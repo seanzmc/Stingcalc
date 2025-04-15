@@ -1,8 +1,9 @@
 # Stingcalc - Auto Loan Payment Calculator
 
-A simple web-based calculator for auto loans with two main functionalities:
+A simple web-based calculator for auto loans with three main functionalities:
 - Calculate monthly payment based on loan amount, term, and interest rate
 - Calculate loan amount based on desired payment, term, and interest rate
+- Calculate monthly income based on year-to-date earnings
 
 ## How to Use
 
@@ -22,3 +23,7 @@ Visit: https://seanzmc.github.io/Stingcalc/
 - Accurate calculations using standard loan formulas
 - Support for decimal values in all inputs
 - Results formatted as currency with two decimal places
+- Monthly income calculator that:
+  - Estimates monthly gross income based on year-to-date earnings
+  - Accounts for partial years when hired during the current year
+  - Handles partial months for more accurate calculations
