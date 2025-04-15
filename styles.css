@@ -171,6 +171,55 @@ input:focus {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
+/* Keyboard Shortcuts Info */
+.keyboard-info {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+.info-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: #6c757d;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.info-toggle:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.info-toggle.active {
+    color: #007bff;
+}
+
+.info-content {
+    display: none;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    padding: 10px 15px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #495057;
+    border-left: 3px solid #007bff;
+}
+
+.info-content p {
+    margin: 5px 0;
+}
+
+.info-content.show {
+    display: block;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
     .container {

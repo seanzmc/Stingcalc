@@ -58,21 +58,41 @@
             </div>
 
             <div class="tab-content">
+                <!-- Keyboard shortcuts info -->
+                <div class="keyboard-info">
+                    <button type="button" class="info-toggle" aria-label="Toggle keyboard shortcuts">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        Keyboard Shortcuts
+                    </button>
+                    <div class="info-content">
+                        <p><strong>Tab:</strong> Move to next field</p>
+                        <p><strong>Shift+Tab:</strong> Move to previous field</p>
+                        <p><strong>Enter:</strong> Move to next field or calculate if on last field</p>
+                    </div>
+                </div>
+
                 <!-- Calculate Payment Tab -->
                 <div class="tab-pane active" id="payment-calc">
                     <h2>Calculate Monthly Payment</h2>
                     <form id="payment-form">
                         <div class="form-group">
                             <label for="loan-amount">Loan Amount ($):</label>
-                            <input type="number" id="loan-amount" min="1" required>
+                            <input type="number" id="loan-amount" min="1" placeholder="e.g., 25000" required>
+                            <small class="form-text">Enter the total amount you wish to borrow</small>
                         </div>
                         <div class="form-group">
                             <label for="loan-term">Loan Term (months):</label>
-                            <input type="number" id="loan-term" min="1" max="120" required>
+                            <input type="number" id="loan-term" min="1" max="120" placeholder="e.g., 60" required>
+                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
                         </div>
                         <div class="form-group">
                             <label for="interest-rate">Interest Rate (% APR):</label>
-                            <input type="number" id="interest-rate" min="0" step="0.01" required>
+                            <input type="number" id="interest-rate" min="0" step="0.01" placeholder="e.g., 4.5" required>
+                            <small class="form-text">Enter the annual interest rate as a percentage</small>
                         </div>
                         <div class="button-group">
                             <button type="submit" class="calculate-btn">Calculate</button>
@@ -91,15 +111,18 @@
                     <form id="amount-form">
                         <div class="form-group">
                             <label for="desired-payment">Desired Monthly Payment ($):</label>
-                            <input type="number" id="desired-payment" min="1" step="0.01" required>
+                            <input type="number" id="desired-payment" min="1" step="0.01" placeholder="e.g., 400" required>
+                            <small class="form-text">Enter your target monthly payment amount</small>
                         </div>
                         <div class="form-group">
                             <label for="amount-term">Loan Term (months):</label>
-                            <input type="number" id="amount-term" min="1" max="120" required>
+                            <input type="number" id="amount-term" min="1" max="120" placeholder="e.g., 60" required>
+                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
                         </div>
                         <div class="form-group">
                             <label for="amount-rate">Interest Rate (% APR):</label>
-                            <input type="number" id="amount-rate" min="0" step="0.01" required>
+                            <input type="number" id="amount-rate" min="0" step="0.01" placeholder="e.g., 4.5" required>
+                            <small class="form-text">Enter the annual interest rate as a percentage</small>
                         </div>
                         <div class="button-group">
                             <button type="submit" class="calculate-btn">Calculate</button>
@@ -118,11 +141,13 @@
                     <form id="income-form">
                         <div class="form-group">
                             <label for="ytd-amount">Year-to-Date (YTD) Amount ($):</label>
-                            <input type="number" id="ytd-amount" min="0" step="0.01" required>
+                            <input type="number" id="ytd-amount" min="0" step="0.01" placeholder="e.g., 24000" required>
+                            <small class="form-text">Enter your total earnings from Jan 1st to current date</small>
                         </div>
                         <div class="form-group">
                             <label for="check-date">Check Date:</label>
                             <input type="date" id="check-date" required>
+                            <small class="form-text">Enter the date of your most recent paycheck</small>
                         </div>
                         <div class="form-group">
                             <label for="hire-date">Hire Date (if hired this year):</label>
@@ -144,5 +169,20 @@
     </div>
 
     <script src="script.js"></script>
+
+    <script>
+        // Toggle keyboard shortcuts info
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoToggle = document.querySelector('.info-toggle');
+            const infoContent = document.querySelector('.info-content');
+
+            if (infoToggle && infoContent) {
+                infoToggle.addEventListener('click', function() {
+                    infoContent.classList.toggle('show');
+                    this.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
