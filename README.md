@@ -10,14 +10,17 @@ A simple web-based calculator for auto loans with three main functionalities:
 You can access this calculator in two ways:
 
 ### Option 1: Use the GitHub Pages version (recommended)
+
 Visit: https://seanzmc.github.io/Stingcalc/
 
 ### Option 2: Download and run locally
+
 1. Download the files from this repository
 2. Extract them to a folder on your computer
 3. Open the `index.html` file in any web browser
 
 ## Features
+
 - Clean, user-friendly interface
 - Tab-based navigation between calculation modes
 - Accurate calculations using standard loan formulas

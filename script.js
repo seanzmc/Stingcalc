@@ -191,6 +191,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return loanAmount;
     }
     
+    // Function to calculate Florida documentary stamp tax
+    function calculateDocStamps(principal) {
+        // Florida documentary stamp tax: $0.35 per $100 financed, capped at $2,000
+        const units = Math.ceil(principal / 100);
+        const stamps = units * 0.35;
+        return Math.min(stamps, 2000);
+    }
+    
     // Function to format currency
     function formatCurrency(amount) {
         return '$' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
