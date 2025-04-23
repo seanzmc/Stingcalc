@@ -55,13 +55,21 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Calculate monthly payment
-        const monthlyPayment = calculateMonthlyPayment(loanAmount, loanTerm, interestRate);
-        console.log('Calculated Monthly Payment:', monthlyPayment);
-        
-        // Display result
+        // Calculate documentary stamp tax and adjust principal
+        const docStampTax = calculateDocStamps(loanAmount);
+        const totalLoanWithTax = loanAmount + docStampTax;
+    
+        // Calculate monthly payment with tax
+        const monthlyPayment = calculateMonthlyPayment(totalLoanWithTax, loanTerm, interestRate);
+        console.log('Calculated Monthly Payment (with doc-stamp):', monthlyPayment);
+    
+        // Display results
         paymentResult.textContent = formatCurrency(monthlyPayment);
         console.log('Payment Result Updated:', paymentResult.textContent);
+    
+        // Display documentary stamp tax and total loan
+        document.getElementById('payment-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
+        document.getElementById('payment-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
     });
     
     // Loan Amount Calculator Form
@@ -87,11 +95,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Calculate loan amount
+        // Calculate loan amount and documentary stamp tax
         const loanAmount = calculateLoanAmount(desiredPayment, loanTerm, interestRate);
-        
-        // Display result
+        const docStampTax = calculateDocStamps(loanAmount);
+        const totalLoanWithTax = loanAmount + docStampTax;
+
+        // Display results
         amountResult.textContent = formatCurrency(loanAmount);
+        document.getElementById('amount-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
+        document.getElementById('amount-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
     });
     
     // Income Calculator Form
@@ -193,10 +205,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to calculate Florida documentary stamp tax
     function calculateDocStamps(principal) {
-        // Florida documentary stamp tax: $0.35 per $100 financed, capped at $2,000
+        // Input validation
+        if (isNaN(principal) || principal <= 0) {
+            return 0;
+        }
         const units = Math.ceil(principal / 100);
         const stamps = units * 0.35;
-        return Math.min(stamps, 2000);
+        return Math.min(stamps, 2450);
     }
     
     // Function to format currency

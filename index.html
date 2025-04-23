@@ -78,6 +78,7 @@
                 <!-- Calculate Payment Tab -->
                 <div class="tab-pane active" id="payment-calc">
                     <h2>Calculate Monthly Payment</h2>
+                    <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
                     <form id="payment-form">
                         <div class="form-group">
                             <label for="loan-amount">Loan Amount ($):</label>
@@ -102,12 +103,17 @@
                     <div class="result" id="payment-result">
                         <h3>Monthly Payment:</h3>
                         <p class="amount">$0.00</p>
+                        <div class="result-details">
+                            <p id="payment-doc-stamp"></p>
+                            <p id="payment-total-loan"></p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Calculate Loan Amount Tab -->
                 <div class="tab-pane" id="amount-calc">
                     <h2>Calculate Loan Amount</h2>
+                    <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
                     <form id="amount-form">
                         <div class="form-group">
                             <label for="desired-payment">Desired Monthly Payment ($):</label>
@@ -132,6 +138,10 @@
                     <div class="result" id="amount-result">
                         <h3>Loan Amount:</h3>
                         <p class="amount">$0.00</p>
+                        <div class="result-details">
+                            <p id="amount-doc-stamp"></p>
+                            <p id="amount-total-loan"></p>
+                        </div>
                     </div>
                 </div>
 

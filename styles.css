@@ -243,3 +243,26 @@ input:focus {
         font-size: 1.3rem;
     }
 }
+
+/* Info Box */
+.info-box {
+    background-color: #e9f7ff;
+    border-left: 4px solid #007bff;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    color: #007bff;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+/* Result Details */
+.result-details {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.result-details p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
