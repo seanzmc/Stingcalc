@@ -33,6 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Payment Calculator Form
     const paymentForm = document.getElementById('payment-form');
     const paymentResult = document.querySelector('#payment-result .amount');
+
+    // Checkbox event listener to trigger recalculation
+    const disableDocStampPaymentElement = document.getElementById('disableDocStampPayment');
+    if (disableDocStampPaymentElement) {
+        disableDocStampPaymentElement.addEventListener('change', function() {
+            paymentForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        });
+    }
     
     paymentForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -56,7 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Calculate documentary stamp tax and adjust principal
-        const docStampTax = calculateDocStamps(loanAmount);
+        const disableDocStamp = document.getElementById('disableDocStampPayment').checked;
+        let docStampTax = 0;
+        if (!disableDocStamp) {
+            docStampTax = calculateDocStamps(loanAmount);
+        }
         const totalLoanWithTax = loanAmount + docStampTax;
     
         // Calculate monthly payment with tax
@@ -75,6 +87,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Loan Amount Calculator Form
     const amountForm = document.getElementById('amount-form');
     const amountResult = document.querySelector('#amount-result .amount');
+    // Checkbox change triggers amount recalculation
+    const disableDocStampAmountElement = document.getElementById('disableDocStampAmount');
+    if (disableDocStampAmountElement) {
+        disableDocStampAmountElement.addEventListener('change', function() {
+            amountForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        });
+    }
     
     amountForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -97,12 +116,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Calculate loan amount and documentary stamp tax
         const loanAmount = calculateLoanAmount(desiredPayment, loanTerm, interestRate);
-        const docStampTax = calculateDocStamps(loanAmount);
-        const totalLoanWithTax = loanAmount + docStampTax;
+        const disableDocStamp = document.getElementById('disableDocStampAmount').checked;
+        let docStampTaxAmount = 0;
+        if (!disableDocStamp) {
+            docStampTaxAmount = calculateDocStamps(loanAmount);
+        }
+        const totalLoanWithTax = loanAmount + docStampTaxAmount;
 
         // Display results
         amountResult.textContent = formatCurrency(loanAmount);
-        document.getElementById('amount-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
+        document.getElementById('amount-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTaxAmount)}`;
         document.getElementById('amount-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
     });
     
@@ -459,6 +482,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const resultElement = document.querySelector(`#${resultId} .amount`);
         if (resultElement) {
             resultElement.textContent = '$0.00';
+        }
+        // Clear documentary stamp tax and total loan amount fields
+        const prefix = formId.replace('-form', '');
+        const docStampElem = document.getElementById(`${prefix}-doc-stamp`);
+        if (docStampElem) {
+            docStampElem.textContent = '';
+        }
+        const totalLoanElem = document.getElementById(`${prefix}-total-loan`);
+        if (totalLoanElem) {
+            totalLoanElem.textContent = '';
         }
         
         // Focus on the first input field

@@ -48,7 +48,7 @@
     </noscript>
 
     <div class="container">
-        <h1>Stingray Chevrolet Finance Calculator</h1>
+        <h1>Stingray Chevrolet Auto Loan Calculator</h1>
 
         <div class="calculator-container">
             <div class="tabs">
@@ -95,6 +95,10 @@
                             <input type="number" id="interest-rate" min="0" step="0.01" placeholder="e.g., 4.5" required>
                             <small class="form-text">Enter the annual interest rate as a percentage</small>
                         </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="disableDocStampPayment">
+                            <label for="disableDocStampPayment">Disable doc stamps for loans outside Florida</label>
+                        </div>
                         <div class="button-group">
                             <button type="submit" class="calculate-btn">Calculate</button>
                             <button type="button" class="clear-btn" data-form="payment-form">Clear</button>
@@ -129,6 +133,10 @@
                             <label for="amount-rate">Interest Rate (% APR):</label>
                             <input type="number" id="amount-rate" min="0" step="0.01" placeholder="e.g., 4.5" required>
                             <small class="form-text">Enter the annual interest rate as a percentage</small>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="disableDocStampAmount">
+                            <label for="disableDocStampAmount">Disable doc stamps for loans outside Florida</label>
                         </div>
                         <div class="button-group">
                             <button type="submit" class="calculate-btn">Calculate</button>
