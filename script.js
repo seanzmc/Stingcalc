@@ -1,215 +1,158 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Tab switching functionality
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanes = document.querySelectorAll('.tab-pane');
+    // Cache DOM elements
+    const elements = {
+        tabButtons: document.querySelectorAll('.tab-btn'),
+        tabPanes: document.querySelectorAll('.tab-pane'),
+        paymentForm: document.getElementById('payment-form'),
+        paymentResult: document.querySelector('#payment-result .amount'),
+        amountForm: document.getElementById('amount-form'),
+        amountResult: document.querySelector('#amount-result .amount'),
+        incomeForm: document.getElementById('income-form'),
+        incomeResult: document.querySelector('#income-result .amount'),
+        disableDocStampPayment: document.getElementById('disableDocStampPayment'),
+        disableDocStampAmount: document.getElementById('disableDocStampAmount')
+    };
     
-    tabButtons.forEach(button => {
+    // Tab switching functionality
+    elements.tabButtons.forEach(button => {
         button.addEventListener('click', function() {
             // Remove active class from all buttons and panes
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabPanes.forEach(pane => pane.classList.remove('active'));
+            elements.tabButtons.forEach(btn => btn.classList.remove('active'));
+            elements.tabPanes.forEach(pane => pane.classList.remove('active'));
             
-            // Add active class to clicked button
+            // Add active class to clicked button and show corresponding tab pane
             this.classList.add('active');
-            
-            // Show corresponding tab pane
-            const tabId = this.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(this.getAttribute('data-tab')).classList.add('active');
         });
     });
     
-    // Add Enter key navigation for all forms
-    setupEnterKeyNavigation('payment-form');
-    setupEnterKeyNavigation('amount-form');
-    setupEnterKeyNavigation('income-form');
-    
-    // Add automatic date formatting for income tab date fields
-    setupDateFormatting('check-date');
-    setupDateFormatting('hire-date');
-    
-    // Setup clear buttons
+    // Setup form enhancements
+    ['payment-form', 'amount-form', 'income-form'].forEach(setupEnterKeyNavigation);
+    ['check-date', 'hire-date'].forEach(setupDateFormatting);
     setupClearButtons();
     
-    // Payment Calculator Form
-    const paymentForm = document.getElementById('payment-form');
-    const paymentResult = document.querySelector('#payment-result .amount');
-
-    // Checkbox event listener to trigger recalculation
-    const disableDocStampPaymentElement = document.getElementById('disableDocStampPayment');
-    if (disableDocStampPaymentElement) {
-        disableDocStampPaymentElement.addEventListener('change', function() {
-            paymentForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    // Checkbox event listeners for recalculation
+    if (elements.disableDocStampPayment) {
+        elements.disableDocStampPayment.addEventListener('change', () => {
+            elements.paymentForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
         });
     }
     
-    paymentForm.addEventListener('submit', function(e) {
+    if (elements.disableDocStampAmount) {
+        elements.disableDocStampAmount.addEventListener('change', () => {
+            elements.amountForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        });
+    }
+    
+    // Consolidated validation function
+    function validateInputs(values, positiveOnly = true) {
+        if (values.some(val => isNaN(val))) {
+            alert('Please enter valid numbers for all fields');
+            return false;
+        }
+        if (positiveOnly && values.some(val => val <= 0)) {
+            alert('Please enter positive values');
+            return false;
+        }
+        return true;
+    }
+    
+    // Payment Calculator Form
+    elements.paymentForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get input values
         const loanAmount = parseFloat(document.getElementById('loan-amount').value);
         const loanTerm = parseInt(document.getElementById('loan-term').value);
         const interestRate = parseFloat(document.getElementById('interest-rate').value);
         
-        console.log('Payment Calculation Inputs:', { loanAmount, loanTerm, interestRate });
+        if (!validateInputs([loanAmount, loanTerm, interestRate])) return;
         
-        // Validate inputs
-        if (isNaN(loanAmount) || isNaN(loanTerm) || isNaN(interestRate)) {
-            alert('Please enter valid numbers for all fields');
-            return;
-        }
-        
-        if (loanAmount <= 0 || loanTerm <= 0 || interestRate < 0) {
-            alert('Please enter positive values');
-            return;
-        }
-        
-        // Calculate documentary stamp tax and adjust principal
-        const disableDocStamp = document.getElementById('disableDocStampPayment').checked;
-        let docStampTax = 0;
-        if (!disableDocStamp) {
-            docStampTax = calculateDocStamps(loanAmount);
-        }
+        // Calculate documentary stamp tax and total loan
+        const docStampTax = elements.disableDocStampPayment.checked ? 0 : calculateDocStamps(loanAmount);
         const totalLoanWithTax = loanAmount + docStampTax;
-    
-        // Calculate monthly payment with tax
         const monthlyPayment = calculateMonthlyPayment(totalLoanWithTax, loanTerm, interestRate);
-        console.log('Calculated Monthly Payment (with doc-stamp):', monthlyPayment);
-    
+        
         // Display results
-        paymentResult.textContent = formatCurrency(monthlyPayment);
-        console.log('Payment Result Updated:', paymentResult.textContent);
-    
-        // Display documentary stamp tax and total loan
+        elements.paymentResult.textContent = formatCurrency(monthlyPayment);
         document.getElementById('payment-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById('payment-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
     });
     
     // Loan Amount Calculator Form
-    const amountForm = document.getElementById('amount-form');
-    const amountResult = document.querySelector('#amount-result .amount');
-    // Checkbox change triggers amount recalculation
-    const disableDocStampAmountElement = document.getElementById('disableDocStampAmount');
-    if (disableDocStampAmountElement) {
-        disableDocStampAmountElement.addEventListener('change', function() {
-            amountForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-        });
-    }
-    
-    amountForm.addEventListener('submit', function(e) {
+    elements.amountForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get input values
         const desiredPayment = parseFloat(document.getElementById('desired-payment').value);
         const loanTerm = parseInt(document.getElementById('amount-term').value);
         const interestRate = parseFloat(document.getElementById('amount-rate').value);
         
-        // Validate inputs
-        if (isNaN(desiredPayment) || isNaN(loanTerm) || isNaN(interestRate)) {
-            alert('Please enter valid numbers for all fields');
-            return;
-        }
-        
-        if (desiredPayment <= 0 || loanTerm <= 0 || interestRate < 0) {
-            alert('Please enter positive values');
-            return;
-        }
+        if (!validateInputs([desiredPayment, loanTerm, interestRate])) return;
         
         // Calculate loan amount and documentary stamp tax
         const loanAmount = calculateLoanAmount(desiredPayment, loanTerm, interestRate);
-        const disableDocStamp = document.getElementById('disableDocStampAmount').checked;
-        let docStampTaxAmount = 0;
-        if (!disableDocStamp) {
-            docStampTaxAmount = calculateDocStamps(loanAmount);
-        }
-        const totalLoanWithTax = loanAmount + docStampTaxAmount;
-
+        const docStampTax = elements.disableDocStampAmount.checked ? 0 : calculateDocStamps(loanAmount);
+        const totalLoanWithTax = loanAmount + docStampTax;
+        
         // Display results
-        amountResult.textContent = formatCurrency(loanAmount);
-        document.getElementById('amount-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTaxAmount)}`;
+        elements.amountResult.textContent = formatCurrency(loanAmount);
+        document.getElementById('amount-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById('amount-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
     });
     
     // Income Calculator Form
-    const incomeForm = document.getElementById('income-form');
-    const incomeResult = document.querySelector('#income-result .amount');
     
-    incomeForm.addEventListener('submit', function(e) {
+    elements.incomeForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        // Get input values
         const ytdAmount = parseFloat(document.getElementById('ytd-amount').value);
         const checkDateInput = document.getElementById('check-date').value;
         const hireDateInput = document.getElementById('hire-date').value;
         
-        console.log('Form inputs:', { ytdAmount, checkDateInput, hireDateInput });
+        // Validate YTD amount
+        if (isNaN(ytdAmount) || ytdAmount < 0) {
+            alert('Please enter a valid positive value for YTD amount');
+            return;
+        }
         
-        // Parse dates
+        // Parse and validate dates
         let checkDate, hireDate;
         try {
-            // Try to parse the date, handling different formats
             checkDate = parseDate(checkDateInput);
             hireDate = hireDateInput ? parseDate(hireDateInput) : null;
             
-            console.log('Parsed dates:', {
-                checkDate: checkDate ? checkDate.toISOString() : null,
-                hireDate: hireDate ? hireDate.toISOString() : null
-            });
+            if (!checkDate || !isValidDate(checkDate)) {
+                throw new Error('Invalid check date');
+            }
+            
+            if (hireDate && !isValidDate(hireDate)) {
+                throw new Error('Invalid hire date');
+            }
         } catch (e) {
-            console.error('Date parsing error:', e);
-            alert('Please enter valid date values in MM/DD/YYYY format');
+            alert('Please enter valid date values');
             return;
         }
         
-        // Validate inputs
-        if (isNaN(ytdAmount) || !checkDate) {
-            alert('Please enter valid values for all required fields');
-            return;
-        }
-        
-        if (ytdAmount < 0) {
-            alert('Please enter a positive value for YTD amount');
-            return;
-        }
-        
-        if (hireDate && !isValidDate(hireDate)) {
-            alert('Please enter a valid hire date');
-            return;
-        }
-        
-        // Calculate monthly income
+        // Calculate and display monthly income
         const monthlyIncome = calculateMonthlyIncome(ytdAmount, checkDate, hireDate);
-        
-        // Display result
-        console.log('Income result element:', incomeResult);
-        incomeResult.textContent = formatCurrency(monthlyIncome);
-        console.log('Updated income result text:', incomeResult.textContent);
+        elements.incomeResult.textContent = formatCurrency(monthlyIncome);
     });
     
     // Function to calculate monthly payment
     function calculateMonthlyPayment(principal, term, rate) {
-        // Convert annual rate to monthly rate and decimal
         const monthlyRate = rate / 100 / 12;
-        console.log('Monthly Rate:', monthlyRate);
         
         // Handle edge case of 0% interest
         if (monthlyRate === 0) {
             return principal / term;
         }
         
-        // Calculate monthly payment using the formula:
-        // P = L[c(1 + c)^n]/[(1 + c)^n - 1]
-        // where P = payment, L = loan amount, c = monthly interest rate, n = number of payments
+        // Calculate monthly payment using standard loan formula
         const x = Math.pow(1 + monthlyRate, term);
-        console.log('X value:', x);
-        const payment = principal * (monthlyRate * x) / (x - 1);
-        console.log('Payment calculation:', { principal, monthlyRate, x, payment });
-        
-        return payment;
+        return principal * (monthlyRate * x) / (x - 1);
     }
     
     // Function to calculate loan amount
     function calculateLoanAmount(payment, term, rate) {
-        // Convert annual rate to monthly rate and decimal
         const monthlyRate = rate / 100 / 12;
         
         // Handle edge case of 0% interest
@@ -217,24 +160,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return payment * term;
         }
         
-        // Calculate loan amount using the formula:
-        // L = P[(1 + c)^n - 1]/[c(1 + c)^n]
-        // where L = loan amount, P = payment, c = monthly interest rate, n = number of payments
+        // Calculate loan amount using inverse loan formula
         const x = Math.pow(1 + monthlyRate, term);
-        const loanAmount = payment * (x - 1) / (monthlyRate * x);
-        
-        return loanAmount;
+        return payment * (x - 1) / (monthlyRate * x);
     }
     
     // Function to calculate Florida documentary stamp tax
     function calculateDocStamps(principal) {
-        // Input validation
-        if (isNaN(principal) || principal <= 0) {
-            return 0;
-        }
-        const units = Math.ceil(principal / 100);
-        const stamps = units * 0.35;
-        return Math.min(stamps, 2450);
+        if (isNaN(principal) || principal <= 0) return 0;
+        return Math.min(Math.ceil(principal / 100) * 0.35, 2450);
     }
     
     // Function to format currency
@@ -244,65 +178,31 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to calculate monthly income based on YTD amount and dates
     function calculateMonthlyIncome(ytdAmount, checkDate, hireDate) {
-        console.log('Calculating monthly income with:', {
-            ytdAmount,
-            checkDate: checkDate.toISOString(),
-            hireDate: hireDate ? hireDate.toISOString() : null
-        });
-        
-        // Make sure we're using a reasonable date
+        // Validate date range
         if (checkDate.getFullYear() > 3000) {
-            console.warn('Date is too far in the future, resetting to 2025-04-15');
-            checkDate = new Date(2025, 3, 15); // April 15, 2025
+            checkDate = new Date(2025, 3, 15); // Reset unreasonable future dates
         }
         
-        // Get the year from the check date
         const year = checkDate.getFullYear();
         
-        // Determine the start date (either January 1st or hire date if hired this year)
+        // Determine start date (January 1st or hire date if hired this year)
         const startDate = hireDate && hireDate.getFullYear() === year
             ? new Date(hireDate)
-            : new Date(year, 0, 1); // January 1st of the current year
+            : new Date(year, 0, 1);
         
-        console.log('Using start date:', startDate.toISOString());
-        
-        // Calculate the number of months between start date and check date
+        // Calculate months between start and check date
         let months = (checkDate.getMonth() - startDate.getMonth()) +
                     (12 * (checkDate.getFullYear() - startDate.getFullYear()));
         
-        // Adjust for partial months
-        const dayOfMonth = checkDate.getDate();
-        const daysInMonth = new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
-        const partialMonth = dayOfMonth / daysInMonth;
-        
+        // Add partial month calculation
+        const partialMonth = checkDate.getDate() /
+            new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
         months += partialMonth;
         
-        // Ensure we have at least a partial month to avoid division by zero
+        // Ensure minimum to avoid division by zero
         months = Math.max(months, 0.1);
         
-        console.log('Calculated months:', months);
-        
-        // Calculate monthly income by dividing YTD by number of months
-        const monthlyIncome = ytdAmount / months;
-        console.log('Calculated monthly income:', monthlyIncome);
-        
-        // Log the final result
-        const result = formatCurrency(monthlyIncome);
-        console.log('Final monthly income result:', result);
-        
-        // Make sure the result is visible in the UI
-        setTimeout(() => {
-            const resultElement = document.querySelector('#income-result .amount');
-            if (resultElement) {
-                console.log('Checking if result is visible in UI:', resultElement.textContent);
-                if (resultElement.textContent !== result) {
-                    console.warn('Result not updated in UI, forcing update');
-                    resultElement.textContent = result;
-                }
-            }
-        }, 100);
-        
-        return monthlyIncome;
+        return ytdAmount / months;
     }
     
     // Function to validate date objects
@@ -312,38 +212,27 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to parse dates in various formats
     function parseDate(dateString) {
-        console.log('Parsing date:', dateString);
-        
-        // Handle the case where the date is in an unexpected format
+        // Handle unusual date format edge case
         if (dateString.includes('50415')) {
-            console.log('Detected unusual date format, correcting to 2025-04-15');
-            return new Date(2025, 3, 15); // April is month 3 (0-based)
+            return new Date(2025, 3, 15);
         }
         
-        // Try to parse as ISO format (YYYY-MM-DD)
+        // Try ISO format first (YYYY-MM-DD)
         let date = new Date(dateString);
-        if (isValidDate(date)) {
-            console.log('Valid ISO date:', date);
-            return date;
-        }
+        if (isValidDate(date)) return date;
         
-        // Try to parse as MM/DD/YYYY
+        // Try MM/DD/YYYY format
         const parts = dateString.split('/');
         if (parts.length === 3) {
-            // Month is 0-based in JavaScript Date
             const month = parseInt(parts[0]) - 1;
             const day = parseInt(parts[1]);
             const year = parseInt(parts[2]);
             
             date = new Date(year, month, day);
-            if (isValidDate(date)) {
-                console.log('Valid MM/DD/YYYY date:', date);
-                return date;
-            }
+            if (isValidDate(date)) return date;
         }
         
-        // If we get here, try to extract a valid date from the string
-        const currentYear = new Date().getFullYear();
+        // Extract date using regex
         const dateRegex = /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4}|\d{2})/;
         const match = dateString.match(dateRegex);
         
@@ -358,14 +247,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             date = new Date(year, month, day);
-            if (isValidDate(date)) {
-                console.log('Extracted date from string:', date);
-                return date;
-            }
+            if (isValidDate(date)) return date;
         }
         
-        // Default to current date if all else fails
-        console.warn('Could not parse date, using current date');
+        // Default to current date if parsing fails
         return new Date();
     }
     
@@ -446,9 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         this.value = `${month}/${day}/${year}`;
                     }
                 } catch (e) {
-                    // If invalid, clear the field
-                    console.warn('Invalid date format:', value);
-                    // Don't clear the field, let the form validation handle it
+                    // If invalid, let the form validation handle it
                 }
             }
         });
@@ -499,5 +382,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (firstInput) {
             firstInput.focus();
         }
+    }
+    
+    // Toggle keyboard shortcuts info
+    const infoToggle = document.querySelector('.info-toggle');
+    const infoContent = document.querySelector('.info-content');
+
+    if (infoToggle && infoContent) {
+        infoToggle.addEventListener('click', function() {
+            infoContent.classList.toggle('show');
+            this.classList.toggle('active');
+        });
     }
 });

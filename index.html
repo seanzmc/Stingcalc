@@ -1,33 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Character encoding -->
     <meta charset="UTF-8">
-
-    <!-- Responsive viewport settings -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-
-    <!-- Browser compatibility -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <!-- SEO meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Calculate auto loan payments, loan amounts, and monthly income with Stingcalc - a free calculator tool from Stingray Chevrolet">
-    <meta name="keywords" content="auto loan, car loan, payment calculator, loan calculator, income calculator">
     <meta name="author" content="Stingray Chevrolet">
-
-    <!-- Page title -->
     <title>Auto Loan Calculator</title>
-
-    <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
-
-    <!-- Preload critical assets -->
-    <link rel="preload" href="styles.css" as="style">
-
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-
-    <!-- Mobile theme color -->
     <meta name="theme-color" content="#4285f4">
 
     <!-- No-JS fallback message -->
@@ -187,20 +167,5 @@
     </div>
 
     <script src="script.js"></script>
-
-    <script>
-        // Toggle keyboard shortcuts info
-        document.addEventListener('DOMContentLoaded', function() {
-            const infoToggle = document.querySelector('.info-toggle');
-            const infoContent = document.querySelector('.info-content');
-
-            if (infoToggle && infoContent) {
-                infoToggle.addEventListener('click', function() {
-                    infoContent.classList.toggle('show');
-                    this.classList.toggle('active');
-                });
-            }
-        });
-    </script>
 </body>
 </html>
