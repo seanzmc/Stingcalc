@@ -23,6 +23,12 @@ h1 {
     color: #2c3e50;
 }
 
+h2 {
+    margin-bottom: 20px;
+    color: #343a40;
+    font-size: 1.5rem;
+}
+
 .calculator-container {
     background-color: #fff;
     border-radius: 8px;
@@ -59,7 +65,6 @@ h1 {
     border-bottom: 3px solid #007bff;
 }
 
-/* Tab Content */
 .tab-content {
     padding: 20px;
 }
@@ -70,12 +75,6 @@ h1 {
 
 .tab-pane.active {
     display: block;
-}
-
-h2 {
-    margin-bottom: 20px;
-    color: #343a40;
-    font-size: 1.5rem;
 }
 
 /* Form Styling */
@@ -111,7 +110,6 @@ input:focus {
     color: #6c757d;
 }
 
-/* Button Group */
 .button-group {
     display: flex;
     gap: 10px;
@@ -148,8 +146,7 @@ input:focus {
 
 /* Results */
 .result {
-    margin-top: 30px;
-    margin-bottom: 20px;
+    margin: 30px 0 20px;
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 8px;
@@ -169,6 +166,47 @@ input:focus {
     font-weight: 700;
     color: #28a745;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Info Box */
+.info-box {
+    background-color: #e9f7ff;
+    border-left: 4px solid #007bff;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    color: #007bff;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+/* Result Details */
+.result-details {
+    margin-top: 15px;
+    text-align: left;
+}
+
+.result-details p {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Checkbox Styling */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    transform: scale(1.2);
+}
+
+.checkbox-group label {
+    margin: 0;
 }
 
 /* Keyboard Shortcuts Info */
@@ -192,12 +230,8 @@ input:focus {
     transition: all 0.2s ease;
 }
 
-.info-toggle:hover {
+.info-toggle:hover, .info-toggle.active {
     background-color: #f8f9fa;
-    color: #007bff;
-}
-
-.info-toggle.active {
     color: #007bff;
 }
 
@@ -242,45 +276,4 @@ input:focus {
     h2 {
         font-size: 1.3rem;
     }
-}
-
-/* Info Box */
-.info-box {
-    background-color: #e9f7ff;
-    border-left: 4px solid #007bff;
-    padding: 10px 15px;
-    margin-bottom: 20px;
-    color: #007bff;
-    border-radius: 4px;
-    font-size: 0.95rem;
-}
-
-/* Result Details */
-.result-details {
-    margin-top: 15px;
-    text-align: left;
-}
-
-.result-details p {
-    margin: 5px 0;
-    font-size: 1rem;
-    color: #333;
-}
-
-/* Checkbox Styling */
-.checkbox-group {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.checkbox-group input[type="checkbox"] {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    transform: scale(1.2);
-}
-
-.checkbox-group label {
-    margin: 0;
 }
