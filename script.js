@@ -186,18 +186,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const year = checkDate.getFullYear();
         
         // Determine start date (January 1st or hire date if hired this year)
-        const startDate = hireDate && hireDate.getFullYear() === year
+        const startDate = (hireDate && hireDate.getFullYear() === year)
             ? new Date(hireDate)
             : new Date(year, 0, 1);
-        
-        // Calculate months between start and check date
-        let months = (checkDate.getMonth() - startDate.getMonth()) +
-                    (12 * (checkDate.getFullYear() - startDate.getFullYear()));
-        
-        // Add partial month calculation
-        const partialMonth = checkDate.getDate() /
-            new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
-        months += partialMonth;
+
+        // Calculate months between start and check date, including partial first and last months
+        const monthDiff = (checkDate.getFullYear() - startDate.getFullYear()) * 12 +
+                          (checkDate.getMonth() - startDate.getMonth());
+        const daysInStartMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
+        const daysInCheckMonth = new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
+        const startPartial = (hireDate && hireDate.getFullYear() === year)
+            ? startDate.getDate() / daysInStartMonth
+            : 0;
+        const checkPartial = checkDate.getDate() / daysInCheckMonth;
+        let months = monthDiff + checkPartial - startPartial;
         
         // Ensure minimum to avoid division by zero
         months = Math.max(months, 0.1);
