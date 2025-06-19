@@ -8,6 +8,7 @@
     <title>Auto Loan Calculator</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="quick_pencil/qp.css">
     <meta name="theme-color" content="#4285f4">
 
     <!-- No-JS fallback message -->
@@ -35,6 +36,7 @@
                 <button type="button" class="tab-btn active" data-tab="payment-calc">Calculate Payment</button>
                 <button type="button" class="tab-btn" data-tab="amount-calc">Calculate Loan Amount</button>
                 <button type="button" class="tab-btn" data-tab="income-calc">Calculate Monthly Income</button>
+                <button type="button" class="tab-btn" data-tab="quick-pencil">Quick Pencil</button>
             </div>
 
             <div class="tab-content">
@@ -162,10 +164,46 @@
                         <p class="amount">$0.00</p>
                     </div>
                 </div>
+                <div class="tab-pane" id="quick-pencil">
+                    <div class="row">
+                        <div class="col s12">
+                            <form id="car-loan-form">
+                                <div class="input-field">
+                                    <input type="number" id="car-price" required>
+                                    <label for="car-price">Car Price</label>
+                                </div>
+                                <div class="input-field">
+                                    <input type="number" id="down-payment" required>
+                                    <label for="down-payment">Down Payment</label>
+                                </div>
+                                <div class="input-field">
+                                    <input type="number" id="trade-in" required>
+                                    <label for="trade-in">Trade-in Value</label>
+                                </div>
+                                <div class="input-field">
+                                    <input type="number" id="qp-interest-rate" step="0.01" required>
+                                    <label for="qp-interest-rate">Interest Rate (%)</label>
+                                </div>
+                                <div class="input-field">
+                                    <input type="number" id="qp-loan-term" required>
+                                    <label for="qp-loan-term">Loan Term (months)</label>
+                                </div>
+                                <button type="submit" class="btn">Calculate</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <h5>Results</h5>
+                            <p>Monthly Payment: <span id="monthly-payment"></span></p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
+    <script src="quick_pencil/qp-new.js"></script>
 </body>
 </html>

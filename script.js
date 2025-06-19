@@ -397,3 +397,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+function calculateQuickPencil() {
+    const hourlyRate = parseFloat(document.getElementById('qp-hourly-rate').value);
+    const hoursWorked = parseFloat(document.getElementById('qp-hours-worked').value);
+    const overtimeHours = parseFloat(document.getElementById('qp-overtime-hours').value) || 0;
+
+    if (isNaN(hourlyRate) || isNaN(hoursWorked)) {
+        document.getElementById('qp-results').innerHTML = '<p class="error-message">Please enter valid numbers for hourly rate and hours worked.</p>';
+        return;
+    }
+
+    const regularPay = hourlyRate * hoursWorked;
+    const overtimePay = overtimeHours * (hourlyRate * 1.5);
+    const totalPay = regularPay + overtimePay;
+
+    document.getElementById('qp-results').innerHTML = `
+        <h3>Results</h3>
+        <p>Regular Pay: $${regularPay.toFixed(2)}</p>
+        <p>Overtime Pay: $${overtimePay.toFixed(2)}</p>
+        <p><strong>Total Pay:</strong> $${totalPay.toFixed(2)}</p>
+    `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const quickPencilForm = document.getElementById('quick-pencil-form');
+    if (quickPencilForm) {
+        quickPencilForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            calculateQuickPencil();
+        });
+    }
+});
