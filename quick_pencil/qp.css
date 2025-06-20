@@ -198,3 +198,67 @@ button:active {
 #summary-content strong {
     color: #333;
 }
+
+/* Integrated Quick Pencil Layout */
+#quick-pencil form {
+    padding: 1rem 0;
+}
+#quick-pencil .qp-subtabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem;
+}
+#quick-pencil .qp-subtab-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    margin-right: 0.5rem;
+    color: #555;
+}
+#quick-pencil .qp-subtab-btn.active {
+    border-color: #007bff;
+    color: #007bff;
+}
+#quick-pencil .qp-fields {
+    margin-bottom: 1rem;
+}
+#quick-pencil .qp-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+#quick-pencil .qp-row label {
+    justify-self: end;
+    padding-right: 0.5rem;
+    font-weight: 600;
+    color: #333;
+}
+#quick-pencil .qp-row input,
+#quick-pencil .qp-row select {
+    width: 100%;
+    max-width: 250px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+#quick-pencil .results {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+#quick-pencil .results h3,
+#quick-pencil .results p {
+    margin: 0.25rem 0;
+    color: #333;
+}
+#quick-pencil .results h3 {
+    margin-top: 0;
+    font-size: 1.1rem;
+}

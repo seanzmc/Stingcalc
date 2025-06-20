@@ -165,88 +165,66 @@
                     </div>
                 </div>
                 <div class="tab-pane" id="quick-pencil">
-                    <header>
-                        <h1>Quick Pencil</h1>
-                    </header>
-                    <main>
-                        <form id="calculator-form">
-                            <fieldset>
-                                <legend>Vehicle & Pricing</legend>
-                                <div>
-                                    <label>Sale Type:</label>
-                                    <input type="radio" id="sale-type-new" name="sale_type" value="new" checked>
-                                    <label for="sale-type-new">New</label>
-                                    <input type="radio" id="sale-type-used" name="sale_type" value="used">
-                                    <label for="sale-type-used">Used</label>
-                                </div>
-                                <div>
-                                    <label for="msrp">M.S.R.P.:</label>
+                    <h2>Quick Pencil</h2>
+                    <div class="info-box">Perform quick delivery estimates ("penciling") for New and Used vehicle sales. Enter your values below and view an itemized summary.</div>
+                        <div class="qp-subtabs">
+                            <button type="button" class="qp-subtab-btn active" data-sale-type="new">New</button>
+                            <button type="button" class="qp-subtab-btn" data-sale-type="used">Used</button>
+                        </div>
+                        <form id="qp-form">
+                            <div class="qp-fields">
+                                <div class="qp-row" data-field="msrp">
+                                    <label for="msrp">M.S.R.P.</label>
                                     <input type="number" id="msrp" name="msrp" required>
                                 </div>
-                                <div>
-                                    <label for="selling-price">Selling Price:</label>
-                                    <input type="number" id="selling-price" name="selling_price" required>
+                                <div class="qp-row" data-field="selling-price" style="display: none;">
+                                    <label for="selling-price">Selling Price</label>
+                                    <input type="number" id="selling-price" name="selling_price">
                                 </div>
-                                <div>
-                                    <label for="additional-equipment">Additional Equipment:</label>
+                                <div class="qp-row">
+                                    <label for="additional-equipment">Additional Equipment</label>
                                     <input type="number" id="additional-equipment" name="additional_equipment">
                                 </div>
-                                <div>
-                                    <label for="discount">Discount:</label>
+                                <div class="qp-row" data-field="discount">
+                                    <label for="discount">Discount</label>
                                     <input type="number" id="discount" name="discount">
                                 </div>
-                                <div>
-                                    <label for="rebates">Rebates:</label>
+                                <div class="qp-row" data-field="rebates">
+                                    <label for="rebates">Rebates</label>
                                     <input type="number" id="rebates" name="rebates">
                                 </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend>Trade-In</legend>
-                                <div>
-                                    <label for="trade-allowance">Trade Allowance:</label>
+                                <div class="qp-row">
+                                    <label for="trade-allowance">Trade Allowance</label>
                                     <input type="number" id="trade-allowance" name="trade_allowance">
                                 </div>
-                                <div>
-                                    <label for="trade-payoff">Trade Payoff:</label>
+                                <div class="qp-row">
+                                    <label for="trade-payoff">Trade Payoff</label>
                                     <input type="number" id="trade-payoff" name="trade_payoff">
                                 </div>
-                            </fieldset>
-
-                            <fieldset>
-                                <legend>Finalizing the Deal</legend>
-                                <div>
-                                    <label>Tag Type:</label>
-                                    <input type="radio" id="tag-type-new" name="tag_type" value="new" checked>
-                                    <label for="tag-type-new">New Tag</label>
-                                    <input type="radio" id="tag-type-transfer" name="tag_type" value="transfer">
-                                    <label for="tag-type-transfer">Transfer Tag</label>
+                                <div class="qp-row">
+                                    <label for="tag-type">Tag Type</label>
+                                    <select id="tag-type" name="tag_type">
+                                        <option value="new">New Tag</option>
+                                        <option value="transfer">Transfer Tag</option>
+                                    </select>
                                 </div>
-                                <div>
-                                    <label for="down-payment">Down Payment:</label>
+                                <div class="qp-row">
+                                    <label for="down-payment">Down Payment</label>
                                     <input type="number" id="down-payment" name="down_payment">
                                 </div>
-                            </fieldset>
-                            <button type="submit">Calculate</button>
+                            </div>
+                            <div class="button-group">
+                                <button type="submit" class="calculate-btn">Calculate</button>
+                                <button type="button" id="qp-clear-btn" class="clear-btn" data-form="qp-form">Clear</button>
+                            </div>
                         </form>
-
-                        <section id="summary-section">
-                            <h2>Calculation Summary</h2>
-                            <div id="itemized-summary">
-                                <!-- Calculation details will be populated here by script.js -->
-                            </div>
-                            <div id="final-amount">
-                                <h3>Amount to be Financed:</h3>
-                                <p id="amount-to-finance-display">$0.00</p>
-                            </div>
-                        </section>
-                    </main>
+                        <div class="results" id="qp-results"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="script.js"></script>
-    <script src="quick_pencil/qp.js"></script>
+    <script src="quick_pencil/qp-new.js"></script>
 </body>
 </html>
