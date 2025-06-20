@@ -229,6 +229,7 @@ button:active {
     display: grid;
     grid-template-columns: 150px 1fr;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 0.75rem;
 }
 #quick-pencil .qp-row label {
