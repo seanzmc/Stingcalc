@@ -233,7 +233,7 @@ button:active {
     margin-bottom: 0.75rem;
 }
 #quick-pencil .qp-row label {
-    justify-self: end;
+    justify-self: left;
     padding-right: 0.5rem;
     font-weight: 600;
     color: #333;
@@ -262,4 +262,34 @@ button:active {
 #quick-pencil .results h3 {
     margin-top: 0;
     font-size: 1.1rem;
+}
+
+/* Divider and grid layout for summary rows in results */
+#quick-pencil .results hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 0.5rem 0;
+}
+#quick-pencil .results .summary-row {
+    display: grid;
+    /* let the label column size to its content to avoid line wraps */
+    grid-template-columns: max-content 1fr;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+#quick-pencil .results .summary-row .label {
+    padding-right: 0.5rem;
+    font-weight: 600;
+    color: #333;
+    width: 25vw;
+}
+#quick-pencil .results .summary-row .value {
+}
+#quick-pencil .results .summary-row.total-row .label {
+    font-weight: 700;
+}
+
+div#qp-results > div.summary-row.total-row:nth-child(20) > span.value {
+  font-weight: bold;
 }
