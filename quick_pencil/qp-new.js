@@ -156,7 +156,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="label">Amount to Finance:</span>
                 <span class="value">$${fmt(finalAmount)}</span>
             </div>
+            <div class="button-group">
+                <button type="button" id="use-in-payment-btn" class="calculate-btn">
+                    Use in Payment Calculator
+                </button>
+            </div>
         `;
+
+        const useBtn = document.getElementById('use-in-payment-btn');
+        if (useBtn) {
+            useBtn.addEventListener('click', () => {
+                const paymentInput = document.getElementById('loan-amount');
+                if (paymentInput) {
+                    paymentInput.value = finalAmount.toFixed(2);
+                }
+                const tabBtn = document.querySelector('.tab-btn[data-tab="payment-calc"]');
+                if (tabBtn) {
+                    tabBtn.click();
+                }
+            });
+        }
     });
 
     // Clear Quick Pencil form and results

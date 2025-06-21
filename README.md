@@ -25,7 +25,7 @@ A comprehensive web-based calculator for auto loans with three main functionalit
 - Toggle between New (MSRP, equipment, discount, fees, rebates) and Used (Selling Price, equipment, trade, fees)
 - Provides an itemized breakdown of taxable amounts, sales tax, fees, trade-in values, rebates, and down payments
 - Displays Amount to Finance with an itemized summary
-- 
+- One-click transfer of the Amount to Finance into the Payment Calculator
 ## Technical Features
 
 - **Responsive Design**: Works on desktop, tablet, and mobile devices
@@ -54,6 +54,16 @@ Visit: https://seanzmc.github.io/Stingcalc/
 ## Development
 
 Built with vanilla HTML, CSS, and JavaScript for maximum compatibility and performance.
+
+### Linting
+
+This project uses ESLint for JavaScript linting and Stylelint for CSS linting. To install development dependencies and run the linters:
+
+```bash
+npm install
+npm run lint:js
+npm run lint
+```
 
 ### File Structure
 - `index.html` - Main application structure
