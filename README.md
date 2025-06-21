@@ -26,6 +26,7 @@ A comprehensive web-based calculator for auto loans with three main functionalit
 - Provides an itemized breakdown of taxable amounts, sales tax, fees, trade-in values, rebates, and down payments
 - Displays Amount to Finance with an itemized summary
 - One-click transfer of the Amount to Finance into the Payment Calculator
+- Print the Quick Pencil summary via built-in print styling
 ## Technical Features
 
 - **Responsive Design**: Works on desktop, tablet, and mobile devices

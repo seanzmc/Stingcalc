@@ -148,6 +148,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Render results using grid-aligned summary rows
         const resultDiv = document.getElementById('qp-results');
         const summaryHTML = rows.join('');
+        // Render the itemized summary
         resultDiv.innerHTML = `
             <h3>Itemized Summary</h3>
             ${summaryHTML}
@@ -156,11 +157,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="label">Amount to Finance:</span>
                 <span class="value">$${fmt(finalAmount)}</span>
             </div>
-            <div class="button-group">
-                <button type="button" id="use-in-payment-btn" class="calculate-btn">
-                    Use in Payment Calculator
-                </button>
-            </div>
+        `;
+
+        // Action buttons: Use in Payment Calculator & Print Summary
+        let actions = document.getElementById('qp-actions');
+        if (!actions) {
+            actions = document.createElement('div');
+            actions.id = 'qp-actions';
+            actions.className = 'button-group';
+            resultDiv.after(actions);
+        }
+        actions.innerHTML = `
+            <button type="button" id="use-in-payment-btn" class="calculate-btn">
+                Use in Payment Calculator
+            </button>
+            <button type="button" id="print-summary-btn" class="calculate-btn">
+                Print Summary
+            </button>
         `;
 
         const useBtn = document.getElementById('use-in-payment-btn');
@@ -171,11 +184,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     paymentInput.value = finalAmount.toFixed(2);
                 }
                 const tabBtn = document.querySelector('.tab-btn[data-tab="payment-calc"]');
-                if (tabBtn) {
-                    tabBtn.click();
-                }
+                if (tabBtn) tabBtn.click();
             });
         }
+
+        const printBtn = document.getElementById('print-summary-btn');
+        if (printBtn) {
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+        }
+        // Scroll quick pencil results into view
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 
     // Clear Quick Pencil form and results
