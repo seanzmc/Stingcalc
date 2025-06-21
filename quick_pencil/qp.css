@@ -290,6 +290,6 @@ button:active {
     font-weight: 700;
 }
 
-div#qp-results > div.summary-row.total-row:nth-child(20) > span.value {
+#quick-pencil .results .summary-row:last-child .value {
   font-weight: bold;
 }
