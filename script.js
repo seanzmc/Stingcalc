@@ -66,7 +66,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const loanTerm = parseInt(document.getElementById('loan-term').value);
         const interestRate = parseFloat(document.getElementById('interest-rate').value);
         
-        if (!validateInputs([loanAmount, loanTerm, interestRate])) return;
+        // Loan amount and term must be positive; interest rate may be zero
+        if (!validateInputs([loanAmount, loanTerm])) return;
+        if (isNaN(interestRate) || interestRate < 0) {
+            alert('Please enter a valid non-negative interest rate');
+            return;
+        }
         
         // Calculate documentary stamp tax and total loan
         const docStampTax = elements.disableDocStampPayment.checked ? 0 : calculateDocStamps(loanAmount);
@@ -89,7 +94,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const loanTerm = parseInt(document.getElementById('amount-term').value);
         const interestRate = parseFloat(document.getElementById('amount-rate').value);
         
-        if (!validateInputs([desiredPayment, loanTerm, interestRate])) return;
+        // Desired payment and term must be positive; interest rate may be zero
+        if (!validateInputs([desiredPayment, loanTerm])) return;
+        if (isNaN(interestRate) || interestRate < 0) {
+            alert('Please enter a valid non-negative interest rate');
+            return;
+        }
         
         // Calculate loan amount and documentary stamp tax
         const loanAmount = calculateLoanAmount(desiredPayment, loanTerm, interestRate);
@@ -185,9 +195,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to calculate monthly income based on YTD amount and dates
     function calculateMonthlyIncome(ytdAmount, checkDate, hireDate) {
-        // Validate date range
-        if (checkDate.getFullYear() > 3000) {
-            checkDate = new Date(2025, 3, 15); // Reset unreasonable future dates
+        // Disallow dates more than two years in the future (based on year only)
+        const today = new Date();
+        const maxYear = today.getFullYear() + 2;
+        if (checkDate.getFullYear() > maxYear) {
+            alert('Check date cannot be more than two years in the future');
+            return;
+        }
+        if (hireDate && hireDate.getFullYear() > maxYear) {
+            alert('Hire date cannot be more than two years in the future');
+            return;
         }
         
         const year = checkDate.getFullYear();
