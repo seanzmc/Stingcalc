@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements
     const elements = {
-        tabButtons: document.querySelectorAll('.tab-btn'),
+        // Only main calculator tabs (with data-tab) should trigger pane switching
+        tabButtons: document.querySelectorAll('.tab-btn[data-tab]'),
         tabPanes: document.querySelectorAll('.tab-pane'),
         paymentForm: document.getElementById('payment-form'),
         paymentResult: document.querySelector('#payment-result .amount'),
@@ -76,6 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
         elements.paymentResult.textContent = formatCurrency(monthlyPayment);
         document.getElementById('payment-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById('payment-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
+        // Scroll payment result into view
+        document.getElementById('payment-result').scrollIntoView({ behavior: 'smooth' });
     });
     
     // Loan Amount Calculator Form
@@ -97,6 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
         elements.amountResult.textContent = formatCurrency(loanAmount);
         document.getElementById('amount-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById('amount-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
+        // Scroll loan amount result into view
+        document.getElementById('amount-result').scrollIntoView({ behavior: 'smooth' });
     });
     
     // Income Calculator Form
@@ -135,6 +140,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculate and display monthly income
         const monthlyIncome = calculateMonthlyIncome(ytdAmount, checkDate, hireDate);
         elements.incomeResult.textContent = formatCurrency(monthlyIncome);
+        // Scroll income result into view
+        document.getElementById('income-result').scrollIntoView({ behavior: 'smooth' });
     });
     
     // Function to calculate monthly payment

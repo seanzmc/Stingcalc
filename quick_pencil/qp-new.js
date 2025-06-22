@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const saleTypeButtons = document.querySelectorAll('#quick-pencil .qp-subtab-btn');
+    const saleTypeButtons = document.querySelectorAll('#quick-pencil .tab-btn');
     const qpRows = document.querySelectorAll('#quick-pencil .qp-row');
     const form = document.getElementById('qp-form');
     // Formatting helper: numbers with commas and two decimals
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         // Gather input values
-        const saleType = document.querySelector('#quick-pencil .qp-subtab-btn.active').dataset.saleType;
+        const saleType = document.querySelector('#quick-pencil .tab-btn.active').dataset.saleType;
         const msrp = parseFloat(document.getElementById('msrp').value) || 0;
         const sellingPriceInput = parseFloat(document.getElementById('selling-price').value) || 0;
         const additionalEq = parseFloat(document.getElementById('additional-equipment').value) || 0;
@@ -82,7 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
         const tagFee = document.getElementById('tag-type').value === 'new' ? 450 : 350;
 
-        let summary = '';
+        // Prepare rows for itemized summary
+        const rows = [];
         let finalAmount = 0;
         const floridaWasteTireFee = 5.00;
         const floridaBatteryFee = 1.50;
@@ -98,30 +99,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const salesTax = totalTaxable * salesTaxRate + docStampFlat;
             const totalDelivered = totalTaxable + salesTax + lemonLawFee + tagFee + tradePayoff;
             finalAmount = totalDelivered - rebates - downPayment;
-            summary = `
-                <p>M.S.R.P.: $${fmt(msrp)}</p>
-                <p>+ Additional Equipment: $${fmt(additionalEq)}</p>
-                <p>- Discount: $${fmt(discount)}</p>
-                <p><strong>= Selling Price: $${fmt(sellPrice)}</strong></p>
-                <hr>
-                <p>Selling Price: $${fmt(sellPrice)}</p>
-                <p>- Trade Allowance: $${fmt(tradeAllowance)}</p>
-                <p>+ FL Waste Tire Fee: $${fmt(floridaWasteTireFee)}</p>
-                <p>+ FL Battery Fee: $${fmt(floridaBatteryFee)}</p>
-                <p>+ Private Tag Agency Fee: $${fmt(privateTagAgencyFee)}</p>
-                <p><strong>= Total Taxable: $${fmt(totalTaxable)}</strong></p>
-                <hr>
-                <p>Total Taxable: $${fmt(totalTaxable)}</p>
-                <p>+ Sales Tax: $${fmt(salesTax)}</p>
-                <p>+ FL Lemon Law Fee: $${fmt(lemonLawFee)}</p>
-                <p>+ Tag & Title Fee: $${fmt(tagFee)}</p>
-                <p>+ Trade Payoff: $${fmt(tradePayoff)}</p>
-                <p><strong>= Delivered Price: $${fmt(totalDelivered)}</strong></p>
-                <hr>
-                <p>Delivered Price: $${fmt(totalDelivered)}</p>
-                <p>- Rebates: $${fmt(rebates)}</p>
-                <p>- Down Payment: $${fmt(downPayment)}</p>
-            `;
+            // Build rows for new car flow
+            rows.push(`<div class="summary-row"><span class="label">M.S.R.P.:</span><span class="value">$${fmt(msrp)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Additional Equipment:</span><span class="value">$${fmt(additionalEq)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">- Discount:</span><span class="value">$${fmt(discount)}</span></div>`);
+            rows.push(`<div class="summary-row total-row"><span class="label">= Selling Price:</span><span class="value">$${fmt(sellPrice)}</span></div>`);
+            rows.push('<hr>');
+            rows.push(`<div class="summary-row"><span class="label">Selling Price:</span><span class="value">$${fmt(sellPrice)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">- Trade Allowance:</span><span class="value">$${fmt(tradeAllowance)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ FL Waste Tire Fee:</span><span class="value">$${fmt(floridaWasteTireFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ FL Battery Fee:</span><span class="value">$${fmt(floridaBatteryFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
+            rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
+            rows.push('<hr>');
+            rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
+            rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
+            rows.push('<hr>');
+            rows.push(`<div class="summary-row"><span class="label">Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">- Rebates:</span><span class="value">$${fmt(rebates)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">- Down Payment:</span><span class="value">$${fmt(downPayment)}</span></div>`);
         } else {
             // Used car flow
             const sellPrice = sellingPriceInput + additionalEq;
@@ -129,30 +129,73 @@ document.addEventListener('DOMContentLoaded', function() {
             const salesTax = totalTaxable * salesTaxRate + docStampFlat;
             const totalDelivered = totalTaxable + salesTax + tagFee + tradePayoff;
             finalAmount = totalDelivered - downPayment;
-            summary = `
-                <p>Selling Price: $${fmt(sellingPriceInput)}</p>
-                <p>+ Additional Equipment: $${fmt(additionalEq)}</p>
-                <p>- Trade Allowance: $${fmt(tradeAllowance)}</p>
-                <p>+ Private Tag Agency Fee: $${fmt(privateTagAgencyFee)}</p>
-                <p><strong>= Total Taxable: $${fmt(totalTaxable)}</strong></p>
-                <hr>
-                <p>Total Taxable: $${fmt(totalTaxable)}</p>
-                <p>+ Sales Tax: $${fmt(salesTax)}</p>
-                <p>+ Tag & Title Fee: $${fmt(tagFee)}</p>
-                <p>+ Trade Payoff: $${fmt(tradePayoff)}</p>
-                <p><strong>= Delivered Price: $${fmt(totalDelivered)}</strong></p>
-                <hr>
-                <p>Delivered Price: $${fmt(totalDelivered)}</p>
-                <p>- Down Payment: $${fmt(downPayment)}</p>
-            `;
+            // Build rows for used car flow
+            rows.push(`<div class="summary-row"><span class="label">Selling Price:</span><span class="value">$${fmt(sellingPriceInput)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Additional Equipment:</span><span class="value">$${fmt(additionalEq)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">- Trade Allowance:</span><span class="value">$${fmt(tradeAllowance)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
+            rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
+            rows.push('<hr>');
+            rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
+            rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
+            rows.push('<hr>');
+            rows.push(`<div class="summary-row"><span class="label">Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">- Down Payment:</span><span class="value">$${fmt(downPayment)}</span></div>`);
         }
-        // Render results
+        // Render results using grid-aligned summary rows
         const resultDiv = document.getElementById('qp-results');
+        const summaryHTML = rows.join('');
+        // Render the itemized summary
         resultDiv.innerHTML = `
             <h3>Itemized Summary</h3>
-            ${summary}
-            <h3>Amount to Finance: $${fmt(finalAmount)}</h3>
+            ${summaryHTML}
+            <hr>
+            <div class="summary-row total-row">
+                <span class="label">Amount to Finance:</span>
+                <span class="value">$${fmt(finalAmount)}</span>
+            </div>
         `;
+
+        // Action buttons: Use in Payment Calculator & Print Summary
+        let actions = document.getElementById('qp-actions');
+        if (!actions) {
+            actions = document.createElement('div');
+            actions.id = 'qp-actions';
+            actions.className = 'button-group';
+            resultDiv.after(actions);
+        }
+        actions.innerHTML = `
+            <button type="button" id="use-in-payment-btn" class="calculate-btn">
+                Use in Payment Calculator
+            </button>
+            <button type="button" id="print-summary-btn" class="calculate-btn">
+                Print Summary
+            </button>
+        `;
+
+        const useBtn = document.getElementById('use-in-payment-btn');
+        if (useBtn) {
+            useBtn.addEventListener('click', () => {
+                const paymentInput = document.getElementById('loan-amount');
+                if (paymentInput) {
+                    paymentInput.value = finalAmount.toFixed(2);
+                }
+                const tabBtn = document.querySelector('.tab-btn[data-tab="payment-calc"]');
+                if (tabBtn) tabBtn.click();
+            });
+        }
+
+        const printBtn = document.getElementById('print-summary-btn');
+        if (printBtn) {
+            printBtn.addEventListener('click', () => {
+                window.print();
+            });
+        }
+        // Scroll quick pencil results into view
+        resultDiv.scrollIntoView({ behavior: 'smooth' });
     });
 
     // Clear Quick Pencil form and results
@@ -162,6 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
             updateFields('new');
             form.querySelectorAll('input').forEach(input => input.value = '');
             document.getElementById('qp-results').innerHTML = '';
+            const actions = document.getElementById('qp-actions');
+            if (actions) actions.remove();
         });
     }
 });
