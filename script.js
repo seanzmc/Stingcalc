@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements
     const elements = {
-        tabButtons: document.querySelectorAll('.tab-btn'),
+        // Only main calculator tabs (with data-tab) should trigger pane switching
+        tabButtons: document.querySelectorAll('.tab-btn[data-tab]'),
         tabPanes: document.querySelectorAll('.tab-pane'),
         paymentForm: document.getElementById('payment-form'),
         paymentResult: document.querySelector('#payment-result .amount'),

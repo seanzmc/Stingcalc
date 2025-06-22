@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const saleTypeButtons = document.querySelectorAll('#quick-pencil .qp-subtab-btn');
+    const saleTypeButtons = document.querySelectorAll('#quick-pencil .tab-btn');
     const qpRows = document.querySelectorAll('#quick-pencil .qp-row');
     const form = document.getElementById('qp-form');
     // Formatting helper: numbers with commas and two decimals
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         // Gather input values
-        const saleType = document.querySelector('#quick-pencil .qp-subtab-btn.active').dataset.saleType;
+        const saleType = document.querySelector('#quick-pencil .tab-btn.active').dataset.saleType;
         const msrp = parseFloat(document.getElementById('msrp').value) || 0;
         const sellingPriceInput = parseFloat(document.getElementById('selling-price').value) || 0;
         const additionalEq = parseFloat(document.getElementById('additional-equipment').value) || 0;
@@ -205,6 +205,8 @@ document.addEventListener('DOMContentLoaded', function() {
             updateFields('new');
             form.querySelectorAll('input').forEach(input => input.value = '');
             document.getElementById('qp-results').innerHTML = '';
+            const actions = document.getElementById('qp-actions');
+            if (actions) actions.remove();
         });
     }
 });
