@@ -285,6 +285,11 @@ input:focus {
 
 
 @media print {
+  /* DEBUG: Add borders to see what's visible during print */
+  * {
+    border: 1px solid red !important;
+  }
+  
   body > *:not(.tab-content) {
     display: none;
   }
@@ -296,4 +301,17 @@ input:focus {
   .tab-content .tab-pane.active {
     display: block !important;
   }
+  
+  /* DEBUG: Force container visibility */
+  .container {
+    display: block !important;
+    border: 3px solid blue !important;
+  }
+  
+  /* DEBUG: Force calculator-container visibility */
+  .calculator-container {
+    display: block !important;
+    border: 3px solid green !important;
+  }
 }
+
