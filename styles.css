@@ -283,3 +283,17 @@ input:focus {
     }
 }
 
+
+@media print {
+  body > *:not(.tab-content-wrapper) {
+    display: none;
+  }
+
+  .tab-content-wrapper, .tab-pane {
+    display: none !important;
+  }
+
+  .tab-content-wrapper .tab-pane.active {
+    display: block !important;
+  }
+}
