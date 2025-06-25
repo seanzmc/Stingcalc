@@ -285,15 +285,15 @@ input:focus {
 
 
 @media print {
-  body > *:not(.tab-content-wrapper) {
+  body > *:not(.tab-content) {
     display: none;
   }
 
-  .tab-content-wrapper, .tab-pane {
+  .tab-content, .tab-pane {
     display: none !important;
   }
 
-  .tab-content-wrapper .tab-pane.active {
+  .tab-content .tab-pane.active {
     display: block !important;
   }
 }
