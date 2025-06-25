@@ -76,54 +76,73 @@
 
 /* Print only the Quick Pencil summary content */
 @media print {
-  body * {
-    visibility: hidden;
+  /* Hide everything by default within the print scope of Quick Pencil tab */
+  #quick-pencil body * {
+    visibility: hidden !important; /* More specific to qp.css scope */
   }
-  #qp-results, #qp-results * {
-    visibility: visible;
+
+  /* Make only the summary section and its children visible */
+  #summary-section, #summary-section * {
+    visibility: visible !important;
   }
-  #qp-results {
+
+  #summary-section {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    padding: 0;
+    padding: 10px; /* Add some padding for print */
     margin: 0;
+    background-color: #fff; /* Ensure white background for printing */
   }
 
-  /* Mirror on-screen summary layout in print */
-  #qp-results h3,
-  #qp-results p {
+  /* Mirror on-screen summary layout in print for #summary-section */
+  #summary-section h2, /* Target h2 as per quickpencil.html */
+  #summary-section h3,
+  #summary-section p,
+  #summary-section div { /* Ensure divs inside summary are visible */
     margin: 0.25rem 0;
-    color: #333;
+    color: #000 !important; /* Ensure text is black for printing */
+    background-color: transparent !important;
   }
-  #qp-results h3 {
+  #summary-section h2 {
+    font-size: 1.2rem; /* Adjust heading size if needed */
+  }
+  #summary-section h3 {
     margin-top: 0;
     font-size: 1.1rem;
   }
-  #qp-results hr {
+  #summary-section hr {
     border: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #ccc !important; /* Make hr more visible */
     margin: 0.5rem 0;
   }
-  #qp-results .summary-row {
+  /* If #itemized-summary contains specific row structures, replicate them here */
+  /* For example, if it uses .summary-row from the original qp.css */
+  #summary-section .summary-row { /* Assuming .summary-row is used within #itemized-summary */
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     margin-bottom: 0.75rem;
   }
-  #qp-results .summary-row .label {
+  #summary-section .summary-row .label {
     font-weight: 600;
-    color: #333;
     text-align: left;
   }
-  #qp-results .summary-row .value {
+  #summary-section .summary-row .value {
     text-align: right;
   }
-  #qp-results .summary-row.total-row .label {
+  #summary-section .summary-row.total-row .label {
     font-weight: 700;
   }
-  #qp-results .summary-row:last-child .value {
+  #summary-section .summary-row:last-child .value {
     font-weight: bold;
+  }
+  #final-amount { /* Ensure final amount section is styled for print */
+    margin-top: 1rem;
+  }
+  #amount-to-finance-display {
+    font-weight: bold;
+    font-size: 1.2rem;
   }
 }

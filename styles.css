@@ -285,33 +285,30 @@ input:focus {
 
 
 @media print {
-  /* DEBUG: Add borders to see what's visible during print */
-  * {
-    border: 1px solid red !important;
-  }
-  
-  body > *:not(.tab-content) {
-    display: none;
-  }
-
-  .tab-content, .tab-pane {
+  body > header,
+  .tabs,
+  .tab-pane:not(.active) {
     display: none !important;
   }
 
-  .tab-content .tab-pane.active {
+  .calculator-container,
+  .tab-content,
+  .tab-pane.active {
     display: block !important;
+    visibility: visible !important; /* Ensure active pane is visible */
+    width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
   }
-  
-  /* DEBUG: Force container visibility */
-  .container {
-    display: block !important;
-    border: 3px solid blue !important;
+
+  /* Ensure all children of the active tab pane are visible */
+  .tab-pane.active * {
+    visibility: visible !important;
   }
-  
-  /* DEBUG: Force calculator-container visibility */
-  .calculator-container {
-    display: block !important;
-    border: 3px solid green !important;
+
+  /* Remove unnecessary borders from debug */
+  * {
+    border: none !important;
   }
 }
 
