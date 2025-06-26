@@ -76,17 +76,22 @@
 
 /* Print only the Quick Pencil summary content */
 @media print {
-  /* Hide everything by default within the print scope of Quick Pencil tab */
-  #quick-pencil body * {
-    visibility: hidden !important; /* More specific to qp.css scope */
+  /* DEPRECATED: Selector is invalid in this context */
+  /* #quick-pencil body * {
+    visibility: hidden !important;
+  } */
+
+  /* Hide form elements, only show results */
+  #quick-pencil #qp-form, #quick-pencil .tabs {
+      display: none !important;
   }
 
-  /* Make only the summary section and its children visible */
-  #summary-section, #summary-section * {
+  /* Make only the results section and its children visible */
+  #qp-results, #qp-results * {
     visibility: visible !important;
   }
 
-  #summary-section {
+  #qp-results {
     position: absolute;
     top: 0;
     left: 0;
@@ -96,53 +101,54 @@
     background-color: #fff; /* Ensure white background for printing */
   }
 
-  /* Mirror on-screen summary layout in print for #summary-section */
-  #summary-section h2, /* Target h2 as per quickpencil.html */
-  #summary-section h3,
-  #summary-section p,
-  #summary-section div { /* Ensure divs inside summary are visible */
+  /* Mirror on-screen summary layout in print for #qp-results */
+  #qp-results h2,
+  #qp-results h3,
+  #qp-results p,
+  #qp-results div {
     margin: 0.25rem 0;
     color: #000 !important; /* Ensure text is black for printing */
     background-color: transparent !important;
   }
-  #summary-section h2 {
-    font-size: 1.2rem; /* Adjust heading size if needed */
+  #qp-results h2 {
+    font-size: 1.2rem;
   }
-  #summary-section h3 {
+  #qp-results h3 {
     margin-top: 0;
     font-size: 1.1rem;
   }
-  #summary-section hr {
+  #qp-results hr {
     border: none;
-    border-top: 1px solid #ccc !important; /* Make hr more visible */
+    border-top: 1px solid #ccc !important;
     margin: 0.5rem 0;
   }
-  /* If #itemized-summary contains specific row structures, replicate them here */
-  /* For example, if it uses .summary-row from the original qp.css */
-  #summary-section .summary-row { /* Assuming .summary-row is used within #itemized-summary */
+  #qp-results .summary-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     margin-bottom: 0.75rem;
   }
-  #summary-section .summary-row .label {
+  #qp-results .summary-row .label {
     font-weight: 600;
     text-align: left;
   }
-  #summary-section .summary-row .value {
+  #qp-results .summary-row .value {
     text-align: right;
   }
-  #summary-section .summary-row.total-row .label {
+  #qp-results .summary-row.total-row .label {
     font-weight: 700;
   }
-  #summary-section .summary-row:last-child .value {
+  #qp-results .summary-row:last-child .value {
     font-weight: bold;
   }
-  #final-amount { /* Ensure final amount section is styled for print */
+
+  /* DEPRECATED: Selector no longer exists in index.html */
+  /* #final-amount {
     margin-top: 1rem;
-  }
-  #amount-to-finance-display {
+  } */
+  /* DEPRECATED: Selector no longer exists in index.html */
+  /* #amount-to-finance-display {
     font-weight: bold;
     font-size: 1.2rem;
-  }
+  } */
 }
