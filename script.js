@@ -219,15 +219,22 @@ document.addEventListener('DOMContentLoaded', function() {
                           (checkDate.getMonth() - startDate.getMonth());
         const daysInStartMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
         const daysInCheckMonth = new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
+        if (hireDate && checkDate < hireDate) {
+            alert('Check date cannot be before the hire date');
+            return 0;
+        }
+
         const startPartial = (hireDate && hireDate.getFullYear() === year)
-            ? startDate.getDate() / daysInStartMonth
+            ? (startDate.getDate() - 1) / daysInStartMonth
             : 0;
         const checkPartial = checkDate.getDate() / daysInCheckMonth;
         let months = monthDiff + checkPartial - startPartial;
-        
-        // Ensure minimum to avoid division by zero
-        months = Math.max(months, 0.1);
-        
+
+        if (months <= 0) {
+            alert('Unable to determine time worked. Please verify the provided dates.');
+            return 0;
+        }
+
         return ytdAmount / months;
     }
     
