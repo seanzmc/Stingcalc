@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // New car flow
             const sellPrice = msrp + additionalEq - discount;
             const totalTaxable = sellPrice - tradeAllowance + floridaWasteTireFee + floridaBatteryFee + privateTagAgencyFee;
-            const salesTax = totalTaxable * salesTaxRate + docStampFlat;
+            const salesTax = totalTaxable < 0 ? 0 : totalTaxable * salesTaxRate + docStampFlat;
             const totalDelivered = totalTaxable + salesTax + lemonLawFee + tagFee + tradePayoff;
             finalAmount = totalDelivered - rebates - downPayment;
             // Build rows for new car flow
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Used car flow
             const sellPrice = sellingPriceInput + additionalEq;
             const totalTaxable = sellPrice - tradeAllowance + privateTagAgencyFee;
-            const salesTax = totalTaxable * salesTaxRate + docStampFlat;
+            const salesTax = totalTaxable < 0 ? 0 : totalTaxable * salesTaxRate + docStampFlat;
             const totalDelivered = totalTaxable + salesTax + tagFee + tradePayoff;
             finalAmount = totalDelivered - downPayment;
             // Build rows for used car flow
