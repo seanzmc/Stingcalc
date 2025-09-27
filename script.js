@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
         amountResult: document.querySelector('#amount-result .amount'),
         incomeForm: document.getElementById('income-form'),
         incomeResult: document.querySelector('#income-result .amount'),
+        interestRateForm: document.getElementById('interest-rate-form'),
+        interestRateResult: document.querySelector('#interest-rate-result .amount'),
         disableDocStampPayment: document.getElementById('disableDocStampPayment'),
         disableDocStampAmount: document.getElementById('disableDocStampAmount')
     };
@@ -28,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Setup form enhancements
-    ['payment-form', 'amount-form', 'income-form'].forEach(setupEnterKeyNavigation);
+    ['payment-form', 'amount-form', 'income-form', 'interest-rate-form'].forEach(setupEnterKeyNavigation);
     ['check-date', 'hire-date'].forEach(setupDateFormatting);
     setupClearButtons();
     
@@ -156,6 +158,44 @@ document.addEventListener('DOMContentLoaded', function() {
         // Scroll income result into view
         document.getElementById('income-result').scrollIntoView({ behavior: 'smooth' });
     });
+
+    // Interest Rate Solver Form
+    elements.interestRateForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const principalAmount = parseFloat(document.getElementById('principal-amount').value);
+        const termInMonths = parseInt(document.getElementById('interest-term').value);
+        const targetPayment = parseFloat(document.getElementById('target-payment').value);
+
+        // Validate inputs
+        if (!validateInputs([principalAmount, termInMonths, targetPayment], true)) {
+            document.getElementById('interest-validation-message').textContent = 'Please enter valid positive values for all fields';
+            return;
+        }
+
+        // Check if payment is sufficient to amortize the loan
+        const minPayment = principalAmount / termInMonths;
+        if (targetPayment < minPayment) {
+            elements.interestRateResult.textContent = 'N/A';
+            document.getElementById('interest-validation-message').textContent = `Payment too low to amortize loan. Minimum required payment: ${formatCurrency(minPayment)}`;
+            document.getElementById('interest-rate-result').scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+
+        // Calculate interest rate using Newton-Raphson method
+        const interestRate = calculateInterestRate(principalAmount, termInMonths, targetPayment);
+
+        if (interestRate === null) {
+            elements.interestRateResult.textContent = 'N/A';
+            document.getElementById('interest-validation-message').textContent = 'Unable to calculate rate. Payment may be too high or loan terms invalid.';
+        } else {
+            elements.interestRateResult.textContent = `${interestRate.toFixed(2)}%`;
+            document.getElementById('interest-validation-message').textContent = '';
+        }
+
+        // Scroll result into view
+        document.getElementById('interest-rate-result').scrollIntoView({ behavior: 'smooth' });
+    });
     
     // Function to calculate monthly payment
     function calculateMonthlyPayment(principal, term, rate) {
@@ -174,15 +214,116 @@ document.addEventListener('DOMContentLoaded', function() {
     // Function to calculate loan amount
     function calculateLoanAmount(payment, term, rate) {
         const monthlyRate = rate / 100 / 12;
-        
+
         // Handle edge case of 0% interest
         if (monthlyRate === 0) {
             return payment * term;
         }
-        
+
         // Calculate loan amount using inverse loan formula
         const x = Math.pow(1 + monthlyRate, term);
         return payment * (x - 1) / (monthlyRate * x);
+    }
+
+    // Function to calculate interest rate using Newton-Raphson method
+    function calculateInterestRate(principal, term, targetPayment) {
+        console.log('DEBUG: calculateInterestRate called with:', { principal, term, targetPayment });
+
+        // Handle edge case where payment equals principal divided by term (0% rate)
+        const minPayment = principal / term;
+        console.log('DEBUG: minPayment =', minPayment);
+        if (Math.abs(targetPayment - minPayment) < 0.01) {
+            console.log('DEBUG: Returning 0% rate (edge case)');
+            return 0;
+        }
+
+        let rate = 0.05; // Initial guess: 5% annual rate
+        console.log('DEBUG: Starting with rate guess =', rate);
+        const monthlyRate = rate / 12;
+        const tolerance = 0.0001; // Convergence tolerance
+        const maxIterations = 100;
+
+        for (let i = 0; i < maxIterations; i++) {
+            // Calculate current payment with current rate guess
+            const currentPayment = calculateMonthlyPayment(principal, term, rate * 100);
+            console.log(`DEBUG: Iteration ${i}: rate=${rate.toFixed(4)}, currentPayment=${currentPayment.toFixed(2)}`);
+
+            // If we're close enough to target payment, we're done
+            if (Math.abs(currentPayment - targetPayment) < 0.01) {
+                console.log('DEBUG: Converged! Returning rate =', rate * 100);
+                return rate * 100; // Return annual percentage
+            }
+
+            // Calculate derivative (rate of change) for Newton-Raphson
+            const rateIncrement = 0.0001;
+            const paymentWithIncrement = calculateMonthlyPayment(principal, term, (rate + rateIncrement) * 100);
+            const derivative = (paymentWithIncrement - currentPayment) / rateIncrement;
+            console.log(`DEBUG: derivative = (${paymentWithIncrement.toFixed(2)} - ${currentPayment.toFixed(2)}) / (${rateIncrement} * 100) = ${derivative}`);
+
+            if (Math.abs(derivative) < 1e-10) {
+                console.log('DEBUG: Derivative too small, breaking to avoid division by zero');
+                break; // Avoid division by zero
+            }
+
+            // Newton-Raphson update
+            const adjustment = (currentPayment - targetPayment) / derivative;
+            console.log(`DEBUG: adjustment = (${currentPayment.toFixed(2)} - ${targetPayment}) / ${derivative} = ${adjustment}`);
+            rate -= adjustment;
+            console.log(`DEBUG: new rate = ${rate.toFixed(4)}`);
+
+            // Prevent negative rates
+            if (rate < 0) {
+                console.log('DEBUG: Rate went negative, setting to 0');
+                rate = 0;
+            }
+
+            // Prevent rates that would make payment infinite
+            if (rate > 1) {
+                console.log('DEBUG: Rate too high, capping at 1.0');
+                rate = 1;
+            }
+        }
+
+        // Check if we converged to a reasonable rate
+        const finalPayment = calculateMonthlyPayment(principal, term, rate * 100);
+        console.log(`DEBUG: After ${maxIterations} iterations, final rate=${rate.toFixed(4)}, finalPayment=${finalPayment.toFixed(2)}`);
+        if (Math.abs(finalPayment - targetPayment) < 0.01) {
+            console.log('DEBUG: Final check passed, returning rate =', rate * 100);
+            return rate * 100;
+        }
+
+        // If we didn't converge, try binary search as fallback
+        console.log('DEBUG: Newton-Raphson failed, trying binary search fallback');
+        return binarySearchInterestRate(principal, term, targetPayment, 0, 100); // Search between 0% and 100%
+    }
+
+    // Binary search fallback for interest rate calculation
+    function binarySearchInterestRate(principal, term, targetPayment, lowRate, highRate) {
+        console.log('DEBUG: binarySearchInterestRate called with:', { principal, term, targetPayment, lowRate, highRate });
+        const tolerance = 0.001;
+        const maxIterations = 50;
+
+        for (let i = 0; i < maxIterations; i++) {
+            const midRate = (lowRate + highRate) / 2;
+            const payment = calculateMonthlyPayment(principal, term, midRate);
+            console.log(`DEBUG: Binary search iteration ${i}: midRate=${midRate.toFixed(4)}, payment=${payment.toFixed(2)}, target=${targetPayment.toFixed(2)}, diff=${Math.abs(payment - targetPayment).toFixed(4)}`);
+
+            if (Math.abs(payment - targetPayment) < tolerance) {
+                console.log('DEBUG: Binary search converged! Returning rate =', midRate);
+                return midRate;
+            }
+
+            if (payment < targetPayment) {
+                console.log('DEBUG: Payment too low, searching higher rates');
+                lowRate = midRate;
+            } else {
+                console.log('DEBUG: Payment too high, searching lower rates');
+                highRate = midRate;
+            }
+        }
+
+        console.log('DEBUG: Binary search failed to converge after', maxIterations, 'iterations');
+        return null; // Could not converge
     }
     
     // Function to calculate Florida documentary stamp tax
@@ -400,7 +541,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const resultId = formId.replace('form', 'result');
         const resultElement = document.querySelector(`#${resultId} .amount`);
         if (resultElement) {
-            resultElement.textContent = '$0.00';
+            // Handle different result formats
+            if (formId === 'interest-rate-form') {
+                resultElement.textContent = '0.00%';
+            } else {
+                resultElement.textContent = '$0.00';
+            }
         }
         // Clear documentary stamp tax and total loan amount fields
         const prefix = formId.replace('-form', '');
@@ -411,6 +557,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalLoanElem = document.getElementById(`${prefix}-total-loan`);
         if (totalLoanElem) {
             totalLoanElem.textContent = '';
+        }
+        // Clear interest rate validation message
+        if (formId === 'interest-rate-form') {
+            const validationMessage = document.getElementById('interest-validation-message');
+            if (validationMessage) {
+                validationMessage.textContent = '';
+            }
         }
         
         // Focus on the first input field
