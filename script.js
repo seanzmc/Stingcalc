@@ -149,6 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Calculate and display monthly income
         const monthlyIncome = calculateMonthlyIncome(ytdAmount, checkDate, hireDate);
+        if (monthlyIncome == null) {
+            return;
+        }
         elements.incomeResult.textContent = formatCurrency(monthlyIncome);
         // Scroll income result into view
         document.getElementById('income-result').scrollIntoView({ behavior: 'smooth' });
@@ -200,11 +203,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const maxYear = today.getFullYear() + 2;
         if (checkDate.getFullYear() > maxYear) {
             alert('Check date cannot be more than two years in the future');
-            return;
+            return null;
         }
         if (hireDate && hireDate.getFullYear() > maxYear) {
             alert('Hire date cannot be more than two years in the future');
-            return;
+            return null;
         }
         
         const year = checkDate.getFullYear();
@@ -221,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const daysInCheckMonth = new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
         if (hireDate && checkDate < hireDate) {
             alert('Check date cannot be before the hire date');
-            return 0;
+            return null;
         }
 
         const startPartial = (hireDate && hireDate.getFullYear() === year)
@@ -232,7 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (months <= 0) {
             alert('Unable to determine time worked. Please verify the provided dates.');
-            return 0;
+            return null;
         }
 
         return ytdAmount / months;
