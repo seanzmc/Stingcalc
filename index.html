@@ -35,9 +35,9 @@
             <div class="tabs">
                 <button type="button" class="tab-btn active" data-tab="payment-calc">Calculate Payment</button>
                 <button type="button" class="tab-btn" data-tab="amount-calc">Calculate Loan Amount</button>
+                <button type="button" class="tab-btn" data-tab="rate-solver">Interest Rate Solver</button>
                 <button type="button" class="tab-btn" data-tab="income-calc">Calculate Monthly Income</button>
                 <button type="button" class="tab-btn" data-tab="quick-pencil">Quick Pencil</button>
-                <button type="button" class="tab-btn" data-tab="rate-solver">Interest Rate Solver</button>
             </div>
 
             <div class="tab-content">
@@ -115,6 +115,40 @@
                         <div class="result-details">
                             <p id="amount-doc-stamp"></p>
                             <p id="amount-total-loan"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interest Rate Solver Tab -->
+                <div class="tab-pane" id="rate-solver">
+                    <h2>Interest Rate Solver</h2>
+                    <div class="info-box">Calculate the interest rate needed for a specific loan amount and term to achieve your target monthly payment. Uses iterative approximation to solve for the rate.</div>
+                    <form id="interest-rate-form">
+                        <div class="form-group">
+                            <label for="principal-amount">Principal Amount ($):</label>
+                            <input type="number" id="principal-amount" min="0.01" step="0.01" placeholder="e.g., 25000.00" required>
+                            <small class="form-text">Enter the loan amount you wish to finance</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="interest-term">Loan Term (months):</label>
+                            <input type="number" id="interest-term" min="1" max="120" placeholder="e.g., 60" required>
+                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="target-payment">Target Monthly Payment ($):</label>
+                            <input type="number" id="target-payment" min="0.01" step="0.01" placeholder="e.g., 450.00" required>
+                            <small class="form-text">Enter your desired monthly payment amount</small>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="calculate-btn">Calculate</button>
+                            <button type="button" class="clear-btn" data-form="interest-rate-form">Clear</button>
+                        </div>
+                    </form>
+                    <div class="result" id="interest-rate-result">
+                        <h3>Required Interest Rate:</h3>
+                        <p class="amount">0.00%</p>
+                        <div class="result-details">
+                            <p id="interest-validation-message"></p>
                         </div>
                     </div>
                 </div>
@@ -203,40 +237,6 @@
                             </div>
                         </form>
                         <div class="results" id="qp-results"></div>
-                </div>
-
-                <!-- Interest Rate Solver Tab -->
-                <div class="tab-pane" id="rate-solver">
-                    <h2>Interest Rate Solver</h2>
-                    <div class="info-box">Calculate the interest rate needed for a specific loan amount and term to achieve your target monthly payment. Uses iterative approximation to solve for the rate.</div>
-                    <form id="interest-rate-form">
-                        <div class="form-group">
-                            <label for="principal-amount">Principal Amount ($):</label>
-                            <input type="number" id="principal-amount" min="0.01" step="0.01" placeholder="e.g., 25000.00" required>
-                            <small class="form-text">Enter the loan amount you wish to finance</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="interest-term">Loan Term (months):</label>
-                            <input type="number" id="interest-term" min="1" max="120" placeholder="e.g., 60" required>
-                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="target-payment">Target Monthly Payment ($):</label>
-                            <input type="number" id="target-payment" min="0.01" step="0.01" placeholder="e.g., 450.00" required>
-                            <small class="form-text">Enter your desired monthly payment amount</small>
-                        </div>
-                        <div class="button-group">
-                            <button type="submit" class="calculate-btn">Calculate</button>
-                            <button type="button" class="clear-btn" data-form="interest-rate-form">Clear</button>
-                        </div>
-                    </form>
-                    <div class="result" id="interest-rate-result">
-                        <h3>Required Interest Rate:</h3>
-                        <p class="amount">0.00%</p>
-                        <div class="result-details">
-                            <p id="interest-validation-message"></p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
