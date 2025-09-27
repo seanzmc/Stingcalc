@@ -79,11 +79,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const docStampTax = elements.disableDocStampPayment.checked ? 0 : calculateDocStamps(loanAmount);
         const totalLoanWithTax = loanAmount + docStampTax;
         const monthlyPayment = calculateMonthlyPayment(totalLoanWithTax, loanTerm, interestRate);
-        
+
+        // Calculate total cost of loan (principal + total interest)
+        const totalInterest = (monthlyPayment * loanTerm) - totalLoanWithTax;
+        const totalCostOfLoan = totalLoanWithTax + totalInterest;
+
         // Display results
         elements.paymentResult.textContent = formatCurrency(monthlyPayment);
         document.getElementById('payment-doc-stamp').textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById('payment-total-loan').textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
+        document.getElementById('payment-total-cost').textContent = `Total Cost of Loan: ${formatCurrency(totalCostOfLoan)}`;
         // Scroll payment result into view
         document.getElementById('payment-result').scrollIntoView({ behavior: 'smooth' });
     });
@@ -548,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 resultElement.textContent = '$0.00';
             }
         }
-        // Clear documentary stamp tax and total loan amount fields
+        // Clear documentary stamp tax, total loan amount, and total cost fields
         const prefix = formId.replace('-form', '');
         const docStampElem = document.getElementById(`${prefix}-doc-stamp`);
         if (docStampElem) {
@@ -557,6 +562,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const totalLoanElem = document.getElementById(`${prefix}-total-loan`);
         if (totalLoanElem) {
             totalLoanElem.textContent = '';
+        }
+        const totalCostElem = document.getElementById(`${prefix}-total-cost`);
+        if (totalCostElem) {
+            totalCostElem.textContent = '';
         }
         // Clear interest rate validation message
         if (formId === 'interest-rate-form') {
