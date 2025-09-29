@@ -59,10 +59,7 @@ h2 {
     background-color: #e9ecef;
 }
 
-/* Quick Pencil internal subtabs: on hover, text turns blue */
-#quick-pencil .tabs .tab-btn:hover {
-    color: #007bff;
-}
+
 
 .tab-btn.active {
     background-color: #fff;
@@ -312,3 +309,24 @@ input:focus {
   }
 }
 
+
+
+/* Disclosure Banner */
+.disclosure-banner {
+    background-color: #fff3cd;
+    border-top: 2px solid #ffc107;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #856404;
+    font-weight: 500;
+    margin-top: 20px;
+    border-radius: 0 0 8px 8px;
+}
+
+.disclosure-banner p {
+    margin: 0;
+    line-height: 1.5;
+}
+>>>>>>> REPLACE
+</insert_content>

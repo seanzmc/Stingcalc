@@ -23,14 +23,7 @@ A comprehensive web-based calculator for auto loans with three main functionalit
 - Handles partial months for accurate calculations
 - Supports flexible date input formats
 
-### ✏️ Quick Pencil
 
-- Perform quick delivery estimates ("penciling") for New and Used vehicle sales
-- Toggle between New (MSRP, equipment, discount, fees, rebates) and Used (Selling Price, equipment, trade, fees)
-- Provides an itemized breakdown of taxable amounts, sales tax, fees, trade-in values, rebates, and down payments
-- Displays Amount to Finance with an itemized summary
-- One-click transfer of the Amount to Finance into the Payment Calculator
-- Print the Quick Pencil summary via built-in print styling
 ## Technical Features
 
 - **Responsive Design**: Works on desktop, tablet, and mobile devices
@@ -74,9 +67,7 @@ npm run lint
 - `index.html` - Main application structure
 - `script.js` - Calculator logic and DOM manipulation
 - `styles.css` - Responsive styling and layout
-- `quick_pencil/qp.css` - Stylesheet for Quick Pencil tab
-- `quick_pencil/qp-new.js` - JavaScript logic for Quick Pencil calculations
-- `quick_pencil/quickpencil.html` - Standalone Quick Pencil template
+
 - `README.md` - Documentation
 
 ## License

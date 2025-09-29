@@ -1,7 +1,7 @@
 {
   "name": "stingcalc",
   "version": "1.0.0",
-  "description": "Auto Loan Payment Calculator and Quick Pencil utilities",
+  "description": "Auto Loan Payment Calculator",
   "scripts": {
     "lint:js": "eslint . --ext .js",
     "lint": "npm run lint:js"
