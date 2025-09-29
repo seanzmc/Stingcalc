@@ -5,22 +5,26 @@ A comprehensive web-based calculator for auto loans with three main functionalit
 ## Features
 
 ### 🚗 Payment Calculator
+
 - Calculate monthly payment based on loan amount, term, and interest rate
 - Includes Florida documentary stamp tax calculation ($0.35 per $100, capped at $2,450)
 - Option to disable doc stamps for loans outside Florida
 
 ### 💰 Loan Amount Calculator
+
 - Calculate maximum loan amount based on desired monthly payment
 - Factors in interest rate and loan term
 - Includes documentary stamp tax considerations
 
 ### 📊 Monthly Income Calculator
+
 - Estimate monthly gross income from year-to-date earnings
 - Accounts for partial years when hired during current year
 - Handles partial months for accurate calculations
 - Supports flexible date input formats
-- 
+
 ### ✏️ Quick Pencil
+
 - Perform quick delivery estimates ("penciling") for New and Used vehicle sales
 - Toggle between New (MSRP, equipment, discount, fees, rebates) and Used (Selling Price, equipment, trade, fees)
 - Provides an itemized breakdown of taxable amounts, sales tax, fees, trade-in values, rebates, and down payments
