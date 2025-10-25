@@ -261,20 +261,20 @@ input:focus {
     .container {
         padding: 10px;
     }
-    
+
     .tab-btn {
         padding: 10px;
         font-size: 14px;
     }
-    
+
     .tab-content {
         padding: 15px;
     }
-    
+
     h1 {
         font-size: 1.8rem;
     }
-    
+
     h2 {
         font-size: 1.3rem;
     }
@@ -329,5 +329,3 @@ input:focus {
     margin: 0;
     line-height: 1.5;
 }
->>>>>>> REPLACE
-</insert_content>
