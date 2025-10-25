@@ -244,7 +244,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let rate = 0.05; // Initial guess: 5% annual rate
         console.log('DEBUG: Starting with rate guess =', rate);
-        const monthlyRate = rate / 12;
         const tolerance = 0.0001; // Convergence tolerance
         const maxIterations = 100;
 
@@ -465,9 +464,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupDateFormatting(inputId) {
         const input = document.getElementById(inputId);
         if (!input) return;
-        
-        // Store the original type
-        const originalType = input.type;
         
         // Change to text type to allow custom formatting
         input.type = 'text';
