@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
         qpRows.forEach(row => {
             const field = row.dataset.field;
             if (field) {
+                // Skip custom-tax-rate as it's controlled by the tax-outside-fl checkbox
+                if (field === 'custom-tax-rate') {
+                    return;
+                }
+                
                 if (type === 'new' && ['msrp', 'discount', 'rebates'].includes(field)) {
                     row.style.display = 'flex';
                     const input = row.querySelector('input, select');
@@ -36,6 +41,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.style.display = 'flex';
             }
         });
+        
+        // Handle visibility of rebates-reduce-taxable checkbox
+        // Only show when sale type is NEW AND tax-outside-fl is checked
+        const taxOutsideFlCheckbox = document.getElementById('tax-outside-fl');
+        const rebatesReduceTaxableRow = document.querySelector('[data-field="rebates-reduce-taxable"]');
+        const rebatesReduceTaxableCheckbox = document.getElementById('rebates-reduce-taxable');
+        
+        if (rebatesReduceTaxableRow && taxOutsideFlCheckbox && rebatesReduceTaxableCheckbox) {
+            if (type === 'new' && taxOutsideFlCheckbox.checked) {
+                rebatesReduceTaxableRow.style.display = 'flex';
+            } else {
+                rebatesReduceTaxableRow.style.display = 'none';
+                rebatesReduceTaxableCheckbox.checked = false;
+            }
+        }
+        
         const visibleInputs = Array.from(form.querySelectorAll('input, select'))
             .filter(el => el.offsetParent !== null);
         if (visibleInputs.length) {
@@ -68,6 +89,50 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Event listener for "tax-outside-fl" checkbox
+    const taxOutsideFlCheckbox = document.getElementById('tax-outside-fl');
+    const customTaxRateRow = document.querySelector('[data-field="custom-tax-rate"]');
+    const rebatesReduceTaxableRow = document.querySelector('[data-field="rebates-reduce-taxable"]');
+    
+    if (taxOutsideFlCheckbox && customTaxRateRow) {
+        taxOutsideFlCheckbox.addEventListener('change', function() {
+            const saleType = document.querySelector('#quick-pencil .tab-btn.active').dataset.saleType;
+            
+            if (this.checked) {
+                // Show custom tax rate input
+                customTaxRateRow.style.display = 'flex';
+                
+                // Show rebates-reduce-taxable only if sale type is NEW
+                if (rebatesReduceTaxableRow && saleType === 'new') {
+                    rebatesReduceTaxableRow.style.display = 'flex';
+                }
+            } else {
+                // Hide both custom tax rate and rebates-reduce-taxable
+                customTaxRateRow.style.display = 'none';
+                if (rebatesReduceTaxableRow) {
+                    rebatesReduceTaxableRow.style.display = 'none';
+                    document.getElementById('rebates-reduce-taxable').checked = false;
+                }
+            }
+        });
+    }
+    
+    // Event listener for "custom-tax-rate" input - validate between 0 and 100
+    const customTaxRateInput = document.getElementById('custom-tax-rate');
+    if (customTaxRateInput) {
+        customTaxRateInput.addEventListener('input', function() {
+            let value = parseFloat(this.value);
+            if (isNaN(value)) {
+                return; // Allow empty or partial input
+            }
+            if (value < 0) {
+                this.value = 0;
+            } else if (value > 100) {
+                this.value = 100;
+            }
+        });
+    }
+
     form.addEventListener('submit', function(e) {
         e.preventDefault();
         // Gather input values
@@ -81,6 +146,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const tradePayoff = parseFloat(document.getElementById('trade-payoff').value) || 0;
         const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
         const tagFee = document.getElementById('tag-type').value === 'new' ? 450 : 350;
+        
+        // Read custom tax checkbox and input values
+        const taxOutsideFl = document.getElementById('tax-outside-fl')?.checked || false;
+        const customTaxRate = parseFloat(document.getElementById('custom-tax-rate')?.value) || 0;
+        const rebatesReduceTaxable = document.getElementById('rebates-reduce-taxable')?.checked || false;
 
         // Prepare rows for itemized summary
         const rows = [];
@@ -95,10 +165,30 @@ document.addEventListener('DOMContentLoaded', function() {
         if (saleType === 'new') {
             // New car flow
             const sellPrice = msrp + additionalEq - discount;
-            const totalTaxable = sellPrice - tradeAllowance + floridaWasteTireFee + floridaBatteryFee + privateTagAgencyFee;
-            const salesTax = totalTaxable < 0 ? 0 : totalTaxable * salesTaxRate + docStampFlat;
+            let totalTaxable = sellPrice - tradeAllowance + floridaWasteTireFee + floridaBatteryFee + privateTagAgencyFee;
+            
+            // Calculate sales tax based on custom tax settings
+            let salesTax;
+            if (taxOutsideFl) {
+                // Custom tax: if rebates-reduce-taxable is checked, subtract rebates from taxable amount
+                if (rebatesReduceTaxable) {
+                    totalTaxable = totalTaxable - rebates;
+                }
+                // Use custom tax rate (percentage converted to decimal) and do NOT add docStampFlat
+                salesTax = totalTaxable < 0 ? 0 : totalTaxable * (customTaxRate / 100);
+            } else {
+                // Florida tax: use standard rate plus doc stamp
+                salesTax = totalTaxable < 0 ? 0 : totalTaxable * salesTaxRate + docStampFlat;
+            }
             const totalDelivered = totalTaxable + salesTax + lemonLawFee + tagFee + tradePayoff;
-            finalAmount = totalDelivered - rebates - downPayment;
+            
+            // When rebates-reduce-taxable is checked, rebates were already subtracted from totalTaxable
+            // Otherwise, subtract rebates from final delivered price as usual
+            if (taxOutsideFl && rebatesReduceTaxable) {
+                finalAmount = totalDelivered - downPayment;
+            } else {
+                finalAmount = totalDelivered - rebates - downPayment;
+            }
             // Build rows for new car flow
             rows.push(`<div class="summary-row"><span class="label">M.S.R.P.:</span><span class="value">$${fmt(msrp)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Additional Equipment:</span><span class="value">$${fmt(additionalEq)}</span></div>`);
@@ -126,7 +216,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Used car flow
             const sellPrice = sellingPriceInput + additionalEq;
             const totalTaxable = sellPrice - tradeAllowance + privateTagAgencyFee;
-            const salesTax = totalTaxable < 0 ? 0 : totalTaxable * salesTaxRate + docStampFlat;
+            
+            // Calculate sales tax based on custom tax settings
+            let salesTax;
+            if (taxOutsideFl) {
+                // Custom tax: use custom tax rate (percentage converted to decimal) and do NOT add docStampFlat
+                salesTax = totalTaxable < 0 ? 0 : totalTaxable * (customTaxRate / 100);
+            } else {
+                // Florida tax: use standard rate plus doc stamp
+                salesTax = totalTaxable < 0 ? 0 : totalTaxable * salesTaxRate + docStampFlat;
+            }
             const totalDelivered = totalTaxable + salesTax + tagFee + tradePayoff;
             finalAmount = totalDelivered - downPayment;
             // Build rows for used car flow
