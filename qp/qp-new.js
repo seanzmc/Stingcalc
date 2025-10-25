@@ -202,8 +202,10 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push('<hr>');
+            // Determine the tax rate percentage for display
+            const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
@@ -235,8 +237,10 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push('<hr>');
+            // Determine the tax rate percentage for display
+            const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
