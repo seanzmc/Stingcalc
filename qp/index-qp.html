@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate auto loan payments, loan amounts, and monthly income with Stingcalc - a free calculator tool from Stingray Chevrolet">
+    <meta name="author" content="Stingray Chevrolet">
+    <title>Auto Loan Calculator</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="qp/qp.css">
+    <meta name="theme-color" content="#4285f4">
+
+    <!-- No-JS fallback message -->
+    <noscript>
+        <style>
+            .calculator-container { display: none; }
+            .noscript-message { display: block; text-align: center; margin: 2rem; }
+        </style>
+    </noscript>
+</head>
+<body>
+    <!-- No-JS message -->
+    <noscript>
+        <div class="noscript-message">
+            <h2>JavaScript Required</h2>
+            <p>This calculator requires JavaScript to function. Please enable JavaScript in your browser settings and reload the page.</p>
+        </div>
+    </noscript>
+
+    <div class="container">
+        <h1>Stingray Chevrolet Auto Loan Calculator</h1>
+
+        <div class="calculator-container">
+            <div class="tabs">
+                <button type="button" class="tab-btn active" data-tab="payment-calc">Calculate Payment</button>
+                <button type="button" class="tab-btn" data-tab="amount-calc">Calculate Loan Amount</button>
+                <button type="button" class="tab-btn" data-tab="rate-solver">Interest Rate Solver</button>
+                <button type="button" class="tab-btn" data-tab="income-calc">Calculate Monthly Income</button>
+                <button type="button" class="tab-btn" data-tab="quick-pencil">Quick Pencil</button>
+            </div>
+
+            <div class="tab-content">
+                <!-- Calculate Payment Tab -->
+                <div class="tab-pane active" id="payment-calc">
+                    <h2>Calculate Monthly Payment</h2>
+                    <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                    <form id="payment-form">
+                        <div class="form-group">
+                            <label for="loan-amount">Loan Amount ($):</label>
+                            <input type="number" id="loan-amount" min="0.01" step="0.01" placeholder="e.g., 25000.00" required>
+                            <small class="form-text">Enter the total amount you wish to borrow</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="loan-term">Loan Term (months):</label>
+                            <input type="number" id="loan-term" min="1" max="120" placeholder="e.g., 60" required>
+                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="interest-rate">Interest Rate (% APR):</label>
+                            <input type="number" id="interest-rate" min="0" step="0.01" placeholder="e.g., 4.5" required>
+                            <small class="form-text">Enter the annual interest rate as a percentage</small>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="disableDocStampPayment">
+                            <label for="disableDocStampPayment">Disable doc stamps for loans outside Florida</label>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="calculate-btn">Calculate</button>
+                            <button type="button" class="clear-btn" data-form="payment-form">Clear</button>
+                        </div>
+                    </form>
+                    <div class="result" id="payment-result">
+                        <h3>Monthly Payment:</h3>
+                        <p class="amount">$0.00</p>
+                        <div class="result-details">
+                            <p id="payment-doc-stamp"></p>
+                            <p id="payment-total-loan"></p>
+                            <p id="payment-total-cost"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculate Loan Amount Tab -->
+                <div class="tab-pane" id="amount-calc">
+                    <h2>Calculate Loan Amount</h2>
+                    <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                    <form id="amount-form">
+                        <div class="form-group">
+                            <label for="desired-payment">Desired Monthly Payment ($):</label>
+                            <input type="number" id="desired-payment" min="1" step="0.01" placeholder="e.g., 400" required>
+                            <small class="form-text">Enter your target monthly payment amount</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount-term">Loan Term (months):</label>
+                            <input type="number" id="amount-term" min="1" max="120" placeholder="e.g., 60" required>
+                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount-rate">Interest Rate (% APR):</label>
+                            <input type="number" id="amount-rate" min="0" step="0.01" placeholder="e.g., 4.5" required>
+                            <small class="form-text">Enter the annual interest rate as a percentage</small>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="disableDocStampAmount">
+                            <label for="disableDocStampAmount">Disable doc stamps for loans outside Florida</label>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="calculate-btn">Calculate</button>
+                            <button type="button" class="clear-btn" data-form="amount-form">Clear</button>
+                        </div>
+                    </form>
+                    <div class="result" id="amount-result">
+                        <h3>Loan Amount:</h3>
+                        <p class="amount">$0.00</p>
+                        <div class="result-details">
+                            <p id="amount-doc-stamp"></p>
+                            <p id="amount-total-loan"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interest Rate Solver Tab -->
+                <div class="tab-pane" id="rate-solver">
+                    <h2>Interest Rate Solver</h2>
+                    <div class="info-box">Calculate the interest rate needed for a specific loan amount and term to achieve your target monthly payment. Uses iterative approximation to solve for the rate.</div>
+                    <form id="interest-rate-form">
+                        <div class="form-group">
+                            <label for="principal-amount">Principal Amount ($):</label>
+                            <input type="number" id="principal-amount" min="0.01" step="0.01" placeholder="e.g., 25000.00" required>
+                            <small class="form-text">Enter the loan amount you wish to finance</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="interest-term">Loan Term (months):</label>
+                            <input type="number" id="interest-term" min="1" max="120" placeholder="e.g., 60" required>
+                            <small class="form-text">Enter the length of the loan in months (1-120)</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="target-payment">Target Monthly Payment ($):</label>
+                            <input type="number" id="target-payment" min="0.01" step="0.01" placeholder="e.g., 450.00" required>
+                            <small class="form-text">Enter your desired monthly payment amount</small>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="calculate-btn">Calculate</button>
+                            <button type="button" class="clear-btn" data-form="interest-rate-form">Clear</button>
+                        </div>
+                    </form>
+                    <div class="result" id="interest-rate-result">
+                        <h3>Required Interest Rate:</h3>
+                        <p class="amount">0.00%</p>
+                        <div class="result-details">
+                            <p id="interest-validation-message"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Calculate Monthly Income Tab -->
+                <div class="tab-pane" id="income-calc">
+                    <h2>Calculate Monthly Income</h2>
+                    <form id="income-form">
+                        <div class="form-group">
+                            <label for="ytd-amount">Year-to-Date (YTD) Amount ($):</label>
+                            <input type="number" id="ytd-amount" min="0" step="0.01" placeholder="e.g., 24000" required>
+                            <small class="form-text">Enter the total YTD amount found in the GROSS field of the paystub</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="check-date">Check Date:</label>
+                            <input type="date" id="check-date" required>
+                            <small class="form-text">Enter the date on the paycheck</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="hire-date">Hire Date (if hired this year):</label>
+                            <input type="date" id="hire-date">
+                            <small class="form-text">Leave blank if hired before this year</small>
+                        </div>
+                        <div class="button-group">
+                            <button type="submit" class="calculate-btn">Calculate</button>
+                            <button type="button" class="clear-btn" data-form="income-form">Clear</button>
+                        </div>
+                    </form>
+                    <div class="result" id="income-result">
+                        <h3>Estimated Monthly Gross Income:</h3>
+                        <p class="amount">$0.00</p>
+                    </div>
+                </div>
+                <div class="tab-pane" id="quick-pencil">
+                    <h2>Quick Pencil</h2>
+                    <div class="info-box">Perform quick delivery estimates ("penciling") for New and Used vehicle sales. Enter your values below and view an itemized summary.</div>
+                        <div class="tabs">
+                            <button type="button" class="tab-btn active" data-sale-type="new">New</button>
+                            <button type="button" class="tab-btn" data-sale-type="used">Used</button>
+                        </div>
+                        <form id="qp-form">
+                            <div class="qp-fields">
+                                <div class="qp-row" data-field="msrp">
+                                    <label for="msrp">M.S.R.P.</label>
+                                    <input type="number" id="msrp" name="msrp" required>
+                                </div>
+                                <div class="qp-row" data-field="selling-price" style="display: none;">
+                                    <label for="selling-price">Selling Price</label>
+                                    <input type="number" id="selling-price" name="selling_price">
+                                </div>
+                                <div class="qp-row">
+                                    <label for="additional-equipment">Additional Equipment</label>
+                                    <input type="number" id="additional-equipment" name="additional_equipment">
+                                </div>
+                                <div class="qp-row" data-field="discount">
+                                    <label for="discount">Discount</label>
+                                    <input type="number" id="discount" name="discount">
+                                </div>
+                                <div class="qp-row" data-field="rebates">
+                                    <label for="rebates">Rebates</label>
+                                    <input type="number" id="rebates" name="rebates">
+                                </div>
+                                <div class="qp-row">
+                                    <label for="trade-allowance">Trade Allowance</label>
+                                    <input type="number" id="trade-allowance" name="trade_allowance">
+                                </div>
+                                <div class="qp-row">
+                                    <label for="trade-payoff">Trade Payoff</label>
+                                    <input type="number" id="trade-payoff" name="trade_payoff">
+                                </div>
+                                <div class="qp-row">
+                                    <label for="tag-type">Tag Type</label>
+                                    <select id="tag-type" name="tag_type">
+                                        <option value="new">New Tag</option>
+                                        <option value="transfer">Transfer Tag</option>
+                                    </select>
+                                </div>
+                                <div class="qp-row">
+                                    <label for="down-payment">Down Payment</label>
+                                    <input type="number" id="down-payment" name="down_payment">
+                                </div>
+                            </div>
+                            <div class="button-group">
+                                <button type="submit" class="calculate-btn">Calculate</button>
+                                <button type="button" id="qp-clear-btn" class="clear-btn" data-form="qp-form">Clear</button>
+                            </div>
+                        </form>
+                        <div class="results" id="qp-results"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="qp/qp-new.js"></script>
+</body>
+</html>

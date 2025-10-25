@@ -313,13 +313,14 @@ input:focus {
 
 /* Disclosure Banner */
 .disclosure-banner {
-    background-color: #fff3cd;
-    border-top: 2px solid #ffc107;
+    background-color: transparent;
+    border-top: none;
     padding: 15px 20px;
     text-align: center;
-    font-size: 0.9rem;
-    color: #856404;
-    font-weight: 500;
+    font-size: 0.75rem;
+    color: #999;
+    font-weight: 400;
+    font-style: italic;
     margin-top: 20px;
     border-radius: 0 0 8px 8px;
 }
