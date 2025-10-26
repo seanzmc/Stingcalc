@@ -321,4 +321,38 @@ document.addEventListener('DOMContentLoaded', function() {
             if (actions) actions.remove();
         });
     }
+
+    // State select autocomplete behavior: hide dropdown until typing
+    const stateInput = document.getElementById('state-select');
+    const stateDatalistId = 'states-list';
+    
+    if (stateInput) {
+        // Initially remove the list attribute to hide the dropdown
+        stateInput.removeAttribute('list');
+        
+        // On focus, only show datalist if there's already text
+        stateInput.addEventListener('focus', function() {
+            if (this.value.trim().length > 0) {
+                this.setAttribute('list', stateDatalistId);
+            } else {
+                this.removeAttribute('list');
+            }
+        });
+        
+        // Show datalist as user types
+        stateInput.addEventListener('input', function() {
+            if (this.value.trim().length > 0) {
+                this.setAttribute('list', stateDatalistId);
+            } else {
+                this.removeAttribute('list');
+            }
+        });
+        
+        // Remove datalist when field is emptied or loses focus with no value
+        stateInput.addEventListener('blur', function() {
+            if (this.value.trim().length === 0) {
+                this.removeAttribute('list');
+            }
+        });
+    }
 });
