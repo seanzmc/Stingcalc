@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
             this.classList.add("active");
             const tabId = this.getAttribute("data-tab");
             document.getElementById(tabId).classList.add("active");
-            
+
             // Focus on the first field in the newly active tab
             focusFirstFieldInTab(tabId);
         });
@@ -629,15 +629,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Apply modifier-based multipliers
                 let stepMultiplier = 1;
 
-                if (e.shiftKey && e.ctrlKey) {
-                    // Shift + Ctrl: 100x step
-                    stepMultiplier = 100;
-                } else if (e.shiftKey) {
+                if (e.shiftKey) {
                     // Shift alone: 10x step
                     stepMultiplier = 10;
                 } else if (e.ctrlKey || e.metaKey) {
-                    // Ctrl/Cmd alone: 5x step
-                    stepMultiplier = 5;
+                    // Ctrl/Cmd alone: 100x step
+                    stepMultiplier = 100;
                 } else if (e.altKey) {
                     // Alt: 0.1x step (smaller increments)
                     stepMultiplier = 0.1;
