@@ -207,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">- Discount:</span><span class="value">$${fmt(discount)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Selling Price:</span><span class="value">$${fmt(sellPrice)}</span></div>`);
             rows.push('<hr>');
-            rows.push(`<div class="summary-row"><span class="label">Selling Price:</span><span class="value">$${fmt(sellPrice)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">- Trade Allowance:</span><span class="value">$${fmt(tradeAllowance)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Waste Tire Fee:</span><span class="value">$${fmt(floridaWasteTireFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Battery Fee:</span><span class="value">$${fmt(floridaBatteryFee)}</span></div>`);
@@ -217,14 +216,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Determine the tax rate percentage and state for display
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
-            rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');
-            rows.push(`<div class="summary-row"><span class="label">Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">- Rebates:</span><span class="value">$${fmt(rebates)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">- Down Payment:</span><span class="value">$${fmt(downPayment)}</span></div>`);
         } else {
@@ -253,13 +250,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Determine the tax rate percentage and state for display
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
-            rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');
-            rows.push(`<div class="summary-row"><span class="label">Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">- Down Payment:</span><span class="value">$${fmt(downPayment)}</span></div>`);
         }
         // Render results using grid-aligned summary rows
