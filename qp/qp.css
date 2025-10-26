@@ -30,6 +30,18 @@
     border-radius: 4px;
     font-size: 1rem;
 }
+
+/* State dropdown specific styling */
+#quick-pencil #state-select {
+    background-color: white;
+    cursor: text;
+}
+
+#quick-pencil #state-select:focus {
+    outline: none;
+    border-color: #4285f4;
+    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.1);
+}
 #quick-pencil .results {
     margin-top: 1rem;
     padding: 1rem;

@@ -93,12 +93,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const taxOutsideFlCheckbox = document.getElementById('tax-outside-fl');
     const customTaxRateRow = document.querySelector('[data-field="custom-tax-rate"]');
     const rebatesReduceTaxableRow = document.querySelector('[data-field="rebates-reduce-taxable"]');
+    const stateDropdownRow = document.querySelector('[data-field="state-dropdown"]');
 
     if (taxOutsideFlCheckbox && customTaxRateRow) {
         taxOutsideFlCheckbox.addEventListener('change', function() {
             const saleType = document.querySelector('#quick-pencil .tab-btn.active').dataset.saleType;
 
             if (this.checked) {
+                // Show state dropdown
+                if (stateDropdownRow) {
+                    stateDropdownRow.style.display = 'flex';
+                }
+                
                 // Show custom tax rate input
                 customTaxRateRow.style.display = 'flex';
 
@@ -107,7 +113,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     rebatesReduceTaxableRow.style.display = 'flex';
                 }
             } else {
-                // Hide both custom tax rate and rebates-reduce-taxable
+                // Hide state dropdown, custom tax rate, and rebates-reduce-taxable
+                if (stateDropdownRow) {
+                    stateDropdownRow.style.display = 'none';
+                    document.getElementById('state-select').value = '';
+                }
+                
                 customTaxRateRow.style.display = 'none';
                 if (rebatesReduceTaxableRow) {
                     rebatesReduceTaxableRow.style.display = 'none';
@@ -147,8 +158,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
         const tagFee = document.getElementById('tag-type').value === 'new' ? 450 : 350;
 
-        // Read custom tax checkbox and input values
+        // Read custom tax checkbox, state selection, and input values
         const taxOutsideFl = document.getElementById('tax-outside-fl')?.checked || false;
+        const selectedState = document.getElementById('state-select')?.value || '';
         const customTaxRate = parseFloat(document.getElementById('custom-tax-rate')?.value) || 0;
         const rebatesReduceTaxable = document.getElementById('rebates-reduce-taxable')?.checked || false;
 
@@ -202,10 +214,11 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push('<hr>');
-            // Determine the tax rate percentage for display
+            // Determine the tax rate percentage and state for display
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
+            const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
             rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
@@ -237,10 +250,11 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push('<hr>');
-            // Determine the tax rate percentage for display
+            // Determine the tax rate percentage and state for display
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
+            const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
             rows.push(`<div class="summary-row"><span class="label">Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
