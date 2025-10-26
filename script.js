@@ -16,6 +16,29 @@ document.addEventListener("DOMContentLoaded", function () {
         disableDocStampAmount: document.getElementById("disableDocStampAmount"),
     };
 
+    // Explicit mapping of tabs to their first input field IDs
+    const tabFirstFields = {
+        'payment-calc': 'loan-amount',
+        'amount-calc': 'desired-payment',
+        'rate-solver': 'principal-amount',
+        'income-calc': 'ytd-amount',
+        'quick-pencil': 'msrp'
+    };
+
+    // Function to focus on the first input field in a tab
+    function focusFirstFieldInTab(tabId) {
+        const fieldId = tabFirstFields[tabId];
+        if (fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field && !field.disabled) {
+                // Small delay to ensure tab transition is complete
+                setTimeout(() => {
+                    field.focus();
+                }, 50);
+            }
+        }
+    }
+
     // Tab switching functionality
     elements.tabButtons.forEach((button) => {
         button.addEventListener("click", function () {
@@ -25,9 +48,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Add active class to clicked button and show corresponding tab pane
             this.classList.add("active");
-            document.getElementById(this.getAttribute("data-tab")).classList.add("active");
+            const tabId = this.getAttribute("data-tab");
+            document.getElementById(tabId).classList.add("active");
+            
+            // Focus on the first field in the newly active tab
+            focusFirstFieldInTab(tabId);
         });
     });
+
+    // Focus on the first field of the initial active tab on page load
+    const initialActiveTab = document.querySelector('.tab-pane.active');
+    if (initialActiveTab) {
+        focusFirstFieldInTab(initialActiveTab.id);
+    }
 
     // Setup form enhancements
     ["payment-form", "amount-form", "income-form", "interest-rate-form"].forEach(setupEnterKeyNavigation);
