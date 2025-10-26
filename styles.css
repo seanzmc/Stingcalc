@@ -118,7 +118,8 @@ input:focus {
     margin-top: 20px;
 }
 
-.calculate-btn, .clear-btn {
+.calculate-btn,
+.clear-btn {
     flex: 1;
     padding: 12px;
     color: white;
@@ -190,7 +191,7 @@ input:focus {
     color: #007bff;
     border-radius: 4px;
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: 800;
 }
 
 /* Result Details */
@@ -243,7 +244,8 @@ input:focus {
     transition: all 0.2s ease;
 }
 
-.info-toggle:hover, .info-toggle.active {
+.info-toggle:hover,
+.info-toggle.active {
     background-color: #f8f9fa;
     color: #007bff;
 }
@@ -293,34 +295,34 @@ input:focus {
 
 
 @media print {
-  body > header,
-  .tabs,
-  .tab-pane:not(.active) {
-    display: none !important;
-  }
 
-  .calculator-container,
-  .tab-content,
-  .tab-pane.active {
-    display: block !important;
-    visibility: visible !important; /* Ensure active pane is visible */
-    width: 100% !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
+    body>header,
+    .tabs,
+    .tab-pane:not(.active) {
+        display: none !important;
+    }
 
-  /* Ensure all children of the active tab pane are visible */
-  .tab-pane.active * {
-    visibility: visible !important;
-  }
+    .calculator-container,
+    .tab-content,
+    .tab-pane.active {
+        display: block !important;
+        visibility: visible !important;
+        /* Ensure active pane is visible */
+        width: 100% !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
 
-  /* Remove unnecessary borders from debug */
-  * {
-    border: none !important;
-  }
+    /* Ensure all children of the active tab pane are visible */
+    .tab-pane.active * {
+        visibility: visible !important;
+    }
+
+    /* Remove unnecessary borders from debug */
+    * {
+        border: none !important;
+    }
 }
-
-
 
 /* Disclosure Banner */
 .disclosure-banner {

@@ -88,10 +88,6 @@
 
 /* Print only the Quick Pencil summary content */
 @media print {
-  /* DEPRECATED: Selector is invalid in this context */
-  /* #quick-pencil body * {
-    visibility: hidden !important;
-  } */
 
   /* Hide form elements, only show results */
   #quick-pencil #qp-form, #quick-pencil .tabs {
@@ -153,14 +149,4 @@
   #qp-results .summary-row:last-child .value {
     font-weight: bold;
   }
-
-  /* DEPRECATED: Selector no longer exists in index.html */
-  /* #final-amount {
-    margin-top: 1rem;
-  } */
-  /* DEPRECATED: Selector no longer exists in index.html */
-  /* #amount-to-finance-display {
-    font-weight: bold;
-    font-size: 1.2rem;
-  } */
 }
