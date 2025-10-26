@@ -71,7 +71,7 @@
                     <div class="tab-pane active"
                          id="payment-calc">
                         <h2>Calculate Monthly Payment</h2>
-                        <div class="info-box">Calculate monthly payment based on the loan amount, term, and interest rate.</div>
+                        <div class="info-heading">Calculate monthly payment based on the loan amount, term, and interest rate.</div>
                         <form id="payment-form">
                             <div class="form-group">
                                 <label for="loan-amount">Loan Amount ($):</label>
@@ -170,7 +170,7 @@
                                        id="disableDocStampAmount">
                                 <label for="disableDocStampAmount">Disable doc stamps for loans outside Florida</label>
                             </div>
-                            <div class="disclosure-banner">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                            <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
                             <div class="button-group">
                                 <button type="submit"
                                         class="calculate-btn">Calculate</button>
@@ -268,7 +268,7 @@
                                 <small class="form-text">Enter the Pay Period End Date</small>
                             </div>
                             <div class="form-group">
-                                <label for="hire-date">Hire Date (if hired this year):</label>
+                                <label for="hire-date">Hire Date (if hired after Jan 1st this year):</label>
                                 <input type="date"
                                        id="hire-date">
                                 <small class="form-text">Leave blank if hired before this year</small>
@@ -353,8 +353,8 @@
                                     <label for="tag-type">Tag Type</label>
                                     <select id="tag-type"
                                             name="tag_type">
-                                        <option value="new">New Tag</option>
-                                        <option value="transfer">Transfer Tag</option>
+                                        <option value="new">New Tag ($450)</option>
+                                        <option value="transfer">Transfer Tag ($350)</option>
                                     </select>
                                 </div>
                                 <div class="qp-row">
