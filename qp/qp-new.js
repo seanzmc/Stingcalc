@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (stateDropdownRow) {
                     stateDropdownRow.style.display = 'flex';
                 }
-                
+
                 // Show custom tax rate input
                 customTaxRateRow.style.display = 'flex';
 
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     stateDropdownRow.style.display = 'none';
                     document.getElementById('state-select').value = '';
                 }
-                
+
                 customTaxRateRow.style.display = 'none';
                 if (rebatesReduceTaxableRow) {
                     rebatesReduceTaxableRow.style.display = 'none';
