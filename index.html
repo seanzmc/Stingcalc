@@ -71,7 +71,7 @@
                     <div class="tab-pane active"
                          id="payment-calc">
                         <h2>Calculate Monthly Payment</h2>
-                        <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                        <div class="info-box">Calculate monthly payment based on the loan amount, term, and interest rate.</div>
                         <form id="payment-form">
                             <div class="form-group">
                                 <label for="loan-amount">Loan Amount ($):</label>
@@ -81,7 +81,7 @@
                                        step="0.01"
                                        placeholder="e.g., 25000.00"
                                        required>
-                                <small class="form-text">Enter the total amount you wish to borrow</small>
+                                <small class="form-text">Enter the total amount financed</small>
                             </div>
                             <div class="form-group">
                                 <label for="loan-term">Loan Term (months):</label>
@@ -108,6 +108,7 @@
                                        id="disableDocStampPayment">
                                 <label for="disableDocStampPayment">Disable doc stamps for loans outside Florida</label>
                             </div>
+                            <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
                             <div class="button-group">
                                 <button type="submit"
                                         class="calculate-btn">Calculate</button>
@@ -132,7 +133,7 @@
                     <div class="tab-pane"
                          id="amount-calc">
                         <h2>Calculate Loan Amount</h2>
-                        <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                        <div class="info-box">Calculate the loan amount based on the desired monthly payment, term, and interest rate.</div>
                         <form id="amount-form">
                             <div class="form-group">
                                 <label for="desired-payment">Desired Monthly Payment ($):</label>
@@ -142,7 +143,7 @@
                                        step="0.01"
                                        placeholder="e.g., 400"
                                        required>
-                                <small class="form-text">Enter your target monthly payment amount</small>
+                                <small class="form-text">Enter the target monthly payment amount</small>
                             </div>
                             <div class="form-group">
                                 <label for="amount-term">Loan Term (months):</label>
@@ -169,6 +170,7 @@
                                        id="disableDocStampAmount">
                                 <label for="disableDocStampAmount">Disable doc stamps for loans outside Florida</label>
                             </div>
+                            <div class="disclosure-banner">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
                             <div class="button-group">
                                 <button type="submit"
                                         class="calculate-btn">Calculate</button>
@@ -192,7 +194,7 @@
                     <div class="tab-pane"
                          id="rate-solver">
                         <h2>Interest Rate Solver</h2>
-                        <div class="info-box">Calculate the interest rate needed for a specific loan amount and term to achieve your target monthly payment. Uses iterative approximation to solve for the rate.</div>
+                        <div class="info-box">Calculate the interest rate needed for a specific loan amount and term to achieve a target monthly payment.</div>
                         <form id="interest-rate-form">
                             <div class="form-group">
                                 <label for="principal-amount">Principal Amount ($):</label>
@@ -202,7 +204,7 @@
                                        step="0.01"
                                        placeholder="e.g., 25000.00"
                                        required>
-                                <small class="form-text">Enter the loan amount you wish to finance</small>
+                                <small class="form-text">Enter the amount financed</small>
                             </div>
                             <div class="form-group">
                                 <label for="interest-term">Loan Term (months):</label>
@@ -222,7 +224,7 @@
                                        step="0.01"
                                        placeholder="e.g., 450.00"
                                        required>
-                                <small class="form-text">Enter your desired monthly payment amount</small>
+                                <small class="form-text">Enter the target monthly payment amount</small>
                             </div>
                             <div class="button-group">
                                 <button type="submit"
@@ -287,7 +289,7 @@
                     <div class="tab-pane"
                          id="quick-pencil">
                         <h2>Quick Pencil</h2>
-                        <div class="info-box">Perform quick delivery estimates ("penciling") for New and Used vehicle sales. Enter your values below and view an itemized summary.</div>
+                        <div class="info-box">Perform quick estimates for New and Used vehicle sales. Enter values below and view an itemized summary.</div>
                         <div class="tabs">
                             <button type="button"
                                     class="tab-btn active"
@@ -362,15 +364,31 @@
                                 </div>
                                 <div class="qp-row checkbox-group">
                                     <label for="tax-outside-fl">Tax outside FL</label>
-                                    <input type="checkbox" id="tax-outside-fl" name="tax_outside_fl">
+                                    <input type="checkbox"
+                                           id="tax-outside-fl"
+                                           name="tax_outside_fl">
                                 </div>
-                                <div class="qp-row" data-field="custom-tax-rate" style="display: none;">
+                                <div class="qp-row"
+                                     data-field="custom-tax-rate"
+                                     style="display: none;">
                                     <label for="custom-tax-rate">Sales Tax Rate (%)</label>
-                                    <input type="number" id="custom-tax-rate" name="custom_tax_rate" min="0" max="100" step="0.01">
+                                    <input type="number"
+                                           id="custom-tax-rate"
+                                           name="custom_tax_rate"
+                                           min="0"
+                                           max="100"
+                                           step="0.01">
                                 </div>
-                                <div class="qp-row" data-field="state-dropdown" style="display: none;">
+                                <div class="qp-row"
+                                     data-field="state-dropdown"
+                                     style="display: none;">
                                     <label for="state-select">State</label>
-                                    <input type="text" id="state-select" name="state_select" list="states-list" placeholder="Select state..." autocomplete="on">
+                                    <input type="text"
+                                           id="state-select"
+                                           name="state_select"
+                                           list="states-list"
+                                           placeholder="Select state..."
+                                           autocomplete="off">
                                     <datalist id="states-list">
                                         <option value="AL">Alabama</option>
                                         <option value="AK">Alaska</option>
@@ -423,9 +441,13 @@
                                         <option value="WY">Wyoming</option>
                                     </datalist>
                                 </div>
-                                <div class="qp-row checkbox-group" data-field="rebates-reduce-taxable" style="display: none;">
+                                <div class="qp-row checkbox-group"
+                                     data-field="rebates-reduce-taxable"
+                                     style="display: none;">
                                     <label for="rebates-reduce-taxable">Rebates reduce taxable amount</label>
-                                    <input type="checkbox" id="rebates-reduce-taxable" name="rebates_reduce_taxable">
+                                    <input type="checkbox"
+                                           id="rebates-reduce-taxable"
+                                           name="rebates_reduce_taxable">
                                 </div>
                             </div>
                             <div class="button-group">
@@ -447,8 +469,8 @@
                 </div>
             </div>
         </div>
-            <script src="script.js"></script>
-            <script src="qp/qp-new.js"></script>
+        <script src="script.js"></script>
+        <script src="qp/qp-new.js"></script>
     </body>
 
 </html>
