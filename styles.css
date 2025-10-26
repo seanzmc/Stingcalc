@@ -181,6 +181,18 @@ input:focus {
     font-size: 0.95rem;
 }
 
+/* Info Heading */
+.info-heading {
+    background-color: #e9f7ff;
+    border-left: 4px solid #007bff;
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    color: #007bff;
+    border-radius: 4px;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
 /* Result Details */
 .result-details {
     margin-top: 15px;
