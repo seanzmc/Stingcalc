@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const minPayment = principalAmount / termInMonths;
         if (targetPayment < minPayment) {
             elements.interestRateResult.textContent = "N/A";
-            document.getElementById("interest-validation-message").textContent = `Payment too low to amortize loan. Minimum required payment: ${formatCurrency(minPayment)}`;
+            document.getElementById("interest-validation-message").textContent = `Payment too low to amortize loan amount. Minimum payment possible is: ${formatCurrency(minPayment)}`;
             document.getElementById("interest-rate-result").scrollIntoView({ behavior: "smooth" });
             return;
         }
