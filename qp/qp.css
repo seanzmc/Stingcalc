@@ -1,6 +1,6 @@
 /* Integrated Quick Pencil Layout */
 #quick-pencil form {
-    padding: 1rem 0;
+    padding: 1rem;
 }
 #quick-pencil .tabs {
     margin-bottom: 1rem;
@@ -86,6 +86,20 @@
     font-weight: bold;
 }
 
+/* Rebate disclosure styling */
+#quick-pencil .results .summary-row.rebate-disclosure {
+    grid-template-columns: 1fr;
+    margin-bottom: 0.5rem;
+    margin-top: -0.25rem;
+}
+#quick-pencil .results .summary-row.rebate-disclosure .disclosure-text {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #666;
+    text-align: left;
+    padding-left: 1rem;
+}
+
 /* Print only the Quick Pencil summary content */
 @media print {
 
@@ -148,5 +162,19 @@
   }
   #qp-results .summary-row:last-child .value {
     font-weight: bold;
+  }
+  
+  /* Print styling for rebate disclosure */
+  #qp-results .summary-row.rebate-disclosure {
+    grid-template-columns: 1fr;
+    margin-bottom: 0.5rem;
+    margin-top: -0.25rem;
+  }
+  #qp-results .summary-row.rebate-disclosure .disclosure-text {
+    font-size: 0.9rem;
+    font-style: italic;
+    color: #666 !important;
+    text-align: left;
+    padding-left: 1rem;
   }
 }

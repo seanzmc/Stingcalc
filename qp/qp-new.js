@@ -216,13 +216,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Determine the tax rate percentage and state for display
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%:</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ ${stateAbbrev} Sales Tax: ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');
             rows.push(`<div class="summary-row"><span class="label">- Rebates:</span><span class="value">$${fmt(rebates)}</span></div>`);
+            // Add disclosure when rebates reduce taxable amount
+            if (rebatesReduceTaxable) {
+                rows.push(`<div class="summary-row rebate-disclosure"><span class="disclosure-text">Rebates reduce the taxable amount</span></div>`);
+            }
             rows.push(`<div class="summary-row"><span class="label">- Down Payment:</span><span class="value">$${fmt(downPayment)}</span></div>`);
         } else {
             // Used car flow
@@ -250,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Determine the tax rate percentage and state for display
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
-            rows.push(`<div class="summary-row"><span class="label">+ Sales Tax: ${stateAbbrev} ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ ${stateAbbrev} Sales Tax: ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
@@ -325,11 +329,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // State select autocomplete behavior: hide dropdown until typing
     const stateInput = document.getElementById('state-select');
     const stateDatalistId = 'states-list';
-    
+
     if (stateInput) {
         // Initially remove the list attribute to hide the dropdown
         stateInput.removeAttribute('list');
-        
+
         // On focus, only show datalist if there's already text
         stateInput.addEventListener('focus', function() {
             if (this.value.trim().length > 0) {
@@ -338,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.removeAttribute('list');
             }
         });
-        
+
         // Show datalist as user types
         stateInput.addEventListener('input', function() {
             if (this.value.trim().length > 0) {
@@ -347,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.removeAttribute('list');
             }
         });
-        
+
         // Remove datalist when field is emptied or loses focus with no value
         stateInput.addEventListener('blur', function() {
             if (this.value.trim().length === 0) {
