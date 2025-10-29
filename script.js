@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("payment-total-cost").textContent = `Total Cost of Loan: ${formatCurrency(totalCostOfLoan)}`;
         // Scroll payment result into view
         document.getElementById("payment-result").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("payment-result").classList.remove("hidden");
     });
 
     // Loan Amount Calculator Form
@@ -153,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("amount-total-loan").textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
         // Scroll loan amount result into view
         document.getElementById("amount-result").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("amount-result").classList.remove("hidden");
     });
 
     // Income Calculator Form
@@ -196,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
         elements.incomeResult.textContent = formatCurrency(monthlyIncome);
         // Scroll income result into view
         document.getElementById("income-result").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("income-result").classList.remove("hidden");
     });
 
     // Interest Rate Solver Form
@@ -234,6 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Scroll result into view
         document.getElementById("interest-rate-result").scrollIntoView({ behavior: "smooth" });
+        document.getElementById("interest-rate-result").classList.remove("hidden");
     });
 
     // Function to calculate monthly payment
@@ -278,7 +282,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let rate = 0.05; // Initial guess: 5% annual rate
         console.log("DEBUG: Starting with rate guess =", rate);
-        const tolerance = 0.0001; // Convergence tolerance
         const maxIterations = 100;
 
         for (let i = 0; i < maxIterations; i++) {
@@ -578,6 +581,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 resultElement.textContent = "$0.00";
             }
         }
+        document.getElementById(resultId).classList.add("hidden");
         // Clear documentary stamp tax, total loan amount, and total cost fields
         const prefix = formId.replace("-form", "");
         const docStampElem = document.getElementById(`${prefix}-doc-stamp`);

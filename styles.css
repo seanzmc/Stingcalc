@@ -189,6 +189,10 @@ select:focus {
     transform-origin: center;
 }
 
+.result.hidden {
+    display: none;
+}
+
 @keyframes popIn {
     0% {
         opacity: 0;

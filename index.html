@@ -89,7 +89,7 @@
                                        id="loan-term"
                                        min="0"
                                        max="120"
-                                       step="12"
+                                       step="1"
                                        placeholder="e.g., 60"
                                        required>
                                 <small class="form-text">Enter the length of the loan in months (1-120)</small>
@@ -118,7 +118,7 @@
                                         data-form="payment-form">Clear</button>
                             </div>
                         </form>
-                        <div class="result"
+                        <div class="result hidden"
                              id="payment-result">
                             <h3>Monthly Payment:</h3>
                             <p class="amount">$0.00</p>
@@ -152,7 +152,7 @@
                                        id="amount-term"
                                        min="0"
                                        max="120"
-                                       step="12"
+                                       step="1"
                                        placeholder="e.g., 60"
                                        required>
                                 <small class="form-text">Enter the length of the loan in months (1-120)</small>
@@ -181,7 +181,7 @@
                                         data-form="amount-form">Clear</button>
                             </div>
                         </form>
-                        <div class="result"
+                        <div class="result hidden"
                              id="amount-result">
                             <h3>Loan Amount:</h3>
                             <p class="amount">$0.00</p>
@@ -196,7 +196,7 @@
                     <div class="tab-pane"
                          id="rate-solver">
                         <h2>Interest Rate Solver</h2>
-                        <div class="info-heading">Calculate the interest rate needed for a specific loan amount and term to achieve a target monthly payment.</div>
+                        <div class="info-heading">Calculate the interest rate required to reach a target monthly payment using a loan amount and term.</div>
                         <form id="interest-rate-form">
                             <div class="form-group">
                                 <label for="principal-amount">Principal Amount ($):</label>
@@ -214,7 +214,7 @@
                                        id="interest-term"
                                        min="0"
                                        max="120"
-                                       step="12"
+                                       step="1"
                                        placeholder="e.g., 60"
                                        required>
                                 <small class="form-text">Enter the length of the loan in months (1-120)</small>
@@ -237,7 +237,7 @@
                                         data-form="interest-rate-form">Clear</button>
                             </div>
                         </form>
-                        <div class="result"
+                        <div class="result hidden"
                              id="interest-rate-result">
                             <h3>Required Interest Rate:</h3>
                             <p class="amount">0.00%</p>
@@ -284,7 +284,7 @@
                                         data-form="income-form">Clear</button>
                             </div>
                         </form>
-                        <div class="result"
+                        <div class="result hidden"
                              id="income-result">
                             <h3>Estimated Monthly Gross Income:</h3>
                             <p class="amount">$0.00</p>
