@@ -80,6 +80,27 @@ h2 {
     display: block;
 }
 
+#payment-calculators .payment-subtabs {
+    margin-bottom: 16px;
+}
+
+#payment-calculators .payment-subtabs .tab-btn {
+    flex: 1;
+    font-size: 0.95rem;
+}
+
+#payment-calculators .info-heading {
+    margin-bottom: 20px;
+}
+
+#payment-calculators .calculator-pane {
+    display: none;
+}
+
+#payment-calculators .calculator-pane.active {
+    display: block;
+}
+
 /* Form Styling */
 form {
     background-color: #f9fafb;

@@ -15,19 +15,49 @@ document.addEventListener("DOMContentLoaded", function () {
         interestRateResult: document.querySelector("#interest-rate-result .amount"),
         disableDocStampPayment: document.getElementById("disableDocStampPayment"),
         disableDocStampAmount: document.getElementById("disableDocStampAmount"),
+        paymentCalculatorInfo: document.getElementById("payment-calculator-info"),
+        paymentSubtabButtons: document.querySelectorAll("#payment-calculators .payment-subtabs .tab-btn"),
+        paymentCalculatorPanes: document.querySelectorAll("#payment-calculators .calculator-pane"),
     };
 
     // Explicit mapping of tabs to their first input field IDs
     const tabFirstFields = {
-        'payment-calc': 'loan-amount',
-        'amount-calc': 'desired-payment',
-        'rate-solver': 'principal-amount',
+        'payment-calculators': null,
         'income-calc': 'ytd-amount',
         'quick-pencil': 'msrp'
     };
 
+    const paymentCalculatorDescriptions = {
+        'payment-calc': 'Calculate monthly payment based on the loan amount, term, and interest rate.',
+        'amount-calc': 'Calculate the loan amount based on the desired monthly payment, term, and interest rate.',
+        'rate-solver': 'Calculate the interest rate required to reach a target monthly payment using a loan amount and term.'
+    };
+
+    const paymentSubtabFirstFields = {
+        'payment-calc': 'loan-amount',
+        'amount-calc': 'desired-payment',
+        'rate-solver': 'principal-amount'
+    };
+
+    function focusFirstFieldInPaymentSubtab(calculatorId) {
+        const fieldId = paymentSubtabFirstFields[calculatorId];
+        if (!fieldId) return;
+        const field = document.getElementById(fieldId);
+        if (field && !field.disabled) {
+            setTimeout(() => {
+                field.focus();
+            }, 50);
+        }
+    }
+
     // Function to focus on the first input field in a tab
     function focusFirstFieldInTab(tabId) {
+        if (tabId === "payment-calculators") {
+            const activeSubButton = document.querySelector("#payment-calculators .payment-subtabs .tab-btn.active");
+            const activeCalculator = activeSubButton ? activeSubButton.getAttribute("data-calculator") : "payment-calc";
+            focusFirstFieldInPaymentSubtab(activeCalculator);
+            return;
+        }
         const fieldId = tabFirstFields[tabId];
         if (fieldId) {
             const field = document.getElementById(fieldId);
@@ -68,6 +98,32 @@ document.addEventListener("DOMContentLoaded", function () {
     ["check-date", "hire-date"].forEach(setupDateFormatting);
     setupClearButtons();
     setupEnhancedStepping();
+
+    function showPaymentCalculator(calculatorId) {
+        if (!calculatorId) return;
+        elements.paymentSubtabButtons.forEach((button) => {
+            const isActive = button.getAttribute("data-calculator") === calculatorId;
+            button.classList.toggle("active", isActive);
+        });
+        elements.paymentCalculatorPanes.forEach((pane) => {
+            const isActive = pane.getAttribute("data-calculator") === calculatorId;
+            pane.classList.toggle("active", isActive);
+        });
+        if (elements.paymentCalculatorInfo) {
+            elements.paymentCalculatorInfo.textContent = paymentCalculatorDescriptions[calculatorId] || "";
+        }
+        focusFirstFieldInPaymentSubtab(calculatorId);
+    }
+
+    elements.paymentSubtabButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            const calculatorId = this.getAttribute("data-calculator");
+            showPaymentCalculator(calculatorId);
+        });
+    });
+
+    // Ensure nested calculator state reflects the default selection
+    showPaymentCalculator("payment-calc");
 
     // Checkbox event listeners for recalculation
     if (elements.disableDocStampPayment) {
