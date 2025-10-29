@@ -2,6 +2,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const saleTypeButtons = document.querySelectorAll('#quick-pencil .tab-btn');
     const qpRows = document.querySelectorAll('#quick-pencil .qp-row');
     const form = document.getElementById('qp-form');
+    const tagTypeSelect = document.getElementById('tag-type');
+    const customTagRow = document.querySelector('[data-field="custom-tag-fee"]');
+    const customTagInput = document.getElementById('custom-tag-fee');
+
+    function refreshCustomTagVisibility() {
+        if (!tagTypeSelect || !customTagRow || !customTagInput) {
+            return;
+        }
+        if (tagTypeSelect.value === 'custom') {
+            customTagRow.style.display = 'flex';
+            customTagInput.required = true;
+        } else {
+            customTagRow.style.display = 'none';
+            customTagInput.required = false;
+            customTagInput.value = '';
+        }
+    }
+
     // Formatting helper: numbers with commas and two decimals
     function fmt(num) {
         return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -19,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const field = row.dataset.field;
             if (field) {
                 // Skip custom-tax-rate as it's controlled by the tax-outside-fl checkbox
-                if (field === 'custom-tax-rate') {
+                if (field === 'custom-tax-rate' || field === 'custom-tag-fee') {
                     return;
                 }
 
@@ -57,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        refreshCustomTagVisibility();
+
         const visibleInputs = Array.from(form.querySelectorAll('input, select'))
             .filter(el => el.offsetParent !== null);
         if (visibleInputs.length) {
@@ -71,6 +91,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     // Initialize with 'new' sale type
     updateFields('new');
+
+    if (tagTypeSelect) {
+        tagTypeSelect.addEventListener('change', refreshCustomTagVisibility);
+    }
+    refreshCustomTagVisibility();
 
     const focusable = Array.from(form.querySelectorAll('input, select, button[type="submit"]'));
     form.addEventListener('keydown', function(e) {
@@ -156,7 +181,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const tradeAllowance = parseFloat(document.getElementById('trade-allowance').value) || 0;
         const tradePayoff = parseFloat(document.getElementById('trade-payoff').value) || 0;
         const downPayment = parseFloat(document.getElementById('down-payment').value) || 0;
-        const tagFee = document.getElementById('tag-type').value === 'new' ? 450 : 350;
+        const tagType = tagTypeSelect ? tagTypeSelect.value : 'new';
+        let tagFee;
+        if (tagType === 'custom') {
+            const customFee = parseFloat(customTagInput?.value);
+            if (isNaN(customFee) || customFee < 0) {
+                alert('Please enter a valid custom tag fee amount.');
+                return;
+            }
+            tagFee = customFee;
+        } else if (tagType === 'transfer') {
+            tagFee = 350;
+        } else {
+            tagFee = 450;
+        }
+        const tagFeeLabel = tagType === 'custom' ? 'Custom Tag Fee' : 'Tag & Title Fee';
 
         // Read custom tax checkbox, state selection, and input values
         const taxOutsideFl = document.getElementById('tax-outside-fl')?.checked || false;
@@ -218,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
             rows.push(`<div class="summary-row"><span class="label">+ ${stateAbbrev} Sales Tax: ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ ${tagFeeLabel}:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');
@@ -255,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
             rows.push(`<div class="summary-row"><span class="label">+ ${stateAbbrev} Sales Tax: ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ ${tagFeeLabel}:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');
@@ -318,11 +357,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const clearBtn = document.getElementById('qp-clear-btn');
     if (clearBtn) {
         clearBtn.addEventListener('click', function() {
+            if (tagTypeSelect) {
+                tagTypeSelect.value = 'new';
+            }
             updateFields('new');
             form.querySelectorAll('input').forEach(input => input.value = '');
             document.getElementById('qp-results').innerHTML = '';
             const actions = document.getElementById('qp-actions');
             if (actions) actions.remove();
+            refreshCustomTagVisibility();
         });
     }
 

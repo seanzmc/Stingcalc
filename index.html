@@ -361,7 +361,19 @@
                                             name="tag_type">
                                         <option value="new">New Tag ($450)</option>
                                         <option value="transfer">Transfer Tag ($350)</option>
+                                        <option value="custom">Custom Tag Fee</option>
                                     </select>
+                                </div>
+                                <div class="qp-row"
+                                     data-field="custom-tag-fee"
+                                     style="display: none;">
+                                    <label for="custom-tag-fee">Custom Tag Fee ($)</label>
+                                    <input type="number"
+                                           id="custom-tag-fee"
+                                           name="custom_tag_fee"
+                                           min="0"
+                                           step="0.01"
+                                           placeholder="Enter custom tag fee">
                                 </div>
                                 <div class="qp-row">
                                     <label for="down-payment">Down Payment</label>
