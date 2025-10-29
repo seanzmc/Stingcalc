@@ -124,9 +124,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("payment-doc-stamp").textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById("payment-total-loan").textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
         document.getElementById("payment-total-cost").textContent = `Total Cost of Loan: ${formatCurrency(totalCostOfLoan)}`;
-        // Scroll payment result into view
-        document.getElementById("payment-result").scrollIntoView({ behavior: "smooth" });
-        document.getElementById("payment-result").classList.remove("hidden");
+        const paymentResultContainer = document.getElementById("payment-result");
+        paymentResultContainer.classList.remove("hidden");
+        paymentResultContainer.scrollIntoView({ behavior: "smooth" });
     });
 
     // Loan Amount Calculator Form
@@ -153,9 +153,9 @@ document.addEventListener("DOMContentLoaded", function () {
         elements.amountResult.textContent = formatCurrency(loanAmount);
         document.getElementById("amount-doc-stamp").textContent = `Documentary Stamp Tax: ${formatCurrency(docStampTax)}`;
         document.getElementById("amount-total-loan").textContent = `Total Loan Amount: ${formatCurrency(totalLoanWithTax)}`;
-        // Scroll loan amount result into view
-        document.getElementById("amount-result").scrollIntoView({ behavior: "smooth" });
-        document.getElementById("amount-result").classList.remove("hidden");
+        const amountResultContainer = document.getElementById("amount-result");
+        amountResultContainer.classList.remove("hidden");
+        amountResultContainer.scrollIntoView({ behavior: "smooth" });
     });
 
     // Income Calculator Form
@@ -201,9 +201,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (elements.incomeAnnualResult) {
             elements.incomeAnnualResult.textContent = `Estimated Annual Gross Income: ${formatCurrency(annualIncome)}`;
         }
-        // Scroll income result into view
-        document.getElementById("income-result").scrollIntoView({ behavior: "smooth" });
-        document.getElementById("income-result").classList.remove("hidden");
+        const incomeResultContainer = document.getElementById("income-result");
+        incomeResultContainer.classList.remove("hidden");
+        incomeResultContainer.scrollIntoView({ behavior: "smooth" });
     });
 
     // Interest Rate Solver Form
@@ -225,7 +225,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (targetPayment < minPayment) {
             elements.interestRateResult.textContent = "N/A";
             document.getElementById("interest-validation-message").textContent = `Payment too low to amortize loan amount. Minimum payment possible is: ${formatCurrency(minPayment)}`;
-            document.getElementById("interest-rate-result").scrollIntoView({ behavior: "smooth" });
+            const interestRateResultContainer = document.getElementById("interest-rate-result");
+            interestRateResultContainer.classList.remove("hidden");
+            interestRateResultContainer.scrollIntoView({ behavior: "smooth" });
             return;
         }
 
@@ -240,9 +242,9 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("interest-validation-message").textContent = "";
         }
 
-        // Scroll result into view
-        document.getElementById("interest-rate-result").scrollIntoView({ behavior: "smooth" });
-        document.getElementById("interest-rate-result").classList.remove("hidden");
+        const interestRateResultContainer = document.getElementById("interest-rate-result");
+        interestRateResultContainer.classList.remove("hidden");
+        interestRateResultContainer.scrollIntoView({ behavior: "smooth" });
     });
 
     // Function to calculate monthly payment
