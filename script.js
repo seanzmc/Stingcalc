@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         amountResult: document.querySelector("#amount-result .amount"),
         incomeForm: document.getElementById("income-form"),
         incomeResult: document.querySelector("#income-result .amount"),
+        incomeAnnualResult: document.getElementById("income-annual"),
         interestRateForm: document.getElementById("interest-rate-form"),
         interestRateResult: document.querySelector("#interest-rate-result .amount"),
         disableDocStampPayment: document.getElementById("disableDocStampPayment"),
@@ -195,7 +196,11 @@ document.addEventListener("DOMContentLoaded", function () {
         if (monthlyIncome == null) {
             return;
         }
+        const annualIncome = monthlyIncome * 12;
         elements.incomeResult.textContent = formatCurrency(monthlyIncome);
+        if (elements.incomeAnnualResult) {
+            elements.incomeAnnualResult.textContent = `Estimated Annual Gross Income: ${formatCurrency(annualIncome)}`;
+        }
         // Scroll income result into view
         document.getElementById("income-result").scrollIntoView({ behavior: "smooth" });
         document.getElementById("income-result").classList.remove("hidden");
@@ -595,6 +600,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const totalCostElem = document.getElementById(`${prefix}-total-cost`);
         if (totalCostElem) {
             totalCostElem.textContent = "";
+        }
+        if (formId === "income-form" && elements.incomeAnnualResult) {
+            elements.incomeAnnualResult.textContent = "Estimated Annual Gross Income: $0.00";
         }
         // Clear interest rate validation message
         if (formId === "interest-rate-form") {
