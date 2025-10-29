@@ -195,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             tagFee = 450;
         }
-        const tagFeeLabel = tagType === 'custom' ? 'Custom Tag Fee' : 'Tag & Title Fee';
 
         // Read custom tax checkbox, state selection, and input values
         const taxOutsideFl = document.getElementById('tax-outside-fl')?.checked || false;
@@ -257,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
             rows.push(`<div class="summary-row"><span class="label">+ ${stateAbbrev} Sales Tax: ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Lemon Law Fee:</span><span class="value">$${fmt(lemonLawFee)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ ${tagFeeLabel}:</span><span class="value">$${fmt(tagFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');
@@ -294,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const taxRatePercent = taxOutsideFl ? customTaxRate : (salesTaxRate * 100);
             const stateAbbrev = taxOutsideFl && selectedState ? selectedState : 'FL';
             rows.push(`<div class="summary-row"><span class="label">+ ${stateAbbrev} Sales Tax: ${taxRatePercent}%</span><span class="value">$${fmt(salesTax)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ ${tagFeeLabel}:</span><span class="value">$${fmt(tagFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Tag & Title Fee:</span><span class="value">$${fmt(tagFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Trade Payoff:</span><span class="value">$${fmt(tradePayoff)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Delivered Price:</span><span class="value">$${fmt(totalDelivered)}</span></div>`);
             rows.push('<hr>');

@@ -177,4 +177,9 @@
     text-align: left;
     padding-left: 1rem;
   }
+
+  /* Ensure action buttons do not appear on printouts */
+  #qp-actions {
+    display: none !important;
+  }
 }
