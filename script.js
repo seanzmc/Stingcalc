@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const paymentCalculatorDescriptions = {
-        'payment-calc': 'Calculate monthly payment based on the loan amount, term, and interest rate.',
-        'amount-calc': 'Calculate the loan amount based on the desired monthly payment, term, and interest rate.',
-        'rate-solver': 'Calculate the interest rate required to reach a target monthly payment using a loan amount and term.'
+        'payment-calc': 'Calculate monthly payment based on loan amount, term, and interest rate.',
+        'amount-calc': 'Calculate the loan amount needed to reach a payment using term and interest rate.',
+        'rate-solver': 'Calculate the interest rate needed to reach a payment using loan amount and term.'
     };
 
     const paymentSubtabFirstFields = {
