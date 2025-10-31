@@ -80,7 +80,8 @@ h2 {
     display: block;
 }
 
-#payment-calculators .payment-subtabs {
+#payment-calculators .payment-subtabs,
+#quick-pencil .sale-type-tabs {
     margin-bottom: 20px;
     padding: 8px;
     border: 1px solid #dbe4ff;
@@ -89,7 +90,8 @@ h2 {
     gap: 8px;
 }
 
-#payment-calculators .payment-subtabs .tab-btn {
+#payment-calculators .payment-subtabs .tab-btn,
+#quick-pencil .sale-type-tabs .tab-btn {
     flex: 1;
     font-size: 0.875rem;
     font-weight: 600;
@@ -102,19 +104,22 @@ h2 {
     box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
 }
 
-#payment-calculators .payment-subtabs .tab-btn:hover {
+#payment-calculators .payment-subtabs .tab-btn:hover,
+#quick-pencil .sale-type-tabs .tab-btn:hover {
     background-color: #ffffff;
     border-color: #c8d3ff;
     color: #2563eb;
 }
 
-#payment-calculators .payment-subtabs .tab-btn:focus-visible {
+#payment-calculators .payment-subtabs .tab-btn:focus-visible,
+#quick-pencil .sale-type-tabs .tab-btn:focus-visible {
     outline: 2px solid #93c5fd;
     outline-offset: 2px;
     border-color: #2563eb;
 }
 
-#payment-calculators .payment-subtabs .tab-btn.active {
+#payment-calculators .payment-subtabs .tab-btn.active,
+#quick-pencil .sale-type-tabs .tab-btn.active {
     background: #ffffff;
     color: #1d4ed8;
     border-color: #1d4ed8;
