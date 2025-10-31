@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
         disableDocStampPayment: document.getElementById("disableDocStampPayment"),
         disableDocStampAmount: document.getElementById("disableDocStampAmount"),
         paymentCalculatorInfo: document.getElementById("payment-calculator-info"),
+        paymentCalculatorHeading: document.getElementById("payment-calculator-heading"),
         paymentSubtabButtons: document.querySelectorAll("#payment-calculators .payment-subtabs .tab-btn"),
         paymentCalculatorPanes: document.querySelectorAll("#payment-calculators .calculator-pane"),
     };
@@ -31,6 +32,12 @@ document.addEventListener("DOMContentLoaded", function () {
         'payment-calc': 'Calculate monthly payment based on loan amount, term, and interest rate.',
         'amount-calc': 'Calculate the loan amount needed to reach a payment using term and interest rate.',
         'rate-solver': 'Calculate the interest rate needed to reach a payment using loan amount and term.'
+    };
+
+    const paymentCalculatorHeadings = {
+        'payment-calc': 'Calculate Monthly Payment',
+        'amount-calc': 'Calculate Loan Amount',
+        'rate-solver': 'Interest Rate Solver'
     };
 
     const paymentSubtabFirstFields = {
@@ -111,6 +118,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         if (elements.paymentCalculatorInfo) {
             elements.paymentCalculatorInfo.textContent = paymentCalculatorDescriptions[calculatorId] || "";
+        }
+        if (elements.paymentCalculatorHeading) {
+            elements.paymentCalculatorHeading.textContent = paymentCalculatorHeadings[calculatorId] || "";
         }
         focusFirstFieldInPaymentSubtab(calculatorId);
     }
