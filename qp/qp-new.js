@@ -337,8 +337,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (paymentInput) {
                     paymentInput.value = finalAmount.toFixed(2);
                 }
-                const tabBtn = document.querySelector('.tab-btn[data-tab="payment-calc"]');
-                if (tabBtn) tabBtn.click();
+
+                const paymentTabBtn = document.querySelector('.tab-btn[data-tab="payment-calculators"]');
+                if (paymentTabBtn) {
+                    paymentTabBtn.click();
+                }
+
+                const monthlyCalculatorBtn = document.querySelector('#payment-calculators .tab-btn[data-calculator="payment-calc"]');
+                if (monthlyCalculatorBtn) {
+                    monthlyCalculatorBtn.click();
+                }
+
+                if (paymentInput) {
+                    setTimeout(() => {
+                        paymentInput.focus();
+                        paymentInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 60);
+                }
             });
         }
 
