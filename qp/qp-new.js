@@ -248,7 +248,8 @@ document.addEventListener("DOMContentLoaded", function () {
             rows.push(`<div class="summary-row"><span class="label">- Trade Allowance:</span><span class="value">$${fmt(tradeAllowance)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Waste Tire Fee:</span><span class="value">$${fmt(floridaWasteTireFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Battery Fee:</span><span class="value">$${fmt(floridaBatteryFee)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Dealer Fee:</span><span class="value">$${dealerFee.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Dealer Fee:</span><span class="value">$${fmt(dealerFee)}</span></div>`);
+
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push("<hr>");
@@ -287,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
             rows.push(`<div class="summary-row"><span class="label">Selling Price:</span><span class="value">$${fmt(sellingPriceInput)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Additional Equipment:</span><span class="value">$${fmt(additionalEq)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">- Trade Allowance:</span><span class="value">$${fmt(tradeAllowance)}</span></div>`);
-            rows.push(`<div class="summary-row"><span class="label">+ Dealer Fee:</span><span class="value">$${dealerFee.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">+ Dealer Fee:</span><span class="value">$${fmt(dealerFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push("<hr>");
