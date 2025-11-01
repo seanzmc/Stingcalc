@@ -207,7 +207,8 @@ document.addEventListener('DOMContentLoaded', function() {
         let finalAmount = 0;
         const floridaWasteTireFee = 5.00;
         const floridaBatteryFee = 1.50;
-        const privateTagAgencyFee = 299.00;
+        const dealerFee = 999.00;
+        const privateTagAgencyFee = 289.52;
         const lemonLawFee = 2.00;
         const salesTaxRate = 0.06;
         const docStampFlat = 75.00;
@@ -215,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (saleType === 'new') {
             // New car flow
             const sellPrice = msrp + additionalEq - discount;
-            let totalTaxable = sellPrice - tradeAllowance + floridaWasteTireFee + floridaBatteryFee + privateTagAgencyFee;
+            let totalTaxable = sellPrice - tradeAllowance + floridaWasteTireFee + floridaBatteryFee + dealerFee + privateTagAgencyFee;
 
             // Calculate sales tax based on custom tax settings
             let salesTax;
@@ -249,6 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">+ FL Waste Tire Fee:</span><span class="value">$${fmt(floridaWasteTireFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ FL Battery Fee:</span><span class="value">$${fmt(floridaBatteryFee)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">Dealer Fee:</span><span class="value">$${dealerFee.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push('<hr>');
             // Determine the tax rate percentage and state for display
@@ -269,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Used car flow
             const sellPrice = sellingPriceInput + additionalEq;
-            const totalTaxable = sellPrice - tradeAllowance + privateTagAgencyFee;
+            const totalTaxable = sellPrice - tradeAllowance + dealerFee + privateTagAgencyFee;
 
             // Calculate sales tax based on custom tax settings
             let salesTax;
@@ -287,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
             rows.push(`<div class="summary-row"><span class="label">+ Additional Equipment:</span><span class="value">$${fmt(additionalEq)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">- Trade Allowance:</span><span class="value">$${fmt(tradeAllowance)}</span></div>`);
             rows.push(`<div class="summary-row"><span class="label">+ Private Tag Agency Fee:</span><span class="value">$${fmt(privateTagAgencyFee)}</span></div>`);
+            rows.push(`<div class="summary-row"><span class="label">Dealer Fee:</span><span class="value">$${dealerFee.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span></div>`);
             rows.push(`<div class="summary-row total-row"><span class="label">= Total Taxable:</span><span class="value">$${fmt(totalTaxable)}</span></div>`);
             rows.push('<hr>');
             // Determine the tax rate percentage and state for display
