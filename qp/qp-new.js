@@ -25,6 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
         return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+    function escapeHtml(str) {
+        const escapeMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;",
+        };
+        return String(str).replace(/[&<>"']/g, (match) => escapeMap[match]);
+    }
+
     function updateFields(type) {
         saleTypeButtons.forEach((btn) => {
             if (btn.dataset.saleType === type) {
@@ -172,6 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         // Gather input values
         const saleType = document.querySelector("#quick-pencil .tab-btn.active").dataset.saleType;
+        const clientName = document.getElementById("client-name")?.value.trim() || "";
         const msrp = parseFloat(document.getElementById("msrp").value) || 0;
         const sellingPriceInput = parseFloat(document.getElementById("selling-price").value) || 0;
         const additionalEq = parseFloat(document.getElementById("additional-equipment").value) || 0;
@@ -305,8 +317,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // Render results using grid-aligned summary rows
         const resultDiv = document.getElementById("qp-results");
         const summaryHTML = rows.join("");
+        const clientNameBlock = clientName
+            ? `<div class="client-name-display">
+                    <span class="client-name-label">Client Name:</span>
+                    <span class="client-name-value">${escapeHtml(clientName)}</span>
+               </div>`
+            : "";
         // Render the itemized summary
         resultDiv.innerHTML = `
+            ${clientNameBlock}
             <h3>Itemized Summary</h3>
             ${summaryHTML}
             <hr>

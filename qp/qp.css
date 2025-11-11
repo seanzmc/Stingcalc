@@ -49,6 +49,18 @@
     border-radius: 4px;
     background-color: #f9f9f9;
 }
+#quick-pencil .results .client-name-display {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+}
+#quick-pencil .results .client-name-value {
+    font-weight: 700;
+}
 #quick-pencil .results h3,
 #quick-pencil .results p {
     margin: 0.25rem 0;
@@ -121,6 +133,23 @@
     padding: 10px; /* Add some padding for print */
     margin: 0;
     background-color: #fff; /* Ensure white background for printing */
+  }
+
+  #qp-results .client-name-display {
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #000;
+    display: block;
+  }
+  #qp-results .client-name-display .client-name-label {
+    display: none;
+  }
+  #qp-results .client-name-display .client-name-value {
+    display: block;
+    text-align: left;
   }
 
   /* Mirror on-screen summary layout in print for #qp-results */
