@@ -3,21 +3,21 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0">
-        <meta name="description"
-              content="Calculate auto loan payments, loan amounts, and monthly income with Stingcalc - a free calculator tool from Sean M.">
-        <meta name="author"
-              content="Sean M.">
-        <title>Auto Loan Calculator</title>
-        <link rel="icon"
-              href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
-        <link rel="stylesheet"
-              href="styles.css">
-        <link rel="stylesheet"
-              href="qp/qp.css">
-        <meta name="theme-color"
-              content="#4285f4">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <meta name="description" content="Calculate auto loan payments, loan amounts, and monthly income with Stingcalc - a free calculator tool from Sean M.">
+        <meta name="author" content="Sean M.">
+
+        <!-- Apple-specific meta tags -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="Stingcalc">
+        <meta name="theme-color" content="#007AFF">
+
+        <title>Stingcalc - Auto Loan Calculator</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚗</text></svg>">
+        <link rel="stylesheet" href="styles/variables.css">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="qp/qp.css">
 
         <!-- No-JS fallback message -->
         <noscript>
@@ -36,50 +36,76 @@
     </head>
 
     <body>
+        <!-- Skip to main content for keyboard navigation -->
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+
         <!-- No-JS message -->
         <noscript>
-            <div class="noscript-message">
+            <div class="noscript-message" role="alert">
                 <h2>JavaScript Required</h2>
                 <p>This calculator requires JavaScript to function. Please enable JavaScript in your browser settings and reload the page.</p>
             </div>
         </noscript>
 
         <div class="container">
-            <h1>Quick Calculator</h1>
+            <header>
+                <h1></h1>
+            </header>
 
-            <div class="calculator-container">
-                <div class="tabs">
+            <main class="calculator-container" id="main-content">
+                <nav class="tabs" role="tablist" aria-label="Calculator types">
                     <button type="button"
                             class="tab-btn active"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="payment-calculators"
                             data-tab="payment-calculators">Payment Calculators</button>
                     <button type="button"
                             class="tab-btn"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="income-calc"
                             data-tab="income-calc">Income Calculator</button>
                     <button type="button"
                             class="tab-btn"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="quick-pencil"
                             data-tab="quick-pencil">Quick Pencil</button>
-                </div>
+                </nav>
 
                 <div class="tab-content">
                     <!-- Payment Calculators Tab -->
-                    <div class="tab-pane active"
-                         id="payment-calculators">
-                        <div class="tabs payment-subtabs">
+                    <section class="tab-pane active"
+                             id="payment-calculators"
+                             role="tabpanel"
+                             aria-labelledby="payment-calculators-tab">
+                        <nav class="tabs payment-subtabs" role="tablist" aria-label="Payment calculator types">
                             <button type="button"
                                     class="tab-btn active"
+                                    role="tab"
+                                    aria-selected="true"
+                                    aria-controls="payment-calc"
                                     data-calculator="payment-calc">Monthly Payment</button>
                             <button type="button"
                                     class="tab-btn"
+                                    role="tab"
+                                    aria-selected="false"
+                                    aria-controls="amount-calc"
                                     data-calculator="amount-calc">Loan Amount</button>
                             <button type="button"
                                     class="tab-btn"
+                                    role="tab"
+                                    aria-selected="false"
+                                    aria-controls="rate-solver"
                                     data-calculator="rate-solver">Rate Solver</button>
-                        </div>
+                        </nav>
                         <h2 id="payment-calculator-heading">Calculate Monthly Payment</h2>
-                        <div class="info-heading"
-                        id="payment-calculator-info">Calculate monthly payment based on the loan amount, term, and interest rate.</div>
-                        <div class="calculator-pane active"
-                        data-calculator="payment-calc">
+                        <p class="info-heading" id="payment-calculator-info">Calculate monthly payment based on the loan amount, term, and interest rate.</p>
+                        <article class="calculator-pane active"
+                                 data-calculator="payment-calc"
+                                 role="tabpanel"
+                                 aria-labelledby="payment-calculator-heading">
                             <form id="payment-form">
                                 <div class="form-group">
                                     <label for="loan-amount">Loan Amount ($):</label>
@@ -114,10 +140,11 @@
                                 </div>
                                 <div class="form-group checkbox-group">
                                     <input type="checkbox"
-                                           id="disableDocStampPayment">
+                                           id="disableDocStampPayment"
+                                           aria-describedby="doc-stamp-info">
                                     <label for="disableDocStampPayment">Disable doc stamps for loans outside Florida</label>
                                 </div>
-                                <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                                <aside class="info-box" id="doc-stamp-info" role="note">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</aside>
                                 <div class="button-group">
                                     <button type="submit"
                                             class="calculate-btn">Calculate</button>
@@ -126,8 +153,10 @@
                                             data-form="payment-form">Clear</button>
                                 </div>
                             </form>
-                            <div class="result hidden"
-                                 id="payment-result">
+                            <aside class="result hidden"
+                                   id="payment-result"
+                                   role="status"
+                                   aria-live="polite">
                                 <h3>Monthly Payment:</h3>
                                 <p class="amount">$0.00</p>
                                 <div class="result-details">
@@ -135,10 +164,12 @@
                                     <p id="payment-total-loan"></p>
                                     <p id="payment-total-cost"></p>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="calculator-pane"
-                             data-calculator="amount-calc">
+                            </aside>
+                        </article>
+                        <article class="calculator-pane"
+                                 data-calculator="amount-calc"
+                                 role="tabpanel"
+                                 aria-label="Loan amount calculator">
                             <form id="amount-form">
                                 <div class="form-group">
                                     <label for="desired-payment">Monthly Payment Target ($):</label>
@@ -173,10 +204,11 @@
                                 </div>
                                 <div class="form-group checkbox-group">
                                     <input type="checkbox"
-                                           id="disableDocStampAmount">
+                                           id="disableDocStampAmount"
+                                           aria-describedby="doc-stamp-info-amount">
                                     <label for="disableDocStampAmount">Disable doc stamps for loans outside Florida</label>
                                 </div>
-                                <div class="info-box">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</div>
+                                <aside class="info-box" id="doc-stamp-info-amount" role="note">Florida documentary stamp tax applies at $0.35 per $100 financed, capped at $2,450 and is added to your loan amount.</aside>
                                 <div class="button-group">
                                     <button type="submit"
                                             class="calculate-btn">Calculate</button>
@@ -185,18 +217,22 @@
                                             data-form="amount-form">Clear</button>
                                 </div>
                             </form>
-                            <div class="result hidden"
-                                 id="amount-result">
+                            <aside class="result hidden"
+                                   id="amount-result"
+                                   role="status"
+                                   aria-live="polite">
                                 <h3>Loan Amount:</h3>
                                 <p class="amount">$0.00</p>
                                 <div class="result-details">
                                     <p id="amount-doc-stamp"></p>
                                     <p id="amount-total-loan"></p>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="calculator-pane"
-                             data-calculator="rate-solver">
+                            </aside>
+                        </article>
+                        <article class="calculator-pane"
+                                 data-calculator="rate-solver"
+                                 role="tabpanel"
+                                 aria-label="Interest rate solver">
                             <form id="interest-rate-form">
                                 <div class="form-group">
                                     <label for="principal-amount">Principal Amount ($):</label>
@@ -237,22 +273,26 @@
                                             data-form="interest-rate-form">Clear</button>
                                 </div>
                             </form>
-                            <div class="result hidden"
-                                 id="interest-rate-result">
+                            <aside class="result hidden"
+                                   id="interest-rate-result"
+                                   role="status"
+                                   aria-live="polite">
                                 <h3>Required Interest Rate:</h3>
                                 <p class="amount">0.00%</p>
                                 <div class="result-details">
                                     <p id="interest-validation-message"></p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
+                            </aside>
+                        </article>
+                    </section>
 
                     <!-- Calculate Monthly Income Tab -->
-                    <div class="tab-pane"
-                         id="income-calc">
+                    <section class="tab-pane"
+                             id="income-calc"
+                             role="tabpanel"
+                             aria-labelledby="income-calc-tab">
                         <h2>Calculate Monthly Income</h2>
-                        <div class="info-heading">Calculate the monthly income based on the year-to-date amount and the pay period end date.</div>
+                        <p class="info-heading">Calculate the monthly income based on the year-to-date amount and the pay period end date.</p>
                         <form id="income-form">
                             <div class="form-group">
                                 <label for="ytd-amount">Year-to-Date (YTD) Amount ($):</label>
@@ -285,27 +325,35 @@
                                         data-form="income-form">Clear</button>
                             </div>
                         </form>
-                        <div class="result hidden"
-                             id="income-result">
+                        <aside class="result hidden"
+                               id="income-result"
+                               role="status"
+                               aria-live="polite">
                             <h3>Estimated Monthly Gross Income:</h3>
                             <p class="amount">$0.00</p>
                             <div class="result-details">
                                 <p id="income-annual">Estimated Annual Gross Income: $0.00</p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane"
-                         id="quick-pencil">
+                        </aside>
+                    </section>
+                    <section class="tab-pane"
+                             id="quick-pencil"
+                             role="tabpanel"
+                             aria-labelledby="quick-pencil-tab">
                         <h2>Quick Pencil</h2>
-                        <div class="info-heading">Perform quick estimates for New and Used vehicle sales. Enter values below and view an itemized summary.</div>
-                        <div class="tabs sale-type-tabs">
+                        <p class="info-heading">Perform quick estimates for New and Used vehicle sales. Enter values below and view an itemized summary.</p>
+                        <nav class="tabs sale-type-tabs" role="tablist" aria-label="Sale type">
                             <button type="button"
                                     class="tab-btn active"
+                                    role="tab"
+                                    aria-selected="true"
                                     data-sale-type="new">New</button>
                             <button type="button"
                                     class="tab-btn"
+                                    role="tab"
+                                    aria-selected="false"
                                     data-sale-type="used">Used</button>
-                        </div>
+                        </nav>
                         <form id="qp-form">
                             <div class="qp-fields">
                                 <div class="qp-row">
@@ -487,15 +535,15 @@
                                         data-form="qp-form">Clear</button>
                             </div>
                         </form>
-                        <div class="results"
-                             id="qp-results"></div>
-                    </div>
+                        <aside class="results" id="qp-results" role="status" aria-live="polite"></aside>
+                    </section>
+
                     <!-- Persistent Disclosure Banner -->
-                    <div class="disclosure-banner">
+                    <aside class="disclosure-banner" role="note" aria-label="Disclaimer">
                         <p>All calculations, estimates, and projections provided by this application (including payment calculations, loan amounts, interest rates, income estimates, and vehicle pricing) are for informational and illustrative purposes only. These figures are approximations based on the information entered and should not be relied upon as accurate, complete, or binding. Actual loan terms, payments, interest rates, vehicle prices, fees, taxes, and other costs may vary and will be determined by the dealer and/or lender. This calculator does not constitute financial, legal, or tax advice, nor does it represent a commitment to lend or an offer of credit. No warranty, express or implied, is made regarding the accuracy, reliability, or completeness of any calculations. Users assume all risk and liability for decisions made based on information provided by this application. Final terms and conditions are subject to dealer approval and applicable lending institution requirements.</p>
-                    </div>
+                    </aside>
                 </div>
-            </div>
+            </main>
         </div>
         <script src="script.js"></script>
         <script src="qp/qp-new.js"></script>
