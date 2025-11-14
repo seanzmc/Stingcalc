@@ -6,15 +6,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const customTagRow = document.querySelector('[data-field="custom-tag-fee"]');
     const customTagInput = document.getElementById("custom-tag-fee");
 
+    const showRow = (row) => {
+        if (!row) {
+            return;
+        }
+        row.hidden = false;
+        row.style.removeProperty("display");
+    };
+
+    const hideRow = (row) => {
+        if (!row) {
+            return;
+        }
+        row.hidden = true;
+    };
+
     function refreshCustomTagVisibility() {
         if (!tagTypeSelect || !customTagRow || !customTagInput) {
             return;
         }
         if (tagTypeSelect.value === "custom") {
-            customTagRow.style.display = "flex";
+            showRow(customTagRow);
             customTagInput.required = true;
         } else {
-            customTagRow.style.display = "none";
+            hideRow(customTagRow);
             customTagInput.required = false;
             customTagInput.value = "";
         }
@@ -53,21 +68,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 if (type === "new" && ["msrp", "discount", "rebates"].includes(field)) {
-                    row.style.display = "flex";
+                    showRow(row);
                     const input = row.querySelector("input, select");
                     input.required = field === "msrp";
                 } else if (type === "used" && field === "selling-price") {
-                    row.style.display = "flex";
+                    showRow(row);
                     const input = row.querySelector("input, select");
                     input.required = true;
                 } else {
-                    row.style.display = "none";
+                    hideRow(row);
                     const input = row.querySelector("input, select");
                     input.required = false;
                     input.value = "";
                 }
             } else {
-                row.style.display = "flex";
+                showRow(row);
             }
         });
 
@@ -79,9 +94,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (rebatesReduceTaxableRow && taxOutsideFlCheckbox && rebatesReduceTaxableCheckbox) {
             if (type === "new" && taxOutsideFlCheckbox.checked) {
-                rebatesReduceTaxableRow.style.display = "flex";
+                showRow(rebatesReduceTaxableRow);
             } else {
-                rebatesReduceTaxableRow.style.display = "none";
+                hideRow(rebatesReduceTaxableRow);
                 rebatesReduceTaxableCheckbox.checked = false;
             }
         }
@@ -137,26 +152,26 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this.checked) {
                 // Show state dropdown
                 if (stateDropdownRow) {
-                    stateDropdownRow.style.display = "flex";
+                    showRow(stateDropdownRow);
                 }
 
                 // Show custom tax rate input
-                customTaxRateRow.style.display = "flex";
+                showRow(customTaxRateRow);
 
                 // Show rebates-reduce-taxable only if sale type is NEW
                 if (rebatesReduceTaxableRow && saleType === "new") {
-                    rebatesReduceTaxableRow.style.display = "flex";
+                    showRow(rebatesReduceTaxableRow);
                 }
             } else {
                 // Hide state dropdown, custom tax rate, and rebates-reduce-taxable
                 if (stateDropdownRow) {
-                    stateDropdownRow.style.display = "none";
+                    hideRow(stateDropdownRow);
                     document.getElementById("state-select").value = "";
                 }
 
-                customTaxRateRow.style.display = "none";
+                hideRow(customTaxRateRow);
                 if (rebatesReduceTaxableRow) {
-                    rebatesReduceTaxableRow.style.display = "none";
+                    hideRow(rebatesReduceTaxableRow);
                     document.getElementById("rebates-reduce-taxable").checked = false;
                 }
             }
