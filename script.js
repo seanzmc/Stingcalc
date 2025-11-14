@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ["check-date", "hire-date"].forEach(setupDateFormatting);
     setupClearButtons();
     setupEnhancedStepping();
+    setupCheckboxLabelToggles();
 
     function showPaymentCalculator(calculatorId) {
         if (!calculatorId) return;
@@ -750,6 +751,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Trigger input event for any listeners
                 this.dispatchEvent(new Event("input", { bubbles: true }));
+            });
+        });
+    }
+
+    // Ensure checkbox labels toggle the input instead of triggering form submit
+    function setupCheckboxLabelToggles() {
+        const checkboxLabels = document.querySelectorAll(".checkbox-group label[for]");
+        checkboxLabels.forEach((label) => {
+            const targetId = label.getAttribute("for");
+            if (!targetId) return;
+            const checkbox = document.getElementById(targetId);
+            if (!checkbox || checkbox.type !== "checkbox") return;
+
+            label.addEventListener("click", (event) => {
+                event.preventDefault();
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event("change", { bubbles: true }));
+                checkbox.focus();
             });
         });
     }
