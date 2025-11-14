@@ -80,14 +80,18 @@
 
 #quick-pencil .qp-row.checkbox-group input[type="checkbox"]::after {
     content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
     width: 55%;
     height: 55%;
     border-radius: 50%;
     background: var(--color-primary);
-    transform: scale(0.6);
+    transform: translate(-50%, -50%) scale(0.5);
     opacity: 0;
     transition: opacity var(--transition-base) var(--easing-standard),
                 transform var(--transition-base) var(--easing-standard);
+    pointer-events: none;
 }
 
 #quick-pencil .qp-row.checkbox-group input[type="checkbox"]:checked {
@@ -97,7 +101,7 @@
 
 #quick-pencil .qp-row.checkbox-group input[type="checkbox"]:checked::after {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
 }
 
 #quick-pencil .qp-row.checkbox-group input[type="checkbox"]:focus-visible {
