@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
         row.hidden = true;
+        row.style.display = "none";
     };
 
     function refreshCustomTagVisibility() {

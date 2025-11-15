@@ -56,18 +56,21 @@
                 <nav class="tabs" role="tablist" aria-label="Calculator types">
                     <button type="button"
                             class="tab-btn active"
+                            id="payment-calculators-tab"
                             role="tab"
                             aria-selected="true"
                             aria-controls="payment-calculators"
                             data-tab="payment-calculators">Payment Calculators</button>
                     <button type="button"
                             class="tab-btn"
+                            id="income-calc-tab"
                             role="tab"
                             aria-selected="false"
                             aria-controls="income-calc"
                             data-tab="income-calc">Income Calculator</button>
                     <button type="button"
                             class="tab-btn"
+                            id="quick-pencil-tab"
                             role="tab"
                             aria-selected="false"
                             aria-controls="quick-pencil"
@@ -103,6 +106,7 @@
                         <h2 id="payment-calculator-heading">Calculate Monthly Payment</h2>
                         <p class="info-heading" id="payment-calculator-info">Calculate monthly payment based on the loan amount, term, and interest rate.</p>
                         <article class="calculator-pane active"
+                                 id="payment-calc"
                                  data-calculator="payment-calc"
                                  role="tabpanel"
                                  aria-labelledby="payment-calculator-heading">
@@ -167,6 +171,7 @@
                             </aside>
                         </article>
                         <article class="calculator-pane"
+                                 id="amount-calc"
                                  data-calculator="amount-calc"
                                  role="tabpanel"
                                  aria-label="Loan amount calculator">
@@ -230,6 +235,7 @@
                             </aside>
                         </article>
                         <article class="calculator-pane"
+                                 id="rate-solver"
                                  data-calculator="rate-solver"
                                  role="tabpanel"
                                  aria-label="Interest rate solver">
