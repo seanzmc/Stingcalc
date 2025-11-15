@@ -54,11 +54,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateFields(type) {
         saleTypeButtons.forEach((btn) => {
-            if (btn.dataset.saleType === type) {
-                btn.classList.add("active");
-            } else {
-                btn.classList.remove("active");
-            }
+            const isActive = btn.dataset.saleType === type;
+            btn.classList.toggle("active", isActive);
+            btn.setAttribute("aria-pressed", isActive ? "true" : "false");
         });
         qpRows.forEach((row) => {
             const field = row.dataset.field;
@@ -103,11 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         refreshCustomTagVisibility();
-
-        const visibleInputs = Array.from(form.querySelectorAll("input, select")).filter((el) => el.offsetParent !== null);
-        if (visibleInputs.length) {
-            visibleInputs[0].focus();
-        }
+        // Do not move focus when toggling sale type; keep focus on the control the user interacted with.
     }
 
     saleTypeButtons.forEach((btn) => {
@@ -386,11 +380,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     monthlyCalculatorBtn.click();
                 }
 
+                // Tab activation will handle moving focus into the payment calculator.
                 if (paymentInput) {
-                    setTimeout(() => {
-                        paymentInput.focus();
-                        paymentInput.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }, 60);
+                    paymentInput.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
             });
         }

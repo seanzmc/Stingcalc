@@ -174,7 +174,9 @@
                                  id="amount-calc"
                                  data-calculator="amount-calc"
                                  role="tabpanel"
-                                 aria-label="Loan amount calculator">
+                                 aria-label="Loan amount calculator"
+                                 hidden
+                                 aria-hidden="true">
                             <form id="amount-form">
                                 <div class="form-group">
                                     <label for="desired-payment">Monthly Payment Target ($):</label>
@@ -238,7 +240,9 @@
                                  id="rate-solver"
                                  data-calculator="rate-solver"
                                  role="tabpanel"
-                                 aria-label="Interest rate solver">
+                                 aria-label="Interest rate solver"
+                                 hidden
+                                 aria-hidden="true">
                             <form id="interest-rate-form">
                                 <div class="form-group">
                                     <label for="principal-amount">Principal Amount ($):</label>
@@ -296,7 +300,9 @@
                     <section class="tab-pane"
                              id="income-calc"
                              role="tabpanel"
-                             aria-labelledby="income-calc-tab">
+                             aria-labelledby="income-calc-tab"
+                             hidden
+                             aria-hidden="true">
                         <h2>Calculate Monthly Income</h2>
                         <p class="info-heading">Calculate the monthly income based on the year-to-date amount and the pay period end date.</p>
                         <form id="income-form">
@@ -345,20 +351,20 @@
                     <section class="tab-pane"
                              id="quick-pencil"
                              role="tabpanel"
-                             aria-labelledby="quick-pencil-tab">
+                             aria-labelledby="quick-pencil-tab"
+                             hidden
+                             aria-hidden="true">
                         <h2>Quick Pencil</h2>
                         <p class="info-heading">Perform quick estimates for New and Used vehicle sales. Enter values below and view an itemized summary. Print the results or push the bottom line to the payment calculator.</p>
-                        <nav class="tabs sale-type-tabs" role="tablist" aria-label="Sale type">
+                        <nav class="tabs sale-type-tabs" aria-label="Sale type">
                             <button type="button"
                                     class="tab-btn active"
-                                    role="tab"
-                                    aria-selected="true"
-                                    data-sale-type="new">New</button>
+                                    data-sale-type="new"
+                                    aria-pressed="true">New</button>
                             <button type="button"
                                     class="tab-btn"
-                                    role="tab"
-                                    aria-selected="false"
-                                    data-sale-type="used">Used</button>
+                                    data-sale-type="used"
+                                    aria-pressed="false">Used</button>
                         </nav>
                         <form id="qp-form">
                             <div class="qp-fields">

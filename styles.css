@@ -124,6 +124,7 @@ h2 {
     padding: var(--spacing-4);
     background: none;
     border: none;
+    border-radius: var(--tab-border-radius);
     cursor: pointer;
     font-size: var(--font-size-body);
     font-weight: var(--font-weight-semibold);
@@ -228,7 +229,7 @@ h2 {
     color: var(--color-text-primary);
     background-color: transparent;
     border: none;
-    border-radius: calc(var(--radius-lg) - var(--spacing-1));
+    border-radius: var(--tab-border-radius);
     padding: var(--spacing-2) var(--spacing-4);
     transition: all var(--transition-base) var(--easing-standard);
 }

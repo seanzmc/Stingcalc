@@ -21,13 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
         paymentCalculatorPanes: document.querySelectorAll("#payment-calculators .calculator-pane"),
     };
 
-    // Explicit mapping of tabs to their first input field IDs
-    const tabFirstFields = {
-        'payment-calculators': null,
-        'income-calc': 'ytd-amount',
-        'quick-pencil': 'msrp'
-    };
-
     const paymentCalculatorDescriptions = {
         'payment-calc': 'Calculate monthly payment based on loan amount, term, and interest rate.',
         'amount-calc': 'Calculate the loan amount needed to reach a payment using term and interest rate.',
@@ -40,64 +33,120 @@ document.addEventListener("DOMContentLoaded", function () {
         'rate-solver': 'Interest Rate Solver'
     };
 
-    const paymentSubtabFirstFields = {
-        'payment-calc': 'loan-amount',
-        'amount-calc': 'desired-payment',
-        'rate-solver': 'principal-amount'
-    };
+    function focusFirstMeaningfulInput(container, options = {}) {
+        if (!container) return;
 
-    function focusFirstFieldInPaymentSubtab(calculatorId) {
-        const fieldId = paymentSubtabFirstFields[calculatorId];
-        if (!fieldId) return;
-        const field = document.getElementById(fieldId);
-        if (field && !field.disabled) {
-            setTimeout(() => {
-                field.focus();
-            }, 50);
+        const activeElement = document.activeElement;
+        if (activeElement && container.contains(activeElement)) {
+            return;
+        }
+
+        const { preferredSelector } = options;
+        if (preferredSelector) {
+            const preferredControl = container.querySelector(preferredSelector);
+            if (preferredControl && typeof preferredControl.focus === "function" && !preferredControl.disabled) {
+                preferredControl.focus();
+                return;
+            }
+        }
+
+        const selector = [
+            'input:not([type="hidden"]):not([type="button"]):not([type="submit"]):not([disabled])',
+            'select:not([disabled])',
+            'textarea:not([disabled])'
+        ].join(", ");
+
+        const firstControl = container.querySelector(selector);
+        if (firstControl && typeof firstControl.focus === "function") {
+            firstControl.focus();
         }
     }
 
-    // Function to focus on the first input field in a tab
-    function focusFirstFieldInTab(tabId) {
+    function focusTabPanel(tabId) {
+        if (!tabId) return;
+
         if (tabId === "payment-calculators") {
-            const activeSubButton = document.querySelector("#payment-calculators .payment-subtabs .tab-btn.active");
-            const activeCalculator = activeSubButton ? activeSubButton.getAttribute("data-calculator") : "payment-calc";
-            focusFirstFieldInPaymentSubtab(activeCalculator);
+            const container = document.getElementById(tabId);
+            if (!container) return;
+            const activeCalculatorPane =
+                container.querySelector(".calculator-pane.active") ||
+                container.querySelector(".calculator-pane");
+            if (activeCalculatorPane) {
+                focusFirstMeaningfulInput(activeCalculatorPane);
+            }
             return;
         }
-        const fieldId = tabFirstFields[tabId];
-        if (fieldId) {
-            const field = document.getElementById(fieldId);
-            if (field && !field.disabled) {
-                // Small delay to ensure tab transition is complete
-                setTimeout(() => {
-                    field.focus();
-                }, 50);
-            }
+
+        if (tabId === "quick-pencil") {
+            const pane = document.getElementById(tabId);
+            if (!pane) return;
+            focusFirstMeaningfulInput(pane, { preferredSelector: "#msrp" });
+            return;
+        }
+
+        const pane = document.getElementById(tabId);
+        if (pane) {
+            focusFirstMeaningfulInput(pane);
         }
     }
 
     // Tab switching functionality
     elements.tabButtons.forEach((button) => {
         button.addEventListener("click", function () {
-            // Remove active class from all buttons and panes
-            elements.tabButtons.forEach((btn) => btn.classList.remove("active"));
-            elements.tabPanes.forEach((pane) => pane.classList.remove("active"));
-
-            // Add active class to clicked button and show corresponding tab pane
-            this.classList.add("active");
             const tabId = this.getAttribute("data-tab");
-            document.getElementById(tabId).classList.add("active");
+            if (!tabId) return;
 
-            // Focus on the first field in the newly active tab
-            focusFirstFieldInTab(tabId);
+            // Update active state and aria-selected on tab buttons
+            elements.tabButtons.forEach((btn) => {
+                const isActive = btn === this;
+                btn.classList.toggle("active", isActive);
+                if (btn.getAttribute("role") === "tab") {
+                    btn.setAttribute("aria-selected", isActive ? "true" : "false");
+                }
+            });
+
+            // Update visibility and aria-hidden on tab panels
+            elements.tabPanes.forEach((pane) => {
+                const isActive = pane.id === tabId;
+                pane.classList.toggle("active", isActive);
+                if (isActive) {
+                    pane.hidden = false;
+                    pane.removeAttribute("aria-hidden");
+                } else {
+                    pane.hidden = true;
+                    pane.setAttribute("aria-hidden", "true");
+                }
+            });
+
+            // Focus the first meaningful control in the active tab panel
+            focusTabPanel(tabId);
         });
     });
 
-    // Focus on the first field of the initial active tab on page load
-    const initialActiveTab = document.querySelector('.tab-pane.active');
+    // Ensure initial tab state and focus on page load
+    const initialActiveTab = document.querySelector(".tab-pane.active");
     if (initialActiveTab) {
-        focusFirstFieldInTab(initialActiveTab.id);
+        elements.tabPanes.forEach((pane) => {
+            const isActive = pane === initialActiveTab;
+            if (isActive) {
+                pane.hidden = false;
+                pane.removeAttribute("aria-hidden");
+            } else {
+                pane.hidden = true;
+                pane.setAttribute("aria-hidden", "true");
+            }
+        });
+
+        elements.tabButtons.forEach((btn) => {
+            const tabId = btn.getAttribute("data-tab");
+            if (!tabId) return;
+            const isActive = tabId === initialActiveTab.id;
+            if (btn.getAttribute("role") === "tab") {
+                btn.setAttribute("aria-selected", isActive ? "true" : "false");
+            }
+        });
+
+        focusTabPanel(initialActiveTab.id);
     }
 
     // Setup form enhancements
@@ -109,21 +158,39 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function showPaymentCalculator(calculatorId) {
         if (!calculatorId) return;
+
+        let activePane = null;
+
         elements.paymentSubtabButtons.forEach((button) => {
             const isActive = button.getAttribute("data-calculator") === calculatorId;
             button.classList.toggle("active", isActive);
+            if (button.getAttribute("role") === "tab") {
+                button.setAttribute("aria-selected", isActive ? "true" : "false");
+            }
         });
+
         elements.paymentCalculatorPanes.forEach((pane) => {
             const isActive = pane.getAttribute("data-calculator") === calculatorId;
             pane.classList.toggle("active", isActive);
+            if (isActive) {
+                pane.hidden = false;
+                pane.removeAttribute("aria-hidden");
+                activePane = pane;
+            } else {
+                pane.hidden = true;
+                pane.setAttribute("aria-hidden", "true");
+            }
         });
+
         if (elements.paymentCalculatorInfo) {
             elements.paymentCalculatorInfo.textContent = paymentCalculatorDescriptions[calculatorId] || "";
         }
         if (elements.paymentCalculatorHeading) {
             elements.paymentCalculatorHeading.textContent = paymentCalculatorHeadings[calculatorId] || "";
         }
-        focusFirstFieldInPaymentSubtab(calculatorId);
+        if (activePane) {
+            focusFirstMeaningfulInput(activePane);
+        }
     }
 
     elements.paymentSubtabButtons.forEach((button) => {

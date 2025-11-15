@@ -135,6 +135,7 @@
   --radius-lg: 0.75rem;    /* 12px */
   --radius-xl: 1rem;       /* 16px */
   --radius-full: 9999px;   /* Circular */
+  --tab-border-radius: calc(var(--radius-lg) - var(--spacing-1));
 }
 
 /* ========================================
