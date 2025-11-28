@@ -143,10 +143,10 @@
 #quick-pencil .results {
     margin-top: var(--spacing-6);
     padding: var(--spacing-6);
-    border: 2px solid var(--color-success);
     border-radius: var(--radius-lg);
-    background-color: var(--color-success-bg);
-    box-shadow: var(--shadow-sm);
+    background-color: var(--color-surface-secondary);
+    border: 1px solid var(--color-border-light);
+    box-shadow: none;
     animation: popIn 0.35s var(--easing-standard);
     transform-origin: center;
 }
@@ -167,25 +167,24 @@
     align-items: center;
     gap: var(--spacing-2);
     margin-bottom: var(--spacing-4);
-    padding-bottom: var(--spacing-3);
-    border-bottom: 1px solid var(--color-border-light);
-    font-size: var(--font-size-body-lg);
-    font-weight: var(--font-weight-semibold);
+    padding-bottom: 0;
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
     color: var(--color-text-primary);
 }
 
 #quick-pencil .results .client-name-value {
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-primary);
 }
 
 #quick-pencil .results h3 {
     margin-top: 0;
     margin-bottom: var(--spacing-4);
-    font-size: var(--font-size-h3);
-    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-regular);
     color: var(--color-text-primary);
-    letter-spacing: var(--letter-spacing-tight);
+    letter-spacing: var(--letter-spacing-normal);
     animation: fadeInUp 0.4s var(--easing-standard) 0.1s backwards;
 }
 
@@ -233,7 +232,7 @@
 #quick-pencil .results .summary-row:nth-child(8) { --stagger-delay: 0.21s; }
 
 #quick-pencil .results .summary-row .label {
-    font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-regular);
     color: var(--color-text-primary);
     text-align: left;
     font-size: var(--font-size-body-sm);
@@ -241,7 +240,7 @@
 
 #quick-pencil .results .summary-row .value {
     text-align: right;
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-regular);
     color: var(--color-text-primary);
     font-variant-numeric: tabular-nums;
     font-size: var(--font-size-body);
@@ -254,15 +253,15 @@
 }
 
 #quick-pencil .results .summary-row.total-row .label {
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-regular);
     font-size: var(--font-size-body);
     color: var(--color-text-primary);
 }
 
 #quick-pencil .results .summary-row.total-row .value {
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-h3);
-    color: var(--color-success);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-body);
+    color: var(--color-text-primary);
 }
 
 /* Rebate disclosure styling */
@@ -275,8 +274,9 @@
 
 #quick-pencil .results .summary-row.rebate-disclosure .disclosure-text {
     font-size: var(--font-size-caption);
-    font-style: italic;
-    color: var(--color-text-secondary);
+    font-style: normal;
+    font-weight: var(--font-weight-regular);
+    color: var(--color-text-primary);
     text-align: left;
     padding-left: var(--spacing-4);
     line-height: var(--line-height-normal);
@@ -344,7 +344,7 @@
     }
 
     #quick-pencil .results h3 {
-        font-size: var(--font-size-h4);
+        font-size: var(--font-size-body);
         margin-bottom: var(--spacing-3);
     }
 
@@ -365,7 +365,7 @@
     #quick-pencil .results .summary-row .value {
         text-align: left;
         font-size: var(--font-size-body-sm);
-        font-weight: var(--font-weight-semibold);
+        font-weight: var(--font-weight-regular);
     }
 
     #quick-pencil .results .summary-row.total-row {
@@ -379,7 +379,7 @@
     }
 
     #quick-pencil .results .summary-row.total-row .value {
-        font-size: var(--font-size-h3);
+        font-size: var(--font-size-body);
         text-align: left;
     }
 
@@ -494,11 +494,11 @@
     }
 
     #quick-pencil .results .client-name-display {
-        font-size: var(--font-size-h4);
+        font-size: var(--font-size-body);
     }
 
     #quick-pencil .results h3 {
-        font-size: var(--font-size-h3);
+        font-size: var(--font-size-body);
     }
 }
 
@@ -532,20 +532,20 @@
     }
 
     #quick-pencil .results .client-name-display {
-        font-size: var(--font-size-h3);
+        font-size: var(--font-size-body);
         margin-bottom: var(--spacing-5);
     }
 
     #quick-pencil .results h3 {
-        font-size: var(--font-size-h2);
+        font-size: var(--font-size-body);
     }
 
     #quick-pencil .results .summary-row .value {
-        font-size: var(--font-size-body-lg);
+        font-size: var(--font-size-body);
     }
 
     #quick-pencil .results .summary-row.total-row .value {
-        font-size: var(--font-size-h2);
+        font-size: var(--font-size-body);
     }
 }
 
@@ -568,7 +568,7 @@
     }
 
     #quick-pencil .results .summary-row.total-row .value {
-        font-size: var(--font-size-h4);
+        font-size: var(--font-size-body);
     }
 }
 
@@ -581,16 +581,12 @@
         display: none !important;
     }
 
-    /* Make only the results section and its children visible */
-    #qp-results,
-    #qp-results * {
+    /* Make only the results section visible */
+    #qp-results {
         visibility: visible !important;
     }
 
     #qp-results {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         padding: var(--spacing-4);
         margin: 0;
@@ -600,18 +596,20 @@
     }
 
     #qp-results .client-name-display {
-        font-size: var(--font-size-h2);
-        font-weight: var(--font-weight-bold);
-        text-transform: uppercase;
-        margin-bottom: var(--spacing-5);
-        padding-bottom: var(--spacing-3);
-        border-bottom: 2px solid var(--color-text-primary) !important;
-        display: block;
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-regular);
+        text-transform: none;
+        margin-bottom: var(--spacing-4);
+        padding-bottom: 0;
+        border-bottom: none !important;
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-2);
         color: var(--color-text-primary) !important;
     }
 
     #qp-results .client-name-display .client-name-label {
-        display: none;
+        display: inline;
     }
 
     #qp-results .client-name-display .client-name-value {
@@ -631,14 +629,14 @@
     }
 
     #qp-results h2 {
-        font-size: var(--font-size-h2);
-        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-regular);
     }
 
     #qp-results h3 {
         margin-top: 0;
-        font-size: var(--font-size-h3);
-        font-weight: var(--font-weight-semibold);
+        font-size: var(--font-size-body);
+        font-weight: var(--font-weight-regular);
     }
 
     #qp-results hr {
@@ -657,7 +655,7 @@
     }
 
     #qp-results .summary-row .label {
-        font-weight: var(--font-weight-semibold);
+        font-weight: var(--font-weight-regular);
         text-align: left;
         font-size: var(--font-size-body-sm);
         color: var(--color-text-primary) !important;
@@ -665,24 +663,24 @@
 
     #qp-results .summary-row .value {
         text-align: right;
-        font-weight: var(--font-weight-medium);
+        font-weight: var(--font-weight-regular);
         color: var(--color-text-primary) !important;
     }
 
     #qp-results .summary-row.total-row {
-        border-top: 2px solid var(--color-border-dark) !important;
+        border-top: 1px solid var(--color-border-medium) !important;
         padding-top: var(--spacing-3);
         margin-top: var(--spacing-3);
     }
 
     #qp-results .summary-row.total-row .label {
-        font-weight: var(--font-weight-bold);
+        font-weight: var(--font-weight-regular);
         font-size: var(--font-size-body);
     }
 
     #qp-results .summary-row.total-row .value {
-        font-weight: var(--font-weight-bold);
-        font-size: var(--font-size-h3);
+        font-weight: var(--font-weight-regular);
+        font-size: var(--font-size-body);
     }
 
     /* Print styling for rebate disclosure */
@@ -694,8 +692,9 @@
 
     #qp-results .summary-row.rebate-disclosure .disclosure-text {
         font-size: var(--font-size-caption);
-        font-style: italic;
-        color: var(--color-text-secondary) !important;
+        font-style: normal;
+        font-weight: var(--font-weight-regular);
+        color: var(--color-text-primary) !important;
         text-align: left;
         padding-left: var(--spacing-4);
     }
