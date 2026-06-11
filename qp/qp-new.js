@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const floridaWasteTireFee = 5.0;
         const floridaBatteryFee = 1.5;
         const dealerFee = 999.0;
-        const privateTagAgencyFee = 289.52;
+        const privateTagAgencyFee = 362.0;
         const lemonLawFee = 2.0;
         const salesTaxRate = 0.06;
         const docStampFlat = 75.0;
