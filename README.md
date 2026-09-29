@@ -22,12 +22,17 @@ A powerful web-based calculator suite designed for automotive financing professi
 
 ### 📊 Monthly Income Calculator
 
-- Estimate monthly gross income from year-to-date earnings
-- Accounts for partial years when hired during current year
-- Handles partial months for accurate calculations
+- YTD income follows the [GM Financial dealer calculator](https://dealers.gmfinancial.com/en-us/dealer-support/income-calculator.html), verified September 28, 2026
+- Separate check date, pay-period end, and actual hire date fields; blank hire date assumes employment before the paystub year
+- Uses check date for hires on/before January 1 of the pay-period end year; later hires use pay-period end (or check date when period end is blank)
+- Preserves GMF's 30-day partial-month convention and intermediate rounding, including same-month and year-boundary behavior; rejects invalid dates and nonpositive divisors
+- Base Pay supports weekly, biweekly, semimonthly, and monthly pay using GMF's factors; currency displays round to cents
 - Automatic date formatting (MM/DD/YYYY)
 - Supports flexible date input formats
 - Real-time validation with clear feedback
+
+Income regression checks: `node --test tests/income.test.cjs` (no added dependencies).
+Examples: $135,143 YTD through August 31, 2026 with a January 1 or earlier hire returns $16,829.76; $1,000 weekly base pay displays $4,333.33 monthly.
 
 ### 🔍 Interest Rate Solver
 

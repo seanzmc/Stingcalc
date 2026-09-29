@@ -59,6 +59,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to focus on the first input field in a tab
     function focusFirstFieldInTab(tabId) {
+        if (tabId === "income-calc") {
+            document.querySelector('#income-calc > div:not([hidden]) input')?.focus();
+            return;
+        }
         if (tabId === "payment-calculators") {
             const activeSubButton = document.querySelector("#payment-calculators .payment-subtabs .tab-btn.active");
             const activeCalculator = activeSubButton ? activeSubButton.getAttribute("data-calculator") : "payment-calc";
@@ -101,10 +105,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Setup form enhancements
-    ["payment-form", "amount-form", "income-form", "interest-rate-form"].forEach(setupEnterKeyNavigation);
-    ["check-date", "hire-date"].forEach(setupDateFormatting);
+    ["payment-form", "amount-form", "income-form", "base-income-form", "interest-rate-form"].forEach(setupEnterKeyNavigation);
+    ["check-date", "pay-period-end", "hire-date"].forEach(setupDateFormatting);
     setupClearButtons();
     setupEnhancedStepping();
+
+    document.querySelectorAll("[data-income-panel]").forEach((button) => {
+        button.addEventListener("click", () => {
+            document.querySelectorAll("[data-income-panel]").forEach((choice) => {
+                const active = choice === button;
+                choice.classList.toggle("active", active);
+                choice.setAttribute("aria-pressed", String(active));
+                document.getElementById(choice.dataset.incomePanel).hidden = !active;
+            });
+            focusFirstFieldInTab("income-calc");
+        });
+    });
 
     function showPaymentCalculator(calculatorId) {
         if (!calculatorId) return;
@@ -228,28 +244,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     elements.incomeForm.addEventListener("submit", function (e) {
         e.preventDefault();
+        document.getElementById("income-result").classList.add("hidden");
 
         const ytdAmount = parseFloat(document.getElementById("ytd-amount").value);
         const checkDateInput = document.getElementById("check-date").value;
+        const payPeriodEndInput = document.getElementById("pay-period-end").value;
         const hireDateInput = document.getElementById("hire-date").value;
 
         // Validate YTD amount
-        if (isNaN(ytdAmount) || ytdAmount < 0) {
+        if (!Number.isFinite(ytdAmount) || ytdAmount <= 0) {
             alert("Please enter a valid positive value for YTD amount");
             return;
         }
 
         // Parse and validate dates
-        let checkDate, hireDate;
+        let checkDate, payPeriodEnd, hireDate;
         try {
             checkDate = parseDate(checkDateInput);
+            payPeriodEnd = payPeriodEndInput ? parseDate(payPeriodEndInput) : checkDate;
             hireDate = hireDateInput ? parseDate(hireDateInput) : null;
 
             if (!checkDate || !isValidDate(checkDate)) {
                 throw new Error("Invalid check date");
             }
 
-            if (hireDate && !isValidDate(hireDate)) {
+            if (!isValidDate(payPeriodEnd) || (hireDateInput && !isValidDate(hireDate))) {
                 throw new Error("Invalid hire date");
             }
         } catch (e) {
@@ -258,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Calculate and display monthly income
-        const monthlyIncome = calculateMonthlyIncome(ytdAmount, checkDate, hireDate);
+        const monthlyIncome = calculateMonthlyIncome(ytdAmount, checkDate, hireDate, payPeriodEnd);
         if (monthlyIncome == null) {
             return;
         }
@@ -270,6 +289,31 @@ document.addEventListener("DOMContentLoaded", function () {
         const incomeResultContainer = document.getElementById("income-result");
         incomeResultContainer.classList.remove("hidden");
         incomeResultContainer.scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("base-income-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const result = document.getElementById("base-income-result");
+        result.classList.add("hidden");
+        const monthlyIncome = calculateMonthlyBasePay(
+            Number(document.getElementById("base-pay").value),
+            document.getElementById("base-pay-frequency").value
+        );
+        if (monthlyIncome == null) {
+            alert("Please enter positive base pay and select a pay frequency.");
+            return;
+        }
+        result.querySelector(".amount").textContent = formatCurrency(monthlyIncome);
+        document.getElementById("base-income-annual").textContent = `Estimated Annual Gross Income: ${formatCurrency(monthlyIncome * 12)}`;
+        result.classList.remove("hidden");
+        result.scrollIntoView({ behavior: "smooth" });
+    });
+
+    // Hide outdated income estimates whenever their inputs change.
+    ["income", "base-income"].forEach((prefix) => {
+        document.getElementById(`${prefix}-form`).addEventListener("input", () => {
+            document.getElementById(`${prefix}-result`).classList.add("hidden");
+        });
     });
 
     // Interest Rate Solver Form
@@ -451,93 +495,71 @@ document.addEventListener("DOMContentLoaded", function () {
         return "$" + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
     }
 
-    // Function to calculate monthly income based on YTD amount and dates
-    function calculateMonthlyIncome(ytdAmount, checkDate, hireDate) {
-        // Disallow dates more than two years in the future (based on year only)
-        const today = new Date();
-        const maxYear = today.getFullYear() + 2;
-        if (checkDate.getFullYear() > maxYear) {
-            alert("Check date cannot be more than two years in the future");
+    // GMF dealer calculator, verified 2026-09-28:
+    // https://dealers.gmfinancial.com/en-us/dealer-support/income-calculator.html
+    // Keep the 30-day fractions, intermediate rounding, and date selection for parity.
+    function calculateMonthlyIncome(ytdAmount, checkDate, hireDate, payPeriodEnd = checkDate) {
+        const maxYear = new Date().getFullYear() + 2;
+        if (!Number.isFinite(ytdAmount) || ytdAmount <= 0 ||
+            !isValidDate(checkDate) || !isValidDate(payPeriodEnd) ||
+            (hireDate && !isValidDate(hireDate))) {
+            alert("Please enter a positive YTD amount and valid dates.");
             return null;
         }
-        if (hireDate && hireDate.getFullYear() > maxYear) {
-            alert("Hire date cannot be more than two years in the future");
+        if ([checkDate, payPeriodEnd, hireDate].some((date) => date && date.getFullYear() > maxYear)) {
+            alert("Dates cannot be more than two years in the future.");
             return null;
         }
-
-        const year = checkDate.getFullYear();
-
-        // Determine start date (January 1st or hire date if hired this year)
-        const startDate = hireDate && hireDate.getFullYear() === year ? new Date(hireDate) : new Date(year, 0, 1);
-
-        // Calculate months between start and check date, including partial first and last months
-        const monthDiff = (checkDate.getFullYear() - startDate.getFullYear()) * 12 + (checkDate.getMonth() - startDate.getMonth());
-        const daysInStartMonth = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
-        const daysInCheckMonth = new Date(checkDate.getFullYear(), checkDate.getMonth() + 1, 0).getDate();
-        if (hireDate && checkDate < hireDate) {
-            alert("Check date cannot be before the hire date");
+        if (hireDate && (checkDate < hireDate || payPeriodEnd < hireDate)) {
+            alert("Check date and pay period end cannot be before the hire date.");
             return null;
         }
 
-        const startPartial = hireDate && hireDate.getFullYear() === year ? (startDate.getDate() - 1) / daysInStartMonth : 0;
-        const checkPartial = checkDate.getDate() / daysInCheckMonth;
-        let months = monthDiff + checkPartial - startPartial;
+        // GMF determines the hire-year branch from the pay-period end year.
+        const janOne = new Date(payPeriodEnd.getFullYear(), 0, 1);
+        let months;
+        if (hireDate && hireDate > janOne) {
+            const daysInHireMonth = new Date(hireDate.getFullYear(), hireDate.getMonth() + 1, 0).getDate();
+            const partialDays = daysInHireMonth - hireDate.getDate() + payPeriodEnd.getDate() + 1;
+            const partialMonths = Number((partialDays / 30).toFixed(2));
+            months = payPeriodEnd.getMonth() - hireDate.getMonth() - 1 + partialMonths;
+        } else {
+            months = checkDate.getMonth() + Number((checkDate.getDate() / 30).toFixed(2));
+        }
 
-        if (months <= 0) {
+        if (months <= 0 || !Number.isFinite(ytdAmount / months)) {
             alert("Unable to determine time worked. Please verify the provided dates.");
             return null;
         }
-
-        return ytdAmount / months;
+        return Number((ytdAmount / months).toFixed(2));
     }
 
-    // Function to validate date objects
+    function calculateMonthlyBasePay(basePay, frequency) {
+        // Use GMF's published factors, including its decimal precision.
+        const factors = { weekly: 4.3333333, biweekly: 2.16666667, semimonthly: 2, monthly: 1 };
+        const monthly = basePay * factors[frequency];
+        return Number.isFinite(basePay) && basePay > 0 && Number.isFinite(monthly) && monthly > 0
+            ? monthly : null;
+    }
+
     function isValidDate(date) {
         return date instanceof Date && !isNaN(date);
     }
 
-    // Function to parse dates in various formats
+    // Parse income dates locally, rejecting impossible dates instead of rolling them forward.
     function parseDate(dateString) {
-        // Handle unusual date format edge case
-        if (dateString.includes("50415")) {
-            return new Date(2025, 3, 15);
-        }
-
-        // Try ISO format first (YYYY-MM-DD)
-        let date = new Date(dateString);
-        if (isValidDate(date)) return date;
-
-        // Try MM/DD/YYYY format
-        const parts = dateString.split("/");
-        if (parts.length === 3) {
-            const month = parseInt(parts[0]) - 1;
-            const day = parseInt(parts[1]);
-            const year = parseInt(parts[2]);
-
-            date = new Date(year, month, day);
-            if (isValidDate(date)) return date;
-        }
-
-        // Extract date using regex
-        const dateRegex = /(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4}|\d{2})/;
-        const match = dateString.match(dateRegex);
-
-        if (match) {
-            const month = parseInt(match[1]) - 1;
-            const day = parseInt(match[2]);
-            let year = parseInt(match[3]);
-
-            // Handle 2-digit years
-            if (year < 100) {
-                year = year + (year < 50 ? 2000 : 1900);
-            }
-
-            date = new Date(year, month, day);
-            if (isValidDate(date)) return date;
-        }
-
-        // Default to current date if parsing fails
-        return new Date();
+        const value = dateString.trim();
+        const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+        const us = /^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4}|\d{2})$/.exec(value);
+        if (!iso && !us) return null;
+        let year = Number(iso ? iso[1] : us[3]);
+        const month = Number(iso ? iso[2] : us[1]);
+        const day = Number(iso ? iso[3] : us[2]);
+        if (!iso && us[3].length === 2) year += year < 50 ? 2000 : 1900;
+        if (year < 1000) return null;
+        const date = new Date(year, month - 1, day);
+        return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+            ? date : null;
     }
 
     // Function to setup Enter key navigation for a form
@@ -545,7 +567,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const form = document.getElementById(formId);
         if (!form) return;
 
-        const inputs = form.querySelectorAll("input");
+        const inputs = form.querySelectorAll(formId === "base-income-form" ? "input, select" : "input");
 
         inputs.forEach((input, index) => {
             input.addEventListener("keydown", function (e) {
@@ -642,6 +664,11 @@ document.addEventListener("DOMContentLoaded", function () {
         inputs.forEach((input) => {
             input.value = "";
         });
+
+        if (formId === "base-income-form") {
+            document.getElementById("base-pay-frequency").value = "weekly";
+            document.getElementById("base-income-annual").textContent = "Estimated Annual Gross Income: $0.00";
+        }
 
         // Reset result display
         const resultId = formId.replace("form", "result");

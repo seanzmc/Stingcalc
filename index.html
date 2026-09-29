@@ -251,48 +251,91 @@
                     <!-- Calculate Monthly Income Tab -->
                     <div class="tab-pane"
                          id="income-calc">
-                        <h2>Calculate Monthly Income</h2>
-                        <div class="info-heading">Calculate the monthly income based on the year-to-date amount and the pay period end date.</div>
-                        <form id="income-form">
-                            <div class="form-group">
-                                <label for="ytd-amount">Year-to-Date (YTD) Amount ($):</label>
-                                <input type="number"
-                                       id="ytd-amount"
-                                       min="0.01"
-                                       step="0.01"
-                                       placeholder="e.g., 24000"
-                                       required>
-                                <small class="form-text">Enter the total YTD amount found in the GROSS field of the paystub</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="check-date">Pay Period End:</label>
-                                <input type="date"
-                                       id="check-date"
-                                       required>
-                                <small class="form-text">Enter the Pay Period End Date</small>
-                            </div>
-                            <div class="form-group">
-                                <label for="hire-date">Hire Date (if hired after Jan 1st this year):</label>
-                                <input type="date"
-                                       id="hire-date">
-                                <small class="form-text">Leave blank if hired before this year</small>
-                            </div>
-                            <div class="button-group">
-                                <button type="submit"
-                                        class="calculate-btn">Calculate</button>
-                                <button type="button"
-                                        class="clear-btn"
-                                        data-form="income-form">Clear</button>
-                            </div>
-                        </form>
-                        <div class="result hidden"
-                             id="income-result">
-                            <h3>Estimated Monthly Gross Income:</h3>
-                            <p class="amount">$0.00</p>
-                            <div class="result-details">
-                                <p id="income-annual">Estimated Annual Gross Income: $0.00</p>
+                        <div class="tabs income-subtabs" aria-label="Income calculation method">
+                            <button type="button" class="tab-btn active" data-income-panel="ytd-income-panel" aria-pressed="true" aria-controls="ytd-income-panel">YTD Income</button>
+                            <button type="button" class="tab-btn" data-income-panel="base-income-panel" aria-pressed="false" aria-controls="base-income-panel">Base Pay</button>
+                        </div>
+                        <div id="ytd-income-panel">
+                            <h2>Calculate Monthly Income</h2>
+                            <div class="info-heading">Turn year-to-date earnings into an estimated monthly income.</div>
+                            <form id="income-form">
+                                <div class="form-group">
+                                    <label for="ytd-amount">Year-to-Date (YTD) Amount ($):</label>
+                                    <input type="number"
+                                           id="ytd-amount"
+                                           min="0.01"
+                                           step="0.01"
+                                           placeholder="e.g., 24000"
+                                           required>
+                                    <small class="form-text">Enter the total YTD amount found in the GROSS field of the paystub</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="check-date">Check Date:</label>
+                                    <input type="date"
+                                           id="check-date"
+                                           required>
+                                    <small class="form-text">Enter the payment date printed on the paystub</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pay-period-end">Pay Period End Date:</label>
+                                    <input type="date" id="pay-period-end">
+                                    <small class="form-text">Used for hires after January 1. Leave blank to use the check date.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="hire-date">Hire Date:</label>
+                                    <input type="date"
+                                           id="hire-date">
+                                    <small class="form-text">Enter the actual hire date. Leave blank only if employed before the paystub year.</small>
+                                </div>
+                                <div class="button-group">
+                                    <button type="submit"
+                                            class="calculate-btn">Calculate</button>
+                                    <button type="button"
+                                            class="clear-btn"
+                                            data-form="income-form">Clear</button>
+                                </div>
+                            </form>
+                            <div class="result hidden"
+                                 id="income-result">
+                                <h3>Estimated Monthly Gross Income:</h3>
+                                <p class="amount">$0.00</p>
+                                <div class="result-details">
+                                    <p id="income-annual">Estimated Annual Gross Income: $0.00</p>
+                                </div>
                             </div>
                         </div>
+                        <div id="base-income-panel" hidden>
+                            <h2>Calculate Monthly Base Pay</h2>
+                            <div class="info-heading">Convert gross base pay per paycheck into an estimated monthly income.</div>
+                            <form id="base-income-form">
+                                <div class="form-group">
+                                    <label for="base-pay">Gross Base Pay per Paycheck ($):</label>
+                                    <input type="number" id="base-pay" min="0.01" step="0.01" placeholder="e.g., 1500.00" required>
+                                    <small class="form-text">Enter base pay before deductions, excluding overtime, bonuses, and commissions</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="base-pay-frequency">Pay Frequency:</label>
+                                    <select id="base-pay-frequency" required>
+                                        <option value="weekly">Weekly</option>
+                                        <option value="biweekly">Biweekly (every two weeks)</option>
+                                        <option value="semimonthly">Semimonthly (twice a month)</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                <div class="button-group">
+                                    <button type="submit" class="calculate-btn">Calculate</button>
+                                    <button type="button" class="clear-btn" data-form="base-income-form">Clear</button>
+                                </div>
+                            </form>
+                            <div class="result hidden" id="base-income-result">
+                                <h3>Estimated Monthly Gross Income:</h3>
+                                <p class="amount">$0.00</p>
+                                <div class="result-details">
+                                    <p id="base-income-annual">Estimated Annual Gross Income: $0.00</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="form-text">Estimates follow the <a href="https://dealers.gmfinancial.com/en-us/dealer-support/income-calculator.html" target="_blank" rel="noopener noreferrer">GM Financial dealer calculator</a>. Confirm qualifying income with the lender.</p>
                     </div>
                     <div class="tab-pane"
                          id="quick-pencil">

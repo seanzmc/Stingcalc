@@ -81,6 +81,7 @@ h2 {
 }
 
 #payment-calculators .payment-subtabs,
+#income-calc .income-subtabs,
 #quick-pencil .sale-type-tabs {
     margin-bottom: 20px;
     padding: 8px;
@@ -91,6 +92,7 @@ h2 {
 }
 
 #payment-calculators .payment-subtabs .tab-btn,
+#income-calc .income-subtabs .tab-btn,
 #quick-pencil .sale-type-tabs .tab-btn {
     flex: 1;
     font-size: 0.875rem;
@@ -105,6 +107,7 @@ h2 {
 }
 
 #payment-calculators .payment-subtabs .tab-btn:hover,
+#income-calc .income-subtabs .tab-btn:hover,
 #quick-pencil .sale-type-tabs .tab-btn:hover {
     background-color: #ffffff;
     border-color: #c8d3ff;
@@ -112,6 +115,7 @@ h2 {
 }
 
 #payment-calculators .payment-subtabs .tab-btn:focus-visible,
+#income-calc .income-subtabs .tab-btn:focus-visible,
 #quick-pencil .sale-type-tabs .tab-btn:focus-visible {
     outline: 2px solid #93c5fd;
     outline-offset: 2px;
@@ -119,6 +123,7 @@ h2 {
 }
 
 #payment-calculators .payment-subtabs .tab-btn.active,
+#income-calc .income-subtabs .tab-btn.active,
 #quick-pencil .sale-type-tabs .tab-btn.active {
     background: #ffffff;
     color: #1d4ed8;
@@ -126,7 +131,8 @@ h2 {
     box-shadow: 0 2px 6px rgba(29, 78, 216, 0.18);
 }
 
-#payment-calculators .info-heading {
+#payment-calculators .info-heading,
+#income-calc .info-heading {
     margin-bottom: 20px;
 }
 
